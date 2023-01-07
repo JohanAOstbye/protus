@@ -15,7 +15,7 @@ export default function CoverImage(props: CoverImageProps) {
   const image = source?.asset?._ref ? (
     <div
       className={cn('shadow-small', {
-        'transition-shadow duration-200 hover:shadow-medium': slug,
+        'hover:shadow-medium transition-shadow duration-200': slug,
       })}
     >
       <Image
@@ -35,7 +35,7 @@ export default function CoverImage(props: CoverImageProps) {
   return (
     <div className="sm:mx-0">
       {slug ? (
-        <Link href={`/posts/${slug}`} aria-label={title}>
+        <Link href={`/chapters/${slug}`} aria-label={title}>
           {image}
         </Link>
       ) : (

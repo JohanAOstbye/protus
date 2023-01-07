@@ -2,12 +2,12 @@ import 'server-only'
 
 import { apiVersion, dataset, projectId, useCdn } from 'lib/sanity.api'
 import {
-  type Post,
+  type Chapter,
   type Settings,
   indexQuery,
-  postAndMoreStoriesQuery,
-  postBySlugQuery,
-  postSlugsQuery,
+  chapterAndMoreStoriesQuery,
+  chapterBySlugQuery,
+  chapterSlugsQuery,
   settingsQuery,
 } from 'lib/sanity.queries'
 import { createClient } from 'next-sanity'
@@ -26,32 +26,32 @@ export async function getSettings(): Promise<Settings> {
   return {}
 }
 
-export async function getAllPosts(): Promise<Post[]> {
+export async function getAllChapters(): Promise<Chapter[]> {
   if (client) {
     return (await client.fetch(indexQuery)) || []
   }
   return []
 }
 
-export async function getAllPostsSlugs(): Promise<Pick<Post, 'slug'>[]> {
+export async function getAllChaptersSlugs(): Promise<Pick<Chapter, 'slug'>[]> {
   if (client) {
-    const slugs = (await client.fetch<string[]>(postSlugsQuery)) || []
+    const slugs = (await client.fetch<string[]>(chapterSlugsQuery)) || []
     return slugs.map((slug) => ({ slug }))
   }
   return []
 }
 
-export async function getPostBySlug(slug: string): Promise<Post> {
+export async function getChapterBySlug(slug: string): Promise<Chapter> {
   if (client) {
-    return (await client.fetch(postBySlugQuery, { slug })) || ({} as any)
+    return (await client.fetch(chapterBySlugQuery, { slug })) || ({} as any)
   }
   return {} as any
 }
 
-export async function getPostAndMoreStories(
+export async function getChapterAndMoreStories(
   slug: string,
   token?: string | null
-): Promise<{ post: Post; morePosts: Post[] }> {
+): Promise<{ chapter: Chapter; moreChapters: Chapter[] }> {
   if (projectId) {
     const client = createClient({
       projectId,
@@ -60,7 +60,7 @@ export async function getPostAndMoreStories(
       useCdn,
       token: token || undefined,
     })
-    return await client.fetch(postAndMoreStoriesQuery, { slug })
+    return await client.fetch(chapterAndMoreStoriesQuery, { slug })
   }
-  return { post: null, morePosts: [] }
+  return { chapter: null, moreChapters: [] }
 }

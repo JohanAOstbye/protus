@@ -1,5 +1,5 @@
 /**
- * This component is responsible for rendering a preview of a post inside the Studio.
+ * This component is responsible for rendering a preview of a chapter inside the Studio.
  */
 import { Card, Flex, Spinner, Text } from '@sanity/ui'
 import { getSecret } from 'plugins/productionUrl/utils'
@@ -19,7 +19,7 @@ type Props = {
   apiVersion: string
 }
 
-export default function PostPreviewPane(props: Props) {
+export default function ChapterPreviewPane(props: Props) {
   const { previewSecretId, apiVersion } = props
   // Whenever the slug changes there's it's best to wait a little for elastic search to reach eventual consistency
   // this helps prevent seeing "Invalid slug" or 404 errors while editing the slug manually
@@ -37,7 +37,7 @@ export default function PostPreviewPane(props: Props) {
     return (
       <Card tone="primary" margin={5} padding={6}>
         <Text align="center">
-          Please add a slug to the post to see the preview!
+          Please add a slug to the chapter to see the preview!
         </Text>
       </Card>
     )

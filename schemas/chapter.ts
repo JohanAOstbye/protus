@@ -3,12 +3,13 @@ import { format, parseISO } from 'date-fns'
 import { defineField, defineType } from 'sanity'
 
 import authorType from './author'
+import descriptionBlockType from './blocks/descriptionBlock'
 
 /**
- * This file is the schema definition for a post.
+ * This file is the schema definition for a chapter.
  *
  * Here you'll be able to edit the different fields that appear when you 
- * create or edit a post in the studio.
+ * create or edit a chapter in the studio.
  * 
  * Here you can see the different schema types that are available:
 
@@ -17,8 +18,8 @@ import authorType from './author'
  */
 
 export default defineType({
-  name: 'post',
-  title: 'Post',
+  name: 'chapter',
+  title: 'Chapter',
   icon: BookIcon,
   type: 'document',
   fields: [
@@ -43,7 +44,7 @@ export default defineType({
       name: 'content',
       title: 'Content',
       type: 'array',
-      of: [{ type: 'block' }],
+      of: [{ type: 'block' }, { type: descriptionBlockType.name }],
     }),
     defineField({
       name: 'excerpt',

@@ -1,12 +1,12 @@
-import AuthorAvatar from 'components/AuthorAvatar'
+import AuthorAvatar from 'components/elements/AuthorAvatar'
+import Date from 'components/chapter/ChapterDate'
 import CoverImage from 'components/CoverImage'
-import Date from 'components/PostDate'
-import type { Post } from 'lib/sanity.queries'
+import type { Chapter } from 'lib/sanity.queries'
 import Link from 'next/link'
 
-export default function HeroPost(
+export default function HeroChapter(
   props: Pick<
-    Post,
+    Chapter,
     'title' | 'coverImage' | 'date' | 'excerpt' | 'author' | 'slug'
   >
 ) {
@@ -19,7 +19,7 @@ export default function HeroPost(
       <div className="mb-20 md:mb-28 md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8">
         <div>
           <h3 className="mb-4 text-4xl leading-tight lg:text-6xl">
-            <Link href={`/posts/${slug}`} className="hover:underline">
+            <Link href={`/chapters/${slug}`} className="hover:underline">
               {title || 'Untitled'}
             </Link>
           </h3>

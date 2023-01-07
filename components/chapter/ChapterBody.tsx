@@ -1,5 +1,5 @@
 /**
- * This component uses Portable Text to render a post body.
+ * This component uses Portable Text to render a chapter body.
  *
  * You can learn more about Portable Text on:
  * https://www.sanity.io/docs/block-content
@@ -9,9 +9,9 @@
  */
 import { PortableText } from '@portabletext/react'
 
-import styles from './PostBody.module.css'
+import styles from './ChapterBody.module.css'
 
-export default function PostBody({ content }) {
+export default function ChapterBody({ content }) {
   return (
     <div className={`mx-auto max-w-2xl ${styles.portableText}`}>
       <PortableText value={content} />

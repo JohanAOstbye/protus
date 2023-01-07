@@ -1,25 +1,24 @@
 import { UserIcon } from '@sanity/icons'
 import { defineField, defineType } from 'sanity'
 
-import chapterType from './chapter'
-
 export default defineType({
-  name: 'language',
-  title: 'Language',
+  name: 'descriptionBlock',
+  title: 'DescriptionBlock',
+  icon: UserIcon,
   type: 'document',
   fields: [
     defineField({
-      name: 'name',
-      title: 'Name',
+      name: 'title',
+      title: 'Title',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'chapter',
-      title: 'Chapter',
-      type: 'reference',
-      to: [{ type: 'reference', to: [{ type: chapterType.name }] }],
+      name: 'content',
+      title: 'Content',
+      type: 'array',
+      of: [{ type: 'block' }],
+      validation: (rule) => rule.required(),
     }),
-    ,
   ],
 })

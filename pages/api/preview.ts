@@ -5,7 +5,7 @@ import {
   projectId,
   useCdn,
 } from 'lib/sanity.api'
-import { postBySlugQuery } from 'lib/sanity.queries'
+import { chapterBySlugQuery } from 'lib/sanity.queries'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { PageConfig } from 'next/types'
 import { createClient } from 'next-sanity'
@@ -18,7 +18,7 @@ export const config: PageConfig = { runtime: 'nodejs' }
 function redirectToPreview(
   res: NextApiResponse<string | void>,
   previewData: { token?: string },
-  Location: '/' | `/posts/${string}`
+  Location: '/' | `/chapter/${string}`
 ): void {
   // Enable Preview Mode by setting the cookies
   res.setPreviewData(previewData)
@@ -66,23 +66,23 @@ export default async function preview(
     return redirectToPreview(res, previewData, '/')
   }
 
-  // Check if the post with the given `slug` exists
+  // Check if the chapter with the given `slug` exists
   const client = _client.withConfig({
     // Fallback to using the WRITE token until https://www.sanity.io/docs/vercel-integration starts shipping a READ token.
     // As this client only exists on the server and the token is never shared with the browser, we don't risk escalating permissions to untrustworthy users
     token:
       process.env.SANITY_API_READ_TOKEN || process.env.SANITY_API_WRITE_TOKEN,
   })
-  const post = await client.fetch(postBySlugQuery, {
+  const chapter = await client.fetch(chapterBySlugQuery, {
     slug: req.query.slug,
   })
 
   // If the slug doesn't exist prevent preview mode from being enabled
-  if (!post) {
+  if (!chapter) {
     return res.status(401).send('Invalid slug')
   }
 
-  // Redirect to the path from the fetched post
+  // Redirect to the path from the fetched chapter
   // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
-  redirectToPreview(res, previewData, `/posts/${post.slug}`)
+  redirectToPreview(res, previewData, `/chapters/${chapter.slug}`)
 }

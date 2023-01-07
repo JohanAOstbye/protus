@@ -2,25 +2,25 @@ import Container from 'components/BlogContainer'
 import BlogHeader from 'components/BlogHeader'
 import Layout from 'components/BlogLayout'
 import MoreStories from 'components/MoreStories'
-import PostBody from 'components/PostBody'
-import PostHeader from 'components/PostHeader'
-import PostTitle from 'components/PostTitle'
 import SectionSeparator from 'components/SectionSeparator'
 import * as demo from 'lib/demo.data'
-import type { Post, Settings } from 'lib/sanity.queries'
+import type { Chapter, Settings } from 'lib/sanity.queries'
 import { notFound } from 'next/navigation'
+import ChapterBody from './ChapterBody'
+import ChapterHeader from './ChapterHeader'
+import ChapterTitle from './ChapterTitle'
 
-export default function PostPage(props: {
+export default function ChapterPage(props: {
   preview?: boolean
   loading?: boolean
-  data: { post: Post; morePosts: Post[] }
+  data: { chapter: Chapter; moreChapters: Chapter[] }
   settings: Settings
 }) {
   const { preview, loading, data, settings } = props
-  const { post = {} as any, morePosts = [] } = data || {}
+  const { chapter = {} as any, moreChapters = [] } = data || {}
   const { title = demo.title } = settings || {}
 
-  const slug = post?.slug
+  const slug = chapter?.slug
 
   if (!slug && !preview) {
     notFound()
@@ -30,21 +30,23 @@ export default function PostPage(props: {
     <Layout preview={preview} loading={loading}>
       <Container>
         <BlogHeader title={title} level={2} />
-        {preview && !post ? (
-          <PostTitle>Loading…</PostTitle>
+        {preview && !chapter ? (
+          <ChapterTitle>Loading…</ChapterTitle>
         ) : (
           <>
             <article>
-              <PostHeader
-                title={post.title}
-                coverImage={post.coverImage}
-                date={post.date}
-                author={post.author}
+              <ChapterHeader
+                title={chapter.title}
+                coverImage={chapter.coverImage}
+                date={chapter.date}
+                author={chapter.author}
               />
-              <PostBody content={post.content} />
+              <ChapterBody content={chapter.content} />
             </article>
             <SectionSeparator />
-            {morePosts?.length > 0 && <MoreStories posts={morePosts} />}
+            {moreChapters?.length > 0 && (
+              <MoreStories chapters={moreChapters} />
+            )}
           </>
         )}
       </Container>

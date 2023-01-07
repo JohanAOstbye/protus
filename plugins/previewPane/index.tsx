@@ -6,10 +6,10 @@
 
 import { DefaultDocumentNodeResolver } from 'sanity/desk'
 import authorType from 'schemas/author'
-import postType from 'schemas/post'
+import chapterType from 'schemas/chapter'
 
 import AuthorAvatarPreviewPane from './AuthorAvatarPreviewPane'
-import PostPreviewPane from './PostPreviewPane'
+import ChapterPreviewPane from './ChapterPreviewPane'
 
 export const previewDocumentNode = ({
   apiVersion,
@@ -33,12 +33,12 @@ export const previewDocumentNode = ({
             .title('Preview'),
         ])
 
-      case postType.name:
+      case chapterType.name:
         return S.document().views([
           S.view.form(),
           S.view
             .component(({ document }) => (
-              <PostPreviewPane
+              <ChapterPreviewPane
                 slug={document.displayed.slug?.current}
                 apiVersion={apiVersion}
                 previewSecretId={previewSecretId}

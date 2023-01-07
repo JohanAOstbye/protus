@@ -1,17 +1,17 @@
-import Avatar from 'components/AuthorAvatar'
+import Avatar from 'components/elements/AuthorAvatar'
+import Date from 'components/chapter/ChapterDate'
 import CoverImage from 'components/CoverImage'
-import Date from 'components/PostDate'
-import type { Post } from 'lib/sanity.queries'
+import type { Chapter } from 'lib/sanity.queries'
 import Link from 'next/link'
 
-export default function PostPreview({
+export default function ChapterPreview({
   title,
   coverImage,
   date,
   excerpt,
   author,
   slug,
-}: Omit<Post, '_id'>) {
+}: Omit<Chapter, '_id'>) {
   return (
     <div>
       <div className="mb-5">
@@ -23,7 +23,7 @@ export default function PostPreview({
         />
       </div>
       <h3 className="mb-3 text-3xl leading-snug">
-        <Link href={`/posts/${slug}`} className="hover:underline">
+        <Link href={`/chapters/${slug}`} className="hover:underline">
           {title}
         </Link>
       </h3>
