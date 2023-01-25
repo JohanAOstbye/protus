@@ -1,3 +1,7 @@
+'use client'
+
+import { CourseContextProvider } from 'components/context/course'
+
 export default function RootLayout({
   children,
 }: {
@@ -6,7 +10,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head />
-      <body className="bg-white text-black">{children}</body>
+      <body className="bg-white text-black">
+        <CourseContextProvider course={undefined}>
+          {children}
+        </CourseContextProvider>
+      </body>
     </html>
   )
 }

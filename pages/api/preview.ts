@@ -3,9 +3,10 @@ import {
   dataset,
   previewSecretId,
   projectId,
+  readToken,
   useCdn,
 } from 'lib/sanity.api'
-import { chapterBySlugQuery } from 'lib/sanity.queries'
+import { chapterBySlugAndCourseQuery } from 'lib/sanity.queries'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { PageConfig } from 'next/types'
 import { createClient } from 'next-sanity'
@@ -18,7 +19,7 @@ export const config: PageConfig = { runtime: 'nodejs' }
 function redirectToPreview(
   res: NextApiResponse<string | void>,
   previewData: { token?: string },
-  Location: '/' | `/chapter/${string}`
+  Location: '/' | `/${string}/${string}`
 ): void {
   // Enable Preview Mode by setting the cookies
   res.setPreviewData(previewData)
@@ -27,7 +28,13 @@ function redirectToPreview(
   res.end()
 }
 
-const _client = createClient({ projectId, dataset, apiVersion, useCdn })
+const _client = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn,
+  token: readToken,
+})
 
 export default async function preview(
   req: NextApiRequest,
@@ -73,8 +80,9 @@ export default async function preview(
     token:
       process.env.SANITY_API_READ_TOKEN || process.env.SANITY_API_WRITE_TOKEN,
   })
-  const chapter = await client.fetch(chapterBySlugQuery, {
+  const chapter = await client.fetch(chapterBySlugAndCourseQuery, {
     slug: req.query.slug,
+    course: 'livet',
   })
 
   // If the slug doesn't exist prevent preview mode from being enabled
@@ -84,5 +92,5 @@ export default async function preview(
 
   // Redirect to the path from the fetched chapter
   // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
-  redirectToPreview(res, previewData, `/chapters/${chapter.slug}`)
+  redirectToPreview(res, previewData, `/chapter/${chapter.slug}`)
 }

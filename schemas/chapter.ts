@@ -3,6 +3,7 @@ import { format, parseISO } from 'date-fns'
 import { defineField, defineType } from 'sanity'
 
 import authorType from './author'
+import courseType from './course'
 import descriptionBlockType from './blocks/descriptionBlock'
 
 /**

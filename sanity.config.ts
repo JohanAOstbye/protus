@@ -14,6 +14,7 @@ import authorType from 'schemas/author'
 import chapterType from 'schemas/chapter'
 import settingsType from 'schemas/settings'
 import descriptionBlock from 'schemas/blocks/descriptionBlock'
+import courseType from 'schemas/course'
 
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Next.js Blog with Sanity.io'
@@ -25,7 +26,13 @@ export default defineConfig({
   title,
   schema: {
     // If you want more content types, you can add them to this array
-    types: [authorType, chapterType, settingsType, descriptionBlock],
+    types: [
+      authorType,
+      chapterType,
+      courseType,
+      settingsType,
+      descriptionBlock,
+    ],
   },
   plugins: [
     deskTool({

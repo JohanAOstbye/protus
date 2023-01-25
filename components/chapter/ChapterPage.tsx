@@ -13,14 +13,17 @@ import ChapterTitle from './ChapterTitle'
 export default function ChapterPage(props: {
   preview?: boolean
   loading?: boolean
-  data: { chapter: Chapter; moreChapters: Chapter[] }
+  data: Chapter
   settings: Settings
 }) {
   const { preview, loading, data, settings } = props
-  const { chapter = {} as any, moreChapters = [] } = data || {}
+  const chapter = data
   const { title = demo.title } = settings || {}
 
   const slug = chapter?.slug
+
+  console.log('slug:', !slug)
+  console.log('preview', !preview)
 
   if (!slug && !preview) {
     notFound()
@@ -44,9 +47,9 @@ export default function ChapterPage(props: {
               <ChapterBody content={chapter.content} />
             </article>
             <SectionSeparator />
-            {moreChapters?.length > 0 && (
+            {/* {moreChapters?.length > 0 && (
               <MoreStories chapters={moreChapters} />
-            )}
+            )} */}
           </>
         )}
       </Container>

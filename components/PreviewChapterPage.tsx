@@ -3,25 +3,19 @@ import { usePreview } from 'lib/sanity.preview'
 import {
   type Chapter,
   type Settings,
-  chapterAndMoreStoriesQuery,
   settingsQuery,
+  courseQuery,
 } from 'lib/sanity.queries'
 import ChapterPage from './chapter/ChapterPage'
 
 export default function PreviewChapterPage({
   token,
-  slug,
+  chapter,
 }: {
   token: null | string
-  slug: string
+  chapter: { course: string }
 }) {
-  const data: { chapter: Chapter; moreChapters: Chapter[] } = usePreview(
-    token,
-    chapterAndMoreStoriesQuery,
-    {
-      slug,
-    }
-  ) || { chapter: null, moreChapters: [] }
+  const data: Chapter = usePreview(token, courseQuery, chapter) || null
   const settings: Settings = usePreview(token, settingsQuery) || {}
 
   return <ChapterPage preview data={data} settings={settings} />

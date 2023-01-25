@@ -10,32 +10,51 @@ const chapterFields = groq`
   "author": author->{name, picture},
 `
 
-export const settingsQuery = groq`*[_type == "settings"][0]`
-
-export const indexQuery = groq`
-*[_type == "chapter"] | order(date desc, _updatedAt desc) {
-  ${chapterFields}
-}`
-
-export const chapterAndMoreStoriesQuery = groq`
-{
-  "chapter": *[_type == "chapter" && slug.current == $slug] | order(_updatedAt desc) [0] {
-    content,
-    ${chapterFields}
-  },
-  "moreChapters": *[_type == "chapter" && slug.current != $slug] | order(date desc, _updatedAt desc) [0...2] {
-    content,
-    ${chapterFields}
-  }
-}`
-
-export const chapterSlugsQuery = groq`
-*[_type == "chapter" && defined(slug.current)][].slug.current
+const chapterFieldsWithCourse = groq`
+  _id,
+  title,
+  date,
+  excerpt,
+  coverImage,
+  "slug": slug.current,
+  "author": author->{name, picture},
+  "course": *[_type == "course" && references(^._id)][0].name 
 `
 
-export const chapterBySlugQuery = groq`
-*[_type == "chapter" && slug.current == $slug][0] {
-  ${chapterFields}
+const courseFields = groq`
+  _id,
+  name,
+  page->{${chapterFields}},
+  "slugs": chapters[]->slug.current
+`
+
+export const settingsQuery = groq`*[_type == "settings"][0]`
+
+export const courseQuery = groq`
+*[_type == "course" && name == $course][0]
+{${courseFields}}
+`
+
+export const coursesQuery = groq`
+*[_type == "course"]
+{${courseFields}}
+`
+
+export const chapterBySlugAndCourseQuery = groq`
+*[_type == "course" && name == $course  && $slug in chapters[]->slug.current][0]
+{
+  chapters[]->
+}
+{
+  chapters[slug.current == $slug]
+}.chapters[0]
+  {${chapterFields}}
+
+`
+export const CoursePageQuery = groq`
+*[_type == "course" && name == $course ][0]
+{
+  "page": page->{${chapterFields}}
 }
 `
 
@@ -53,6 +72,14 @@ export interface Chapter {
   author?: Author
   slug?: string
   content?: any
+  course?: string
+}
+
+export interface Course {
+  _id: string
+  name?: string
+  page: Chapter
+  slugs?: string[]
 }
 
 export interface Settings {

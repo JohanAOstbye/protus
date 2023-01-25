@@ -1,14 +1,21 @@
 import 'server-only'
 
-import { apiVersion, dataset, projectId, useCdn } from 'lib/sanity.api'
+import {
+  apiVersion,
+  dataset,
+  projectId,
+  readToken,
+  useCdn,
+} from 'lib/sanity.api'
 import {
   type Chapter,
   type Settings,
-  indexQuery,
-  chapterAndMoreStoriesQuery,
-  chapterBySlugQuery,
-  chapterSlugsQuery,
+  type Course,
   settingsQuery,
+  chapterBySlugAndCourseQuery,
+  coursesQuery,
+  CoursePageQuery,
+  courseQuery,
 } from 'lib/sanity.queries'
 import { createClient } from 'next-sanity'
 
@@ -16,7 +23,7 @@ import { createClient } from 'next-sanity'
  * Checks if it's safe to create a client instance, as `@sanity/client` will throw an error if `projectId` is false
  */
 const client = projectId
-  ? createClient({ projectId, dataset, apiVersion, useCdn })
+  ? createClient({ projectId, dataset, apiVersion, useCdn, token: readToken })
   : null
 
 export async function getSettings(): Promise<Settings> {
@@ -26,32 +33,17 @@ export async function getSettings(): Promise<Settings> {
   return {}
 }
 
-export async function getAllChapters(): Promise<Chapter[]> {
+export async function getCourse(course: string): Promise<Course> {
   if (client) {
-    return (await client.fetch(indexQuery)) || []
-  }
-  return []
-}
-
-export async function getAllChaptersSlugs(): Promise<Pick<Chapter, 'slug'>[]> {
-  if (client) {
-    const slugs = (await client.fetch<string[]>(chapterSlugsQuery)) || []
-    return slugs.map((slug) => ({ slug }))
-  }
-  return []
-}
-
-export async function getChapterBySlug(slug: string): Promise<Chapter> {
-  if (client) {
-    return (await client.fetch(chapterBySlugQuery, { slug })) || ({} as any)
+    return (await client.fetch(courseQuery, { course })) || ({} as any)
   }
   return {} as any
 }
 
-export async function getChapterAndMoreStories(
-  slug: string,
+export async function getInitialCourse(
+  course: string,
   token?: string | null
-): Promise<{ chapter: Chapter; moreChapters: Chapter[] }> {
+): Promise<Course> {
   if (projectId) {
     const client = createClient({
       projectId,
@@ -60,7 +52,63 @@ export async function getChapterAndMoreStories(
       useCdn,
       token: token || undefined,
     })
-    return await client.fetch(chapterAndMoreStoriesQuery, { slug })
+    return await client.fetch(courseQuery, { course })
   }
-  return { chapter: null, moreChapters: [] }
+  return {} as any
+}
+
+export async function getChapter(
+  slug: string,
+  course: string
+): Promise<Chapter> {
+  if (client) {
+    let chapter = client.fetch(chapterBySlugAndCourseQuery, {
+      slug,
+      course,
+    })
+
+    return chapter || ({} as any)
+  }
+  return {} as any
+}
+
+export async function getInitialChapter(
+  chapter: { slug: string; course: string },
+  token?: string | null
+): Promise<Chapter> {
+  if (projectId) {
+    const client = createClient({
+      projectId,
+      dataset,
+      apiVersion,
+      useCdn,
+      token: token || undefined,
+    })
+    return await client.fetch(chapterBySlugAndCourseQuery, chapter)
+  }
+  return {} as any
+}
+
+export async function getCourses(
+  chapter?: { slug: string; course: string },
+  token?: string | null
+): Promise<{ courses: Course[]; chapter?: Chapter }> {
+  if (projectId) {
+    const client = createClient({
+      projectId,
+      dataset,
+      apiVersion,
+      useCdn,
+      token: token || undefined,
+    })
+    let courses = await client.fetch(coursesQuery)
+    if (chapter) {
+      return {
+        courses,
+        chapter: await client.fetch(chapterBySlugAndCourseQuery, chapter),
+      }
+    }
+    return { courses }
+  }
+  return { courses: [] }
 }

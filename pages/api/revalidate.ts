@@ -36,6 +36,7 @@ export default async function revalidate(
       req,
       process.env.SANITY_REVALIDATE_SECRET
     )
+
     if (isValidSignature === false) {
       const message = 'Invalid signature'
       console.log(message)
@@ -47,6 +48,8 @@ export default async function revalidate(
       console.error(invalidId, { body })
       return res.status(400).send(invalidId)
     }
+
+    console.log(body)
 
     const staleRoutes = await queryStaleRoutes(body as any)
     await Promise.all(staleRoutes.map((route) => res.revalidate(route)))
@@ -60,10 +63,10 @@ export default async function revalidate(
   }
 }
 
-type StaleRoute = '/' | `/chapters/${string}`
+type StaleRoute = '/' | `/${string}/${string}`
 
 async function queryStaleRoutes(
-  body: Pick<ParseBody['body'], '_type' | '_id' | 'date' | 'slug'>
+  body: Pick<ParseBody['body'], '_type' | '_id' | 'date' | 'slug' | 'course'>
 ): Promise<StaleRoute[]> {
   const client = createClient({ projectId, dataset, apiVersion, useCdn: false })
 
@@ -73,7 +76,9 @@ async function queryStaleRoutes(
     if (!exists) {
       let staleRoutes: StaleRoute[] = ['/']
       if ((body.slug as any)?.current) {
-        staleRoutes.push(`/chapters/${(body.slug as any).current}`)
+        staleRoutes.push(
+          `/${(body.course as any).current}/${(body.slug as any).current}`
+        )
       }
       // Assume that the chapter document was deleted. Query the datetime used to sort "More stories" to determine if the chapter was in the list.
       const moreStories = await client.fetch(

@@ -1,11 +1,10 @@
-import { UserIcon } from '@sanity/icons'
 import { defineField, defineType } from 'sanity'
 
 import chapterType from './chapter'
 
 export default defineType({
-  name: 'language',
-  title: 'Language',
+  name: 'course',
+  title: 'Course',
   type: 'document',
   fields: [
     defineField({
@@ -15,11 +14,16 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'chapter',
-      title: 'Chapter',
+      name: 'page',
+      title: 'Page',
       type: 'reference',
-      to: [{ type: 'reference', to: [{ type: chapterType.name }] }],
+      to: [{ type: chapterType.name }],
     }),
-    ,
+    defineField({
+      name: 'chapters',
+      title: 'Chapters',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: chapterType.name }] }],
+    }),
   ],
 })
