@@ -16,6 +16,8 @@ import { getSecret } from 'plugins/productionUrl/utils'
 // option in next.config.mjs without breaking preview mode
 export const config: PageConfig = { runtime: 'nodejs' }
 
+//TODO: update logic for redirecting to the correct page
+
 function redirectToPreview(
   res: NextApiResponse<string | void>,
   previewData: { token?: string },
