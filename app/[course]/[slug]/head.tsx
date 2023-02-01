@@ -1,4 +1,3 @@
-import BlogMeta from 'components/BlogMeta'
 import * as demo from 'lib/demo.data'
 import { getChapter, getSettings } from 'lib/sanity.client'
 import { urlForImage } from 'lib/sanity.image'
@@ -18,7 +17,6 @@ export default async function SlugHead({
   return (
     <>
       <title>{chapter.title ? `${chapter.title} | ${title}` : title}</title>
-      <BlogMeta />
       {chapter.coverImage?.asset?._ref && (
         <meta
           property="og:image"
