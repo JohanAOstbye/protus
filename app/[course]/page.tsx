@@ -1,10 +1,11 @@
-import ChapterPage from 'components/chapter/ChapterPage'
 import { useCourse } from 'components/context/course'
-import PreviewChapterPage from 'components/PreviewChapterPage'
-import { PreviewSuspense } from 'components/PreviewSuspense'
+import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage'
+
 import { getCourse, getInitialCourse, getSettings } from 'lib/sanity.client'
+// import { PreviewSuspense } from 'next-sanity/preview'
 import { previewData } from 'next/headers'
 import { notFound } from 'next/navigation'
+import ChapterPage from 'old/chapter/ChapterPage'
 
 export default async function SlugRoute({
   params,
@@ -19,18 +20,18 @@ export default async function SlugRoute({
     const data = await getInitialCourse(params.course, token)
 
     return (
-      <PreviewSuspense
-        fallback={
-          <ChapterPage
-            loading
-            preview
-            data={await data}
-            settings={await settings}
-          />
-        }
-      >
+      // <PreviewSuspense
+      //   fallback={
+      //     <ChapterPage
+      //       loading
+      //       preview
+      //       data={await data}
+      //       settings={await settings}
+      //     />
+      //   }
+      // >
         <PreviewChapterPage token={token} chapter={params} />
-      </PreviewSuspense>
+      // </PreviewSuspense>
     )
   }
 

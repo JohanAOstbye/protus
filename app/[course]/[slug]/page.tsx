@@ -1,8 +1,11 @@
-import ChapterPage from 'components/chapter/ChapterPage'
-import PreviewChapterPage from 'components/PreviewChapterPage'
-import { PreviewSuspense } from 'components/PreviewSuspense'
+
+
+import ChapterLayout from 'components/pages/chapter/ChapterPage';
+import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage';
 import { getChapter, getInitialChapter, getSettings } from 'lib/sanity.client'
+// import { PreviewSuspense } from 'next-sanity/preview';
 import { previewData } from 'next/headers'
+import ChapterPage from 'old/chapter/ChapterPage';
 
 export default async function SlugRoute({
   params,
@@ -12,24 +15,22 @@ export default async function SlugRoute({
   // Start fetching settings early, so it runs in parallel with the chapter query
   const settings = getSettings()
 
-  if (previewData()) {
-    const token = previewData().token || null
-    const data = getInitialChapter(params, token)
-    return (
-      <PreviewSuspense
-        fallback={
-          <ChapterPage
-            loading
-            preview
-            data={await data}
-            settings={await settings}
-          />
-        }
-      >
-        <PreviewChapterPage token={token} chapter={params} />
-      </PreviewSuspense>
-    )
-  }
+  // if (previewData()) {
+  //   const token = previewData().token || null
+  //   const data = getInitialChapter(params, token)
+  //   return (
+  //     <PreviewSuspense
+  //       fallback={
+  //         <ChapterLayout
+  //           loading
+  //           preview           
+  //         ><div></div></ChapterLayout>
+  //       }
+  //     >
+  //       <PreviewChapterPage token={token} chapter={params} />
+  //     </PreviewSuspense>
+  //   )
+  // }
 
   const data = getChapter(params.slug, params.course)
 
