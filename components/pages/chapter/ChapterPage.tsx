@@ -1,11 +1,11 @@
 import AlertBanner from 'components/elements/AlertBanner'
 
-export default function BlogLayout({
-  preview,
+export default function ChapterLayout({
+  preview = false,
   loading,
   children,
 }: {
-  preview: boolean
+  preview?: boolean
   loading?: boolean
   children: React.ReactNode
 }) {

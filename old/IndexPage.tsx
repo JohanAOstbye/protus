@@ -1,9 +1,8 @@
-import Container from 'components/BlogContainer'
-import BlogHeader from 'components/BlogHeader'
-import Layout from 'components/BlogLayout'
-import MoreStories from 'components/MoreStories'
+
+import Layout from 'app/layout'
 import * as demo from 'lib/demo.data'
 import type { Chapter, Settings } from 'lib/sanity.queries'
+import BlogHeader from './BlogHeader'
 import HeroChapter from './HeroChapter'
 
 export default function IndexPage(props: {
@@ -16,10 +15,10 @@ export default function IndexPage(props: {
 
   return (
     <>
-      <Layout preview={preview} loading={loading}>
-        <Container>
+      <Layout >
+      
           <BlogHeader title={title} description={description} level={1} />
-        </Container>
+      
       </Layout>
     </>
   )

@@ -1,14 +1,15 @@
-import Container from 'components/BlogContainer'
-import BlogHeader from 'components/BlogHeader'
-import Layout from 'components/BlogLayout'
-import MoreStories from 'components/MoreStories'
-import SectionSeparator from 'components/SectionSeparator'
+import Container from 'components/elements/BlogContainer'
+import BlogHeader from 'old/BlogHeader'
+
+import MoreStories from 'old/MoreStories'
+import SectionSeparator from 'old/SectionSeparator'
 import * as demo from 'lib/demo.data'
 import type { Chapter, Settings } from 'lib/sanity.queries'
 import { notFound } from 'next/navigation'
 import ChapterBody from './ChapterBody'
 import ChapterHeader from './ChapterHeader'
 import ChapterTitle from './ChapterTitle'
+import Layout from 'app/layout'
 
 export default function ChapterPage(props: {
   preview?: boolean
@@ -30,7 +31,7 @@ export default function ChapterPage(props: {
   }
 
   return (
-    <Layout preview={preview} loading={loading}>
+    <Layout >
       <Container>
         <BlogHeader title={title} level={2} />
         {preview && !chapter ? (

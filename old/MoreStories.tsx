@@ -1,5 +1,6 @@
-import ChapterPreview from 'components/chapter/ChapterPreview'
+
 import type { Chapter } from 'lib/sanity.queries'
+import ChapterPreview from './chapter/ChapterPreview'
 
 export default function MoreStories({ chapters }: { chapters: Chapter[] }) {
   return (
