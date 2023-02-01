@@ -1,4 +1,4 @@
-import Container from 'components/elements/BlogContainer'
+import Container from 'components/blocks/BlogContainer'
 import BlogHeader from 'old/BlogHeader'
 
 import MoreStories from 'old/MoreStories'
