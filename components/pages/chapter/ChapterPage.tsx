@@ -5,19 +5,16 @@ import { chapterType } from 'lib/types'
 export default function ChapterPage({
   preview = false,
   loading,
-  data
+  data,
 }: {
   preview?: boolean
   loading?: boolean
   data: chapterType
 }) {
-  
   return (
-      <>
-        { preview && <AlertBanner loading={loading} />}
-        {!loading && data ? (<main>
-          {JSON.stringify(data)}
-          </main>):<Loading/>}
-      </>
+    <>
+      {preview && <AlertBanner loading={loading} />}
+      {!loading && data ? <main>{JSON.stringify(data)}</main> : <Loading />}
+    </>
   )
 }
