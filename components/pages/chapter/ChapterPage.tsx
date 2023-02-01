@@ -1,6 +1,9 @@
 import AlertBanner from 'components/elements/AlertBanner'
-import Loading from 'components/elements/Loading'
-import { chapterType } from 'lib/types'
+import BlogContainer from 'components/blocks/BlogContainer'
+import Sidebar from 'components/layout/Sidebar'
+import BlogHeader from 'old/BlogHeader'
+import Header from 'components/layout/Header'
+import Footer from 'components/layout/Footer'
 
 export default function ChapterPage({
   preview = false,
@@ -13,8 +16,15 @@ export default function ChapterPage({
 }) {
   return (
     <>
-      {preview && <AlertBanner loading={loading} />}
-      {!loading && data ? <main>{JSON.stringify(data)}</main> : <Loading />}
+      <div className="min-h-screen">
+        <AlertBanner preview={preview} loading={loading} />
+        <main>{children}</main>
+        {/* <BlogHeader title={''} level={1}/> */}
+        <Header />
+        <BlogContainer children={<div></div>} />
+        <Sidebar children={<div></div>} />
+        <Footer />
+      </div>
     </>
   )
 }
