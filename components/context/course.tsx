@@ -1,6 +1,6 @@
 'use client'
 
-import { courseType } from 'lib/types'
+import { courseType } from 'lib/types/sanity'
 import React, {
   createContext,
   useState,
