@@ -1,4 +1,6 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
+import Container from 'components/blocks/BlogContainer'
+
 export default function Alert({ loading }: { loading?: boolean }) {
   return (
     <div className="border-accent-7 bg-accent-7 border-b text-white">
