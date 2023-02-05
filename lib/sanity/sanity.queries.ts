@@ -58,12 +58,21 @@ export const CoursePageQuery = groq`
 }
 `
 
-export interface Author {
+export type Author = {
   name?: string
   picture?: any
 }
 
-export interface Chapter {
+type descriptionBlock = {
+  title: string
+  content: string[]
+}
+
+type contentBlock = string | descriptionBlock
+
+type content = contentBlock[]
+
+export type Chapter = {
   _id: string
   title?: string
   coverImage?: any
@@ -71,18 +80,18 @@ export interface Chapter {
   excerpt?: string
   author?: Author
   slug?: string
-  content?: any
+  content?: content
   course?: string
 }
 
-export interface Course {
+export type Course = {
   _id: string
   name?: string
   page: Chapter
   slugs?: string[]
 }
 
-export interface Settings {
+export type Settings = {
   title?: string
   description?: any[]
   ogImage?: {

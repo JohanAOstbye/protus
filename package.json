@@ -7,7 +7,9 @@
     "lint": "next lint -- --ignore-path .gitignore",
     "lint:fix": "npm run format && npm run lint -- --fix",
     "start": "next start",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "prettier": {
     "semi": false,
@@ -35,7 +37,17 @@
     "zod": "^3.20.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-interactions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/react": "^6.5.16",
+    "@storybook/testing-library": "^0.0.13",
     "@types/react": "^18.0.26",
+    "babel-loader": "^8.3.0",
     "eslint": "^8.31.0",
     "eslint-config-next": "^13.1.1",
     "eslint-plugin-simple-import-sort": "^8.0.0",
