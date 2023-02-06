@@ -17,7 +17,7 @@ export default function RootLayout({
         <CourseContextProvider course={undefined}>
           {children}
           <Navbar/>
-          <Sidebar children={undefined}/>
+          <Sidebar/>
           <Footer/>
         </CourseContextProvider>
       </body>

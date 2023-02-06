@@ -1,6 +1,8 @@
-export default function Sidebar({ children }) {
-    return <div className="container mx-auto px-5">{ children }
+const Sidebar = () => {
+    return (
         <div>Dette er en sidebar</div>
-    </div>
+    )
   }
   
+
+export default Sidebar
