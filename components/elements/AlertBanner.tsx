@@ -1,11 +1,12 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 import Container from 'components/blocks/BlogContainer'
 
-export default function Alert({
+const AlertBanner = ( {
+  
   loading,
 }: {
   loading?: boolean
-}) {
+}) => {
   return (
     <div className="border-b border-accent-7 bg-accent-7 text-white">
       <Container>
@@ -23,3 +24,5 @@ export default function Alert({
     </div>
   )
 }
+
+export default AlertBanner
