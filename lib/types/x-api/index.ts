@@ -5,6 +5,7 @@ import { object } from './object'
 import { context } from './context'
 import { result } from './result'
 import { authority } from './authority'
+import { attachments } from './attachments'
 
 export const IRI = z.string().url()
 export const IRL = z.string().url()
@@ -13,8 +14,6 @@ export const languageTag = z.string() //TODO: restrict to the correct codes
 export const languageMap = z.map(languageTag, z.string())
 
 export const extensions = z.map(z.string(), z.any())
-
-const attachments = z.object({})
 
 export const statement = z.object({
   actor: actor,

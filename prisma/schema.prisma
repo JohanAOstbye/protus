@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "mongodb"
     // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -14,25 +14,191 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+// X-API
+
+model Statement {
+    id          String           @id @default(uuid()) @map("_id") @db.ObjectId
+    actor       Actor            @relation(fields: [actorId], references: [id])
+    verb        Verb             @relation(fields: [verbId], references: [id])
+    object      Object           @relation(fields: [objectId], references: [id], name: "statementObject")
+    result      Result?
+    context     Context?         @relation(fields: [contextId], references: [registration], name: "statementContext")
+    timestamp   DateTime?        @updatedAt
+    stored      DateTime?        @default(now())
+    authority   AuthorityActor[]
+    version     String?          @default("1.0.0")
+    attachments Attachment[]
+    actorId     String           @db.ObjectId
+    verbId      String           @db.ObjectId
+    objectId    String           @unique @db.ObjectId
+    contextId   String           @unique @db.ObjectId
+    contextref  Context[]        @relation(name: "statementcontextref")
+    objectref   Object[]         @relation(name: "statementobjectref")
+}
+
+type Score {
+    scaled Int
+    raw    Int?
+    min    Int?
+    max    Int?
+}
+
+type Result {
+    score      Score?
+    success    Boolean?
+    completion Boolean?
+    response   String?
+    duration   String?
+    extensions Extension[]
+}
+
+model ContextActivity {
+    id                  String  @id @default(uuid()) @map("_id") @db.ObjectId
+    key                 String
+    value               Object  @relation(fields: [objectId], references: [id])
+    context             Context @relation(fields: [contextRegistration], references: [registration])
+    objectId            String  @db.ObjectId
+    contextRegistration String  @db.ObjectId
+}
+
+model Context {
+    registration      String            @id @default(uuid()) @map("_id") @db.ObjectId
+    instructor        Actor?            @relation(fields: [instructorId], references: [id], name: "instructor")
+    statement         Statement?        @relation(fields: [statementId], references: [id], onUpdate: NoAction, onDelete: NoAction, name: "statementcontextref")
+    team              Actor?            @relation(fields: [teamId], references: [id], name: "team")
+    contextActivities ContextActivity[]
+    revision          String?
+    platform          String?
+    language          String?
+    extensions        Extension[]
+    instructorId      String?           @db.ObjectId
+    teamId            String?           @db.ObjectId
+    statementId       String            @db.ObjectId
+    Statement         Statement?        @relation(name: "statementContext")
+}
+
+type Attachment {
+    usageType   String
+    display     LanguageTag[]
+    description LanguageTag[]
+    contentType String
+    length      Int
+    sha2        String
+    fileUrl     String
+}
+
+enum objectType {
+    Activity
+    StatementRef
+    SubStatment
+}
+
+enum interactionType {
+    trueFalse
+    choice
+    fillIn
+    longFillIn
+    matching
+    performance
+    sequencing
+    likert
+    numeric
+    other
+}
+
+type idDescription {
+    id          String
+    description LanguageTag[]
+}
+
+type definition {
+    name                    LanguageTag[]
+    description             LanguageTag[]
+    type                    String?
+    moreInfo                String?
+    extensions              Extension[]
+    interactionType         interactionType?
+    correctResponsesPattern String[]
+    choices                 String[]
+    scale                   String[]
+    source                  idDescription[]
+    target                  idDescription[]
+    steps                   idDescription[]
+}
+
+model Object {
+    id              String            @id @default(uuid()) @map("_id") @db.ObjectId
+    statement       Statement?        @relation(fields: [statementId], references: [id], onUpdate: NoAction, onDelete: NoAction, name: "statementobjectref")
+    objectType      objectType
+    actor           Actor?            @relation(fields: [actorId], references: [id], name: "substatementActor")
+    verb            Verb?             @relation(fields: [verbId], references: [id], name: "substatementVerb")
+    object          Object?           @relation(fields: [objectId], references: [id], onUpdate: NoAction, onDelete: NoAction, name: "substatementObject")
+    IRIid           String            @map("id")
+    definition      definition?
+    actorId         String?           @db.ObjectId
+    statementId     String?           @db.ObjectId
+    verbId          String?           @db.ObjectId
+    objectId        String?           @db.ObjectId
+    ContextActivity ContextActivity[]
+    Statement       Statement?        @relation(name: "statementObject")
+    Objects         Object[]          @relation(name: "substatementObject")
+}
+
+model Verb {
+    id        String      @id @default(uuid()) @map("_id") @db.ObjectId
+    Statement Statement[]
+    Object    Object[]    @relation(name: "substatementVerb")
+}
+
+type LanguageTag {
+    key   String
+    value String
+}
+
+type Extension {
+    key   String
+    value String
+}
+
+model AuthorityActor {
+    id          String    @id @default(uuid()) @map("_id") @db.ObjectId
+    statement   Statement @relation(fields: [statementId], references: [id])
+    actor       Actor     @relation(fields: [actorId], references: [id])
+    statementId String    @db.ObjectId
+    actorId     String    @db.ObjectId
+}
+
+model Actor {
+    id                String           @id @default(uuid()) @map("_id") @db.ObjectId
+    objectType        String           @default("Agent")
+    member            Actor[]          @relation(name: "member")
+    mbox              String?
+    mbox_sha1sum      String?
+    openid            String?
+    account           User?            @relation(fields: [accountId], references: [id])
+    accountId         String?          @unique @db.ObjectId
+    Actor             Actor?           @relation(fields: [actorId], references: [id], name: "member", onDelete: NoAction, onUpdate: NoAction)
+    actorId           String?          @db.ObjectId
+    Statement         Statement[]
+    teamContext       Context[]        @relation(name: "team")
+    InsturctorContext Context[]        @relation(name: "instructor")
+    Object            Object[]         @relation(name: "substatementActor")
+    AuthorityActor    AuthorityActor[]
 }
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
+    id                String  @id @default(uuid()) @map("_id") @db.ObjectId
+    userId            String  @db.ObjectId
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
+    refresh_token     String? @db.String
+    access_token      String? @db.String
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? // @db.Text
+    id_token          String? @db.String
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -40,24 +206,26 @@ model Account {
 }
 
 model Session {
-    id           String   @id @default(cuid())
+    id           String   @id @default(uuid()) @map("_id") @db.ObjectId
     sessionToken String   @unique
-    userId       String
+    userId       String   @db.ObjectId
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String    @id @default(uuid()) @map("_id") @db.ObjectId
     name          String?
     email         String?   @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
+    actor         Actor?
 }
 
 model VerificationToken {
+    id         String   @id @default(uuid()) @map("_id") @db.ObjectId
     identifier String
     token      String   @unique
     expires    DateTime
