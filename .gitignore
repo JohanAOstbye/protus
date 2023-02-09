@@ -40,5 +40,5 @@ jspm_packages
 # environemt variables
 .env
 
-
+# yarn packages
 yarn.lock
