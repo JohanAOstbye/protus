@@ -6,7 +6,7 @@ import {
   settingsQuery,
   courseQuery,
 } from 'lib/sanity.queries'
-import ChapterLayout from './ChapterPage'
+import ChapterPage from './ChapterPage'
 
 export default function PreviewChapterPage({
   token,
@@ -18,5 +18,5 @@ export default function PreviewChapterPage({
   const data: Chapter = usePreview(token, courseQuery, chapter) || null
   const settings: Settings = usePreview(token, settingsQuery) || {}
 
-  return <ChapterLayout preview  ><div></div></ChapterLayout>
+  return <ChapterPage preview data={data}  />
 }

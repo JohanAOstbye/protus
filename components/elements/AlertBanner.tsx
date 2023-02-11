@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
-import Container from 'components/blocks/BlogContainer'
 
 const AlertBanner = ( {
   
@@ -9,7 +8,6 @@ const AlertBanner = ( {
 }) => {
   return (
     <div className="border-b border-accent-7 bg-accent-7 text-white">
-      <Container>
         <div className="py-2 text-center text-sm">
           {loading ? 'Loading... ' : 'This page is a preview. '}
           <a
@@ -20,7 +18,6 @@ const AlertBanner = ( {
           </a>{' '}
           to exit preview mode.
         </div>
-      </Container>
     </div>
   )
 }
