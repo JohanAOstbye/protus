@@ -1,0 +1,27 @@
+
+$surf-bg: #1D1D1D;
+$surf-text: #D9D9D9;
+
+$surf-grad1: #008BC7;
+$surf-grad2: #76FFFF;
+
+$surf-dark-grad1: #00298E;
+$surf-dark-grad2: #0881B6;
+
+$surf-gradient: $surf-grad1, $surf-grad2;
+
+$surf-dark-gradient: $surf-dark-grad1, $surf-dark-grad2;
+
+// -- background gradients --
+@mixin gradient($direction, $list) { 
+    background: -webkit-linear-gradient($direction, $list);
+    background: -moz-linear-gradient($direction, $list);
+    background: -o-linear-gradient($direction, $list);
+    background: linear-gradient($direction, $list);  
+  }
+
+ /* usage
+.sidebar {
+    @include gradient(left, $surf-gradient);
+}
+ */

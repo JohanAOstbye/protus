@@ -1,0 +1,8 @@
+@use 'styles/utils/_colors.scss' as *;
+
+
+.button {
+    @include gradient(left, $surf-gradient);
+    border-radius: 6px;
+    color: black;
+}
