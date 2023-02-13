@@ -1,11 +1,11 @@
 
 
+import ChapterPage from 'components/pages/chapter/ChapterPage';
 import ChapterLayout from 'components/pages/chapter/ChapterPage';
 import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage';
 import { getChapter, getInitialChapter, getSettings } from 'lib/sanity.client'
 // import { PreviewSuspense } from 'next-sanity/preview';
 import { previewData } from 'next/headers'
-import ChapterPage from 'old/chapter/ChapterPage';
 
 export default async function SlugRoute({
   params,
@@ -36,7 +36,7 @@ export default async function SlugRoute({
 
   console.log(await data)
 
-  return <ChapterPage data={await data} settings={await settings} />
+  return <ChapterPage data={await data} />
 }
 
 // FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`

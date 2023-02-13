@@ -2,7 +2,7 @@ import AlertBanner from 'components/elements/AlertBanner'
 import Loading from 'components/elements/Loading'
 import { chapterType } from 'lib/types'
 
-export default function ChapterPage({
+const ChapterPage = ( {
   preview = false,
   loading,
   data
@@ -10,7 +10,7 @@ export default function ChapterPage({
   preview?: boolean
   loading?: boolean
   data: chapterType
-}) {
+}) =>{
   
   return (
       <>
@@ -21,3 +21,5 @@ export default function ChapterPage({
       </>
   )
 }
+
+export default ChapterPage

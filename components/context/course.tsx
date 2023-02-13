@@ -43,9 +43,9 @@ export const CourseContextProvider = (props: courseContextProviderProps) => {
 }
 
 export const useCourse = () => {
-  const course = useContext(CourseContext)
-  if (course === undefined) {
+  const courseInfo = useContext(CourseContext)
+  if (courseInfo === undefined) {
     throw new Error('usecourse was used outside of its Provider')
   }
-  return course
+  return courseInfo
 }

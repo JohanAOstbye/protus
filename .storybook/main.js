@@ -17,6 +17,11 @@ module.exports = {
   },
   webpackFinal:async (config) => {
     config.resolve.modules.push(path.resolve(__dirname, '../'))
+    config.module.rules.push({
+      test: /\.scss$/,
+      use: ['style-loader', 'css-loader?url=false&modules=true', 'sass-loader'],
+      include: path.resolve(__dirname, '../'),
+    });
     return config
   }
 }
