@@ -1,5 +1,6 @@
+import { Prisma } from '@prisma/client'
 import { z } from 'zod'
-import { extensions } from '.'
+import { extensions, mapToArray } from '.'
 
 const score = z
   .object({
@@ -22,7 +23,7 @@ const score = z
     return true
   })
 
-const duration = z.object({})
+const duration = z.string()
 
 export const result = z.object({
   score: score.optional(),
@@ -32,3 +33,13 @@ export const result = z.object({
   duration: duration.optional(),
   extensions: extensions.optional(),
 })
+
+export type resultType = z.infer<typeof result>
+
+export const resultToPrisma = (result: resultType) => {
+  const prismaStatment: Prisma.ResultCreateInput = {
+    ...result,
+    extensions: result.extensions ? mapToArray(result.extensions) : [],
+  }
+  return prismaStatment
+}
