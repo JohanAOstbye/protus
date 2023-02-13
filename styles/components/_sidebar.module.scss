@@ -1,0 +1,21 @@
+@use 'styles/utils/_colors.scss' as *;
+
+
+.sidebar {
+    background-color: $surf-bg;
+    opacity: 90%;
+}
+
+ul {
+    list-style-type: none;
+}
+
+a {
+    color: $surf-text;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
