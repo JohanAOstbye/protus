@@ -25,7 +25,7 @@ const courseFields = groq`
   _id,
   name,
   page->{${chapterFields}},
-  "slugs": chapters[]->slug.current
+  "slugs": chapters[]->{"slug": slug.current,title}
 `
 
 export const settingsQuery = groq`*[_type == "settings"][0]`
@@ -88,7 +88,7 @@ export type Course = {
   _id: string
   name?: string
   page: Chapter
-  slugs?: string[]
+  slugs?: { title: string; slug: string }[]
 }
 
 export type Settings = {

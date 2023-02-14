@@ -1,11 +1,11 @@
 'use client'
-import { usePreview } from 'lib/sanity.preview'
+import { usePreview } from 'lib/sanity/sanity.preview'
 import {
   type Chapter,
   type Settings,
   settingsQuery,
   courseQuery,
-} from 'lib/sanity.queries'
+} from 'lib/sanity/sanity.queries'
 import ChapterPage from './ChapterPage'
 
 export default function PreviewChapterPage({

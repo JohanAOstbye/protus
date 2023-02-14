@@ -1,4 +1,4 @@
-import { useCourse } from 'components/context/course'
+import { useCourse } from 'components/context/courseContext'
 import React from 'react'
 import Footer from './Footer'
 import Navbar from './Navbar'
@@ -9,7 +9,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="layout">
       <Navbar />
-      <Sidebar chapters={[]} courseSlug={course.name} />
+      {course.name && course.slugs && (
+        <Sidebar chapters={course.slugs} courseSlug={course.name} />
+      )}
       <main>{children}</main>
       <Footer />
     </div>
