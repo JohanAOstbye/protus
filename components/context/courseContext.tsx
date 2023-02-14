@@ -10,12 +10,14 @@ import React, {
   useCallback,
 } from 'react'
 
-type courseContextType = {
-  course: courseType
-  updateCourse: (course: courseType) => void
-}
+type courseContextType =
+  | {
+      course: courseType
+      updateCourse: (course: courseType) => void
+    }
+  | undefined
 
-const CourseContext = createContext<courseContextType>(null)
+const CourseContext = createContext<courseContextType>(undefined)
 
 interface courseContextProviderProps {
   children: React.ReactNode

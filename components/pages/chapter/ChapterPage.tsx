@@ -1,6 +1,6 @@
 import AlertBanner from 'components/elements/AlertBanner'
 import Loading from 'components/elements/Loading'
-import { chapterType } from 'lib/types'
+import { chapterType } from 'lib/types/sanity'
 
 const ChapterPage = ({
   preview = false,
