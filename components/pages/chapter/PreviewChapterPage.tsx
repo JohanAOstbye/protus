@@ -1,8 +1,11 @@
 'use client'
-
-import { usePreview } from 'lib/sanity/sanity.preview'
-import { Chapter, courseQuery, settingsQuery } from 'lib/sanity/sanity.queries'
-import { Settings } from 'sanity'
+import { usePreview } from 'lib/sanity.preview'
+import {
+  type Chapter,
+  type Settings,
+  settingsQuery,
+  courseQuery,
+} from 'lib/sanity.queries'
 import ChapterPage from './ChapterPage'
 
 export default function PreviewChapterPage({
@@ -15,5 +18,5 @@ export default function PreviewChapterPage({
   const data: Chapter = usePreview(token, courseQuery, chapter) || null
   const settings: Settings = usePreview(token, settingsQuery) || {}
 
-  return <ChapterPage preview data={data}  />
+  return <ChapterPage preview data={data} />
 }

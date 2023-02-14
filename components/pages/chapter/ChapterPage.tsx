@@ -1,6 +1,6 @@
 import AlertBanner from 'components/elements/AlertBanner'
 import Loading from 'components/elements/Loading'
-import { chapterType } from 'lib/types/sanity'
+import { chapterType } from 'lib/types'
 
 const ChapterPage = ({
   preview = false,
@@ -13,12 +13,8 @@ const ChapterPage = ({
 }) => {
   return (
     <>
-      <div className="min-h-screen">
-        <AlertBanner preview={preview} loading={loading} />
-        <main>{children}</main>
-        <Sidebar children={<div></div>} />
-        <Footer />
-      </div>
+      {preview && <AlertBanner loading={loading} />}
+      {!loading && data ? <main>{JSON.stringify(data)}</main> : <Loading />}
     </>
   )
 }

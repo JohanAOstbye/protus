@@ -1,5 +1,7 @@
-import { Chapter } from 'lib/sanity/sanity.queries'
+import { title } from 'lib/demo.data'
+import { Chapter } from 'lib/sanity.queries'
 import Link from 'next/link'
+import chapter from 'schemas/chapter'
 import style from 'styles/components/_sidebar.module.scss'
 
 const Sidebar = ({
