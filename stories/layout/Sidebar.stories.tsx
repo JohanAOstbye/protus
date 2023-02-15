@@ -1,18 +1,11 @@
 // Sidebar.stories.ts|tsx
 
-import React, { ReactPropTypes } from 'react';
+import React from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import Sidebar from 'components/layout/Sidebar';
 
-
 const mockdata = [{title:'chapter1',slug:'ole',},{title:'chapter2',slug:'dole'}]
-
-
-
-
-
-
 
 export default {
   /* 👇 The title prop is optional.

@@ -90,9 +90,8 @@ export async function getInitialChapter(
 }
 
 export async function getCourses(
-  chapter?: { slug: string; course: string },
   token?: string | null
-): Promise<{ courses: Course[]; chapter?: Chapter }> {
+): Promise<Course[]> {
   if (projectId) {
     const client = createClient({
       projectId,
@@ -102,13 +101,8 @@ export async function getCourses(
       token: token || undefined,
     })
     let courses = await client.fetch(coursesQuery)
-    if (chapter) {
-      return {
-        courses,
-        chapter: await client.fetch(chapterBySlugAndCourseQuery, chapter),
-      }
-    }
-    return { courses }
+
+    return courses
   }
-  return { courses: [] }
+  return []
 }

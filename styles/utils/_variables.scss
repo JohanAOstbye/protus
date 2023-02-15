@@ -1,0 +1,60 @@
+$content-l-max-width: 1440px;
+$content-max-width: 1180px;
+$content-sm-max-width: 1100px;
+$content-s-max-width: 1040px;
+$content-xs-max-width: 980px;
+$content-xxs-max-width: 720px;
+
+$font-size-base: 16px;
+
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+@function convert-to-rem($value, $base-value: $font-size-base) {
+  $value: strip-unit($value) / strip-unit($base-value) * 1rem;
+
+  @if ($value==0rem) {
+    $value: 0;
+  }
+
+  // Turn 0rem into 0
+  @return $value;
+}
+
+//SPACING
+$spacing--big: convert-to-rem(192px);
+$spacing--xxxl: convert-to-rem(160px);
+$spacing--xxl: convert-to-rem(96px);
+$spacing--xl: convert-to-rem(80px);
+$spacing--l: convert-to-rem(64px);
+$spacing--m: convert-to-rem(48px);
+$spacing--sm: convert-to-rem(32px);
+$spacing--s: convert-to-rem(24px);
+$spacing--xs: convert-to-rem(16px);
+$spacing--xxs: convert-to-rem(12px);
+$spacing--xxxs: convert-to-rem(8px);
+$spacing--tiny: convert-to-rem(4px);
+$spacing--xtiny: convert-to-rem(2px);
+
+//FONTSIZES
+$font--xl: convert-to-rem(96px);
+$font--l: convert-to-rem(60px);
+$font--m: convert-to-rem(36px);
+$font--sm: convert-to-rem(24px);
+$font--s: convert-to-rem(18px);
+$font--xs: convert-to-rem(16px);
+$font--xxs: convert-to-rem(14px);
+$font--xxxs: convert-to-rem(12px);
+
+//BREAKPOINTS
+$breakpoint-xs: 400px;
+$breakpoint-s: 500px;
+$breakpoint-sm: 700px;
+$breakpoint-m: 1000px;
+$breakpoint-l: 1312px;
+$breakpoint-xl: 1500px;

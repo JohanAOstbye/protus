@@ -3,6 +3,10 @@
 import { CourseContextProvider } from 'components/context/course'
 import Layout from 'components/layout'
 
+import {
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
 
 export default function RootLayout({
   children,
@@ -10,17 +14,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-
+  const queryClient = new QueryClient()
 
   return (
     <html lang="en">
       <head />
       <body className="bg-white text-black">
+      <QueryClientProvider client={queryClient}>
         <CourseContextProvider course={undefined}>
           <Layout>
             {children}
             </Layout>
         </CourseContextProvider>
+        </QueryClientProvider>
       </body>
     </html>
   )

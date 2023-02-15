@@ -4,14 +4,28 @@ import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage'
 
 import { getCourse, getInitialCourse, getSettings } from 'lib/sanity.client'
 // import { PreviewSuspense } from 'next-sanity/preview'
-import { previewData } from 'next/headers'
-import { notFound } from 'next/navigation'
+// import { previewData } from 'next/headers'
+// import { notFound } from 'next/navigation'
 
 export default async function SlugRoute({
   params,
 }: {
   params: { course: string }
 }) {
+
+
+  const course = await getCourse(params.course)
+
+  console.log(await course)
+
+  return <ChapterPage data={await course.page}  />
+}
+
+// FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`
+export const revalidate = 1
+
+// THIS WAS PREVIEW
+/*
   // Start fetching settings early, so it runs in parallel with the chapter query
   const settings = getSettings()
 
@@ -34,13 +48,4 @@ export default async function SlugRoute({
       // </PreviewSuspense>
     )
   }
-
-  const course = await getCourse(params.course)
-
-  console.log(await course)
-
-  return <ChapterPage data={await course.page}  />
-}
-
-// FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`
-export const revalidate = 1
+  */
