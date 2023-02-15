@@ -1,8 +1,12 @@
 'use client'
 
-import { CourseContextProvider } from 'components/context/course'
+import { CourseContextProvider } from 'components/context/courseContext'
 import Layout from 'components/layout'
 
+import {
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
 
 export default function RootLayout({
   children,
@@ -10,17 +14,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-
+  const queryClient = new QueryClient()
 
   return (
     <html lang="en">
       <head />
       <body className="bg-white text-black">
-        <CourseContextProvider course={undefined}>
+      <QueryClientProvider client={queryClient}>
+        <CourseContextProvider course={undefined} courses={undefined}>
           <Layout>
             {children}
             </Layout>
         </CourseContextProvider>
+        </QueryClientProvider>
       </body>
     </html>
   )

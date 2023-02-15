@@ -4,11 +4,12 @@ import Footer from './Footer'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { course } = useCourse()
+export const Layout = ({ children }: { children?: React.ReactNode }) => {
+  const {course, courses}  = useCourse()
+  
   return (
     <div className="layout">
-      <Navbar />
+      <Navbar courses={courses} selectedCourse={course} />
       {course.name && course.slugs && (
         <Sidebar chapters={course.slugs} courseSlug={course.name} />
       )}

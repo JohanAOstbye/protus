@@ -1,0 +1,38 @@
+@use 'styles/utils/_colors.scss' as *;
+
+.container {
+  display: flex;
+  background-color: $surf-bg;
+  font-size: larger;
+  color: $surf-text;
+  grid-gap: 0.3em;
+}
+
+.protus {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+@mixin reset{ margin: 0; padding: 0; }
+ul{
+    @include reset;
+    list-style: none;
+    li{
+      float: left;
+      position: relative;
+      ul{ 
+        padding-left: 1em;
+        padding-bottom: 0.3em;
+        display: none;
+        position: absolute;
+        overflow: auto;
+        width: 5em; 
+        background-color: $surf-bg;
+        border-bottom: 2px solid darken(white, 20%);
+        border-right: 2px solid darken(white, 20%);
+        li{
+          float: none;
+        }
+      }
+      &:hover ul{ display: block; }
+    }
+  }
