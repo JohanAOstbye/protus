@@ -1,6 +1,6 @@
 'use client'
 
-import { CourseContextProvider } from 'components/context/course'
+import { CourseContextProvider } from 'components/context/courseContext'
 import Layout from 'components/layout'
 
 import {
@@ -21,7 +21,7 @@ export default function RootLayout({
       <head />
       <body className="bg-white text-black">
       <QueryClientProvider client={queryClient}>
-        <CourseContextProvider course={undefined}>
+        <CourseContextProvider course={undefined} courses={undefined}>
           <Layout>
             {children}
             </Layout>

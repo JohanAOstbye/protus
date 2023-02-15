@@ -1,16 +1,15 @@
-import { title } from 'lib/sanity/demo.data'
-import { Chapter } from 'lib/sanity/sanity.queries'
 import Link from 'next/link'
-import chapter from 'schemas/chapter'
 import style from 'styles/components/_sidebar.module.scss'
 
-const Sidebar = ({
+export const Sidebar = ({
   chapters,
   courseSlug,
 }: {
   chapters: { title: string; slug: string }[]
   courseSlug: string
 }) => {
+  console.log(chapters);
+  
   return (
     <ul className={style.sidebar}>
       {chapters.map((chapter, i) => (
