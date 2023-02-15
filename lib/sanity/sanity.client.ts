@@ -6,7 +6,7 @@ import {
   projectId,
   readToken,
   useCdn,
-} from 'lib/sanity.api'
+} from 'lib/sanity/sanity.api'
 import {
   type Chapter,
   type Settings,
@@ -16,7 +16,7 @@ import {
   coursesQuery,
   CoursePageQuery,
   courseQuery,
-} from 'lib/sanity.queries'
+} from 'lib/sanity/sanity.queries'
 import { createClient } from 'next-sanity'
 
 /**

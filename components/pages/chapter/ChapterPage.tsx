@@ -1,24 +1,21 @@
 import AlertBanner from 'components/elements/AlertBanner'
 import Loading from 'components/elements/Loading'
-import { chapterType } from 'lib/types'
+import { chapterType } from 'lib/types/sanity'
 
-const ChapterPage = ( {
+const ChapterPage = ({
   preview = false,
   loading,
-  data
+  data,
 }: {
   preview?: boolean
   loading?: boolean
   data: chapterType
-}) =>{
-  
+}) => {
   return (
-      <>
-        { preview && <AlertBanner loading={loading} />}
-        {!loading && data ? (<main>
-          {JSON.stringify(data)}
-          </main>):<Loading/>}
-      </>
+    <>
+      {preview && <AlertBanner loading={loading} />}
+      {!loading && data ? <main>{JSON.stringify(data)}</main> : <Loading />}
+    </>
   )
 }
 
