@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Actor, Prisma, XapiAccount } from '@prisma/client'
 import { Session } from 'next-auth'
 import { z } from 'zod'
 import { user } from '../auth/user'
@@ -8,26 +8,13 @@ export const account = z.object({
   name: z.string(),
 })
 
-export const inverseFunctionalIdentifier = z.object({
-  mbox: z.string().email().optional(),
-  mbox_sha1sum: z.string().optional(),
-  openid: z.string().url().optional(),
-  account: account.optional(),
-})
-
-export const actorBase = z.object({
-  id: z.string().uuid().optional(),
-  name: z.string().optional(),
-})
-
-export const agent = z
+export const inverseFunctionalIdentifier = z
   .object({
-    objectType: z.literal('Agent').optional(),
-    user: user.optional(),
-    userId: z.string().uuid().optional(),
+    mbox: z.string().email().optional(),
+    mbox_sha1sum: z.string().optional(),
+    openid: z.string().url().optional(),
+    account: account.optional(),
   })
-  .merge(actorBase)
-  .merge(inverseFunctionalIdentifier)
   .refine(
     (data) => {
       let standardKeys = ['mbox', 'mbox_sha1sum', 'openid', 'account']
@@ -41,53 +28,60 @@ export const agent = z
     }
   )
 
+export const actorBase = z.object({
+  id: z.string().uuid().optional(),
+  name: z.string().optional(),
+})
+
+export const agent = z
+  .object({
+    objectType: z.literal('Agent').optional(),
+    user: user.optional(),
+    userId: z.string().uuid().optional(),
+  })
+  .and(actorBase)
+  .and(inverseFunctionalIdentifier)
+
 export const anongroup = z
   .object({
-    objectType: z.literal('Group').optional(),
+    objectType: z.literal('Group'),
     member: z.array(agent),
   })
   .merge(actorBase)
 
 export const identifiedgroup = z
   .object({
-    objectType: z.literal('Group').optional(),
+    objectType: z.literal('Group'),
     member: z.array(agent).optional(),
   })
-  .merge(actorBase)
-  .merge(inverseFunctionalIdentifier)
-  .refine(
-    (data) => {
-      let standardKeys = ['mbox', 'mbox_sha1sum', 'openid', 'account']
-      let keys = Object.keys(data).filter((key) => standardKeys.includes(key))
-      return (keys.length === 0 && data.member) || keys.length === 1
-    },
-    {
-      message:
-        "you must have one and only one of the following indientfier keys: 'mbox', 'mbox_sha1sum', 'openid', 'account'",
-      path: ['identifier'],
-    }
-  )
+  .and(actorBase)
+  .and(inverseFunctionalIdentifier)
 
 export const group = anongroup.or(identifiedgroup)
 
 export const actor = agent.or(group)
 
 export type actorType = z.infer<typeof actor>
+export type groupType = z.infer<typeof group>
+export type agentType = z.infer<typeof agent>
 
 export const actorToPrisma = (actor: actorType, userId?: string) => {
   let prismaActor: Prisma.ActorCreateInput = {}
   let anon = anongroup.safeParse(actor)
 
   if (anon.success) {
-    let memberList: Prisma.ActorCreateWithoutActorInput[] =
-      anon.data.member.map((member) => actorToPrisma(member))
     prismaActor = {
       objectType: anon.data.objectType,
-      member: {
-        createMany: {
-          data: memberList,
-        },
-      },
+      member: anon.data.member
+        ? {
+            connect: anon.data.member.map((member) => {
+              return {
+                id: member.id,
+                ...inverseFunctionalIdentifier.parse(member),
+              }
+            }),
+          }
+        : undefined,
     }
   }
   let identified = identifiedgroup.safeParse(actor)
@@ -98,7 +92,10 @@ export const actorToPrisma = (actor: actorType, userId?: string) => {
       member: identified.data.member
         ? {
             connect: identified.data.member.map((member) => {
-              return inverseFunctionalIdentifier.parse(member)
+              return {
+                id: member.id,
+                ...inverseFunctionalIdentifier.parse(member),
+              }
             }),
           }
         : undefined,
@@ -136,4 +133,87 @@ export const actorToPrisma = (actor: actorType, userId?: string) => {
     }
   }
   return prismaActor
+}
+
+export const actorFromPrisma = (
+  prismaActor: Actor & {
+    account?: XapiAccount | undefined
+    member?: (Actor & {
+      account?: XapiAccount | undefined
+    })[]
+  }
+): actorType => {
+  let actorObject: actorType
+  if (prismaActor.objectType === 'Agent') {
+    actorObject = {
+      objectType: prismaActor.objectType,
+      name: prismaActor.name == null ? undefined : prismaActor.name,
+      mbox: prismaActor.mbox == null ? undefined : prismaActor.mbox,
+      mbox_sha1sum:
+        prismaActor.mbox_sha1sum == null ? undefined : prismaActor.mbox_sha1sum,
+      openid: prismaActor.openid == null ? undefined : prismaActor.openid,
+      account: prismaActor.account,
+    }
+  } else {
+    actorObject = {
+      objectType: 'Group',
+      name: prismaActor.name == null ? undefined : prismaActor.name,
+      mbox: prismaActor.mbox == null ? undefined : prismaActor.mbox,
+      mbox_sha1sum:
+        prismaActor.mbox_sha1sum == null ? undefined : prismaActor.mbox_sha1sum,
+      openid: prismaActor.openid == null ? undefined : prismaActor.openid,
+      account: prismaActor.account,
+      member: prismaActor.member
+        ? prismaActor.member
+            .filter((member) => member.objectType == 'Agent')
+            .map((member) => agent.parse(actorFromPrisma(member)))
+        : undefined,
+    }
+  }
+  const result = actor.safeParse(actorObject)
+  if (!result.success) {
+    console.error(result.error)
+    throw new Error('Invalid actor')
+  }
+  return result.data
+}
+
+export const groupFromPrisma = (
+  prismaActor: Actor & {
+    account?: XapiAccount | undefined
+    member?: (Actor & {
+      account?: XapiAccount | undefined
+    })[]
+  }
+): groupType => {
+  let actorObject: groupType = {
+    objectType: 'Group',
+    name: prismaActor.name == null ? undefined : prismaActor.name,
+    mbox: prismaActor.mbox == null ? undefined : prismaActor.mbox,
+    mbox_sha1sum:
+      prismaActor.mbox_sha1sum == null ? undefined : prismaActor.mbox_sha1sum,
+    openid: prismaActor.openid == null ? undefined : prismaActor.openid,
+    account: prismaActor.account,
+    member: prismaActor.member
+      ? prismaActor.member
+          .filter((member) => member.objectType == 'Agent')
+          .map((member) => agent.parse(actorFromPrisma(member)))
+      : undefined,
+  }
+
+  const result = group.safeParse(actorObject)
+  if (!result.success) {
+    console.error(result.error)
+    throw new Error('Invalid actor')
+  }
+  return result.data
+}
+
+export const actorInclude: Prisma.ActorInclude = {
+  member: {
+    include: {
+      account: true,
+    },
+  },
+  account: true,
 }

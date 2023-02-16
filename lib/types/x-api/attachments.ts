@@ -1,7 +1,12 @@
-import { Prisma } from '@prisma/client'
-import { description } from 'lib/sanity/demo.data'
+import { Attachment, Prisma } from '@prisma/client'
 import { z } from 'zod'
-import { IRI, IRL, languageMap, mapToArray } from '.'
+import {
+  IRI,
+  IRL,
+  languageMap,
+  recordFromPrismaArray,
+  recordToPrismaArray,
+} from '.'
 
 const internetMediaType = z.object({})
 
@@ -17,15 +22,31 @@ export const attachment = z.object({
 
 export type attachmentType = z.infer<typeof attachment>
 
-export const attachmentsToPrisma = (attachment: attachmentType) => {
+export const attachmentToPrisma = (attachment: attachmentType) => {
   const prismaAttachment: Prisma.AttachmentCreateInput = {
     usageType: attachment.usageType,
     contentType: `${attachment.contentType}`,
     length: attachment.length,
     sha2: attachment.sha2,
     fileUrl: attachment.fileUrl,
-    display: mapToArray(attachment.display),
-    description: mapToArray(attachment.description),
+    display: recordToPrismaArray(attachment.display),
+    description: recordToPrismaArray(attachment.description),
   }
   return prismaAttachment
+}
+
+export const attachmentFromPrisma = (
+  prismaAttachment: Attachment
+): attachmentType => {
+  const attachmentObject: attachmentType = {
+    ...prismaAttachment,
+    display: recordFromPrismaArray(prismaAttachment.display),
+    description: recordFromPrismaArray(prismaAttachment.description),
+  }
+  const result = attachment.safeParse(attachmentObject)
+  if (!result.success) {
+    console.error(result.error)
+    throw new Error('Invalid attachment')
+  }
+  return result.data
 }

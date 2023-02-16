@@ -1,6 +1,5 @@
 import { Prisma } from '@prisma/client'
 import { z } from 'zod'
-import { user } from '../auth/user'
 import {
   actor,
   actorToPrisma,
@@ -31,17 +30,17 @@ export const authorityToPrisma = (
   let anon = anongroup.safeParse(authority)
 
   if (anon.success) {
-    let memberList: Prisma.ActorCreateWithoutActorInput[] =
-      anon.data.member.map((member) => actorToPrisma(member))
     prismaAuthority = {
       connectOrCreate: {
         create: {
           objectType: anon.data.objectType,
-          member: {
-            createMany: {
-              data: memberList,
-            },
-          },
+          member: anon.data.member
+            ? {
+                connect: anon.data.member.map((member) => {
+                  return inverseFunctionalIdentifier.parse(member)
+                }),
+              }
+            : undefined,
         },
         where: identifier,
       },
