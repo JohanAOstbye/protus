@@ -1,3 +1,5 @@
+@use './variables' as *;
+
 @mixin content-wrapper($size: m, $side: full, $percent-width: 100%, $spacing: s) {
     @if ($side == left or $side == right) and $percent-width == 100% {
       $percent-width: 50%;
@@ -13,6 +15,7 @@
   
     @if $size == sm {
       $content-width: $content-sm-max-width;
+
     }
   
     @if $size == s {
@@ -94,32 +97,32 @@
   }
   // BREAKPOINTS
   
-  @mixin breakpoint-xs {
+  @mixin breakpoint-xsm {
     @media screen and (min-width: $breakpoint-xs) {
       @content;
     }
   }
   
-  @mixin breakpoint-s {
+  @mixin breakpoint-sm {
     @media screen and (min-width: $breakpoint-s) {
       @content;
     }
   }
   
-  @mixin breakpoint-sm {
+  @mixin breakpoint-smme {
     @media screen and (min-width: $breakpoint-sm) {
       @content;
     }
   }
   
-  @mixin breakpoint-m {
+  @mixin breakpoint-me {
     @media screen and (min-width: $breakpoint-m) {
       @content;
     }
   }
   
 
-  @mixin breakpoint-l {
+  @mixin breakpoint-la {
     @media screen and (min-width: $breakpoint-l) {
       @content;
     }
@@ -127,7 +130,7 @@
   
 
   
-  @mixin breakpoint-xl {
+  @mixin breakpoint-xla {
     @media screen and (min-width: $breakpoint-xl) {
       @content;
     }
