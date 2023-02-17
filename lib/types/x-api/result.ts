@@ -79,3 +79,19 @@ export const resultFromPrisma = (prismaResult: Result): resultType => {
   }
   return res.data
 }
+
+export const resultSelect: Prisma.ResultSelect = {
+  score: {
+    select: {
+      scaled: true,
+      raw: true,
+      min: true,
+      max: true,
+    },
+  },
+  success: true,
+  completion: true,
+  response: true,
+  duration: true,
+  extensions: true,
+}

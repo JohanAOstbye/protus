@@ -50,3 +50,13 @@ export const attachmentFromPrisma = (
   }
   return result.data
 }
+
+export const attachmentSelect: Prisma.AttachmentSelect = {
+  usageType: true,
+  display: true,
+  description: true,
+  contentType: true,
+  length: true,
+  sha2: true,
+  fileUrl: true,
+}

@@ -1,6 +1,17 @@
 import { z } from 'zod'
-import { verb, verbFromPrisma } from './verb'
-import { actor, actorFromPrisma, actorInclude, actorToPrisma } from './actor'
+import { verb, verbFromPrisma, verbSelect } from './verb'
+import {
+  actor,
+  actorFromPrisma,
+  actorInclude,
+  actorSelect,
+  actorToPrisma,
+  agent,
+  agentFromPrisma,
+  group,
+  groupFromPrisma,
+  inverseFunctionalIdentifier,
+} from './actor'
 import { IRI, languageMap, recordFromPrismaArray, recordToPrismaArray } from '.'
 import { Actor, Prisma, Verb, Object, interactionType } from '@prisma/client'
 
@@ -87,14 +98,34 @@ const statementObject = objectBase.extend({
   id: z.string().uuid(),
 })
 
+const agentObject = objectBase
+  .extend({
+    objectType: z.literal('Agent'),
+  })
+  .and(agent)
+
+const groupObject = objectBase
+  .extend({
+    objectType: z.literal('Group'),
+  })
+  .and(group)
+
+const nestedObject = activityObject
+  .or(statementObject)
+  .or(agentObject)
+  .or(groupObject)
 const subStatementObject = z.object({
   objectType: z.literal('SubStatement'),
   actor: actor,
   verb: verb,
-  object: activityObject.or(statementObject),
+  object: nestedObject,
 })
 
-export const object = activityObject.or(statementObject).or(subStatementObject)
+export const object = activityObject
+  .or(statementObject)
+  .or(subStatementObject)
+  .or(agentObject)
+  .or(groupObject)
 
 export type objectType = z.infer<typeof object>
 
@@ -157,6 +188,26 @@ export const objectToPrisma = (object: objectType) => {
             },
           }
         : undefined,
+    }
+  } else if (object.objectType == 'Agent') {
+    prismaObject = {
+      objectType: 'Agent',
+      objectActor: {
+        connectOrCreate: {
+          create: actorToPrisma(object),
+          where: inverseFunctionalIdentifier.parse(object),
+        },
+      },
+    }
+  } else if (object.objectType == 'Group') {
+    prismaObject = {
+      objectType: 'Group',
+      objectActor: {
+        connectOrCreate: {
+          create: actorToPrisma(object),
+          where: inverseFunctionalIdentifier.parse(object),
+        },
+      },
     }
   } else {
     const def = interactionDefinition.safeParse(object.definition)
@@ -251,7 +302,12 @@ export const objectFromPrisma = (
   prismaobject: Object & {
     actor?: Actor | undefined
     verb?: Verb | undefined
-    object?: Object | undefined
+    object?:
+      | (Object & {
+          objectActor?: Actor | undefined
+        })
+      | undefined
+    objectActor?: Actor | undefined
   }
 ): objectType => {
   let objectObject: objectType
@@ -261,6 +317,19 @@ export const objectFromPrisma = (
     objectObject = {
       objectType: 'StatementRef',
       id: prismaobject.statementId,
+    }
+  } else if (prismaobject.objectType == 'Agent') {
+    if (prismaobject.objectActor == null)
+      throw new Error('StatementRef has no statement')
+    objectObject = {
+      ...agentFromPrisma(prismaobject.objectActor),
+      objectType: 'Agent',
+    }
+  } else if (prismaobject.objectType == 'Group') {
+    if (prismaobject.objectActor == null)
+      throw new Error('StatementRef has no statement')
+    objectObject = {
+      ...groupFromPrisma(prismaobject.objectActor),
     }
   } else if (prismaobject.objectType == 'SubStatement') {
     if (prismaobject.actorId == null || prismaobject.actor == null)
@@ -274,6 +343,9 @@ export const objectFromPrisma = (
       prismaobject.object.statementId == null
     )
       throw new Error('SubStatement has no statement')
+    if (prismaobject.object.objectType == 'SubStatement')
+      throw new Error('SubStatement cannot contain a SubStatement')
+
     objectObject = {
       objectType: 'SubStatement',
       actor: actorFromPrisma(prismaobject.actor),
@@ -368,7 +440,13 @@ export const objectFromPrisma = (
   return result.data
 }
 
-export const nestedObjectFromPrisma = (prismaobject: Object): objectType => {
+export const nestedObjectFromPrisma = (
+  prismaobject: Object & {
+    objectActor?: Actor | undefined
+  }
+): z.infer<typeof nestedObject> => {
+  if (prismaobject.objectType == 'SubStatement')
+    throw new Error('SubStatement not allowed in SubStatement')
   let objectObject: objectType
   if (prismaobject.objectType == 'StatementRef') {
     if (prismaobject.statementId == null)
@@ -376,6 +454,19 @@ export const nestedObjectFromPrisma = (prismaobject: Object): objectType => {
     objectObject = {
       objectType: 'StatementRef',
       id: prismaobject.statementId,
+    }
+  } else if (prismaobject.objectType == 'Agent') {
+    if (prismaobject.objectActor == null)
+      throw new Error('ActorObject has no actor')
+    objectObject = {
+      ...agentFromPrisma(prismaobject.objectActor),
+      objectType: 'Agent',
+    }
+  } else if (prismaobject.objectType == 'Group') {
+    if (prismaobject.objectActor == null)
+      throw new Error('GroupObject has no group')
+    objectObject = {
+      ...groupFromPrisma(prismaobject.objectActor),
     }
   } else {
     if (prismaobject.id == null) throw new Error('activity has no ID')
@@ -457,7 +548,7 @@ export const nestedObjectFromPrisma = (prismaobject: Object): objectType => {
     }
   }
 
-  const result = object.safeParse(objectObject)
+  const result = nestedObject.safeParse(objectObject)
   if (!result.success) {
     console.error(result.error)
     throw new Error('Invalid object')
@@ -465,22 +556,158 @@ export const nestedObjectFromPrisma = (prismaobject: Object): objectType => {
   return result.data
 }
 
-const interactionTypeFromPrisma = (
-  type: interactionType
-): z.infer<typeof interactionTypes> => {
-  switch (type) {
-    case 'trueFalse':
-      return 'true-false'
-    case 'fillIn':
-      return 'fill-in'
-    case 'longFillIn':
-      return 'long-fill-in'
-    default:
-      return type
-  }
+export const objectInclude: Prisma.ObjectInclude = {
+  objectActor: true,
+  actor: true,
+  verb: true,
+  object: true,
 }
 
-export const objectInclude: Prisma.ObjectInclude = {
-  actor: { include: actorInclude },
-  object: true,
+export const objectSelect: Prisma.ObjectSelect = {
+  mongoid: true,
+  id: true,
+  objectType: true,
+  statementId: true,
+  objectActor: {
+    select: actorSelect,
+  },
+  actor: {
+    select: actorSelect,
+  },
+  verb: {
+    select: verbSelect,
+  },
+  object: {
+    select: {
+      mongoid: true,
+      id: true,
+      objectType: true,
+      statementId: true,
+      objectActor: {
+        select: actorSelect,
+      },
+      definition: {
+        select: {
+          name: {
+            select: {
+              key: true,
+              value: true,
+            },
+          },
+          description: {
+            select: {
+              key: true,
+              value: true,
+            },
+          },
+          type: true,
+          moreInfo: true,
+          extensions: {
+            select: {
+              key: true,
+              value: true,
+            },
+          },
+          interactionType: true,
+          correctResponsesPattern: true,
+          choices: true,
+          scale: true,
+          source: {
+            select: {
+              id: true,
+              description: {
+                select: {
+                  key: true,
+                  value: true,
+                },
+              },
+            },
+          },
+          target: {
+            select: {
+              id: true,
+              description: {
+                select: {
+                  key: true,
+                  value: true,
+                },
+              },
+            },
+          },
+          steps: {
+            select: {
+              id: true,
+              description: {
+                select: {
+                  key: true,
+                  value: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  definition: {
+    select: {
+      name: {
+        select: {
+          key: true,
+          value: true,
+        },
+      },
+      description: {
+        select: {
+          key: true,
+          value: true,
+        },
+      },
+      type: true,
+      moreInfo: true,
+      extensions: {
+        select: {
+          key: true,
+          value: true,
+        },
+      },
+      interactionType: true,
+      correctResponsesPattern: true,
+      choices: true,
+      scale: true,
+      source: {
+        select: {
+          id: true,
+          description: {
+            select: {
+              key: true,
+              value: true,
+            },
+          },
+        },
+      },
+      target: {
+        select: {
+          id: true,
+          description: {
+            select: {
+              key: true,
+              value: true,
+            },
+          },
+        },
+      },
+      steps: {
+        select: {
+          id: true,
+          description: {
+            select: {
+              key: true,
+              value: true,
+            },
+          },
+        },
+      },
+    },
+  },
 }

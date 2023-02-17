@@ -5,11 +5,12 @@ import {
   group,
   actorFromPrisma,
   groupFromPrisma,
+  actorSelect,
 } from './actor'
-import { objectInclude } from './object'
 import { languageTag, extensions, recordToPrismaArray } from '.'
 import { Actor, Context, Prisma, XapiAccount } from '@prisma/client'
 import { isArray } from 'sanity'
+import { objectInclude, objectSelect } from './object'
 
 const contextActivitiesObject = z.map(
   z
@@ -116,6 +117,26 @@ export const contextInclude: Prisma.ContextInclude = {
       value: {
         include: {
           Object: { include: objectInclude },
+        },
+      },
+    },
+  },
+}
+
+export const contextSelect: Prisma.ContextSelect = {
+  registration: true,
+  revision: true,
+  platform: true,
+  language: true,
+  statementId: true,
+  extensions: true,
+  instructor: { select: actorSelect },
+  team: { select: actorSelect },
+  contextActivities: {
+    select: {
+      value: {
+        select: {
+          Object: { select: objectSelect },
         },
       },
     },

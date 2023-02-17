@@ -143,39 +143,11 @@ export const actorFromPrisma = (
     })[]
   }
 ): actorType => {
-  let actorObject: actorType
   if (prismaActor.objectType === 'Agent') {
-    actorObject = {
-      objectType: prismaActor.objectType,
-      name: prismaActor.name == null ? undefined : prismaActor.name,
-      mbox: prismaActor.mbox == null ? undefined : prismaActor.mbox,
-      mbox_sha1sum:
-        prismaActor.mbox_sha1sum == null ? undefined : prismaActor.mbox_sha1sum,
-      openid: prismaActor.openid == null ? undefined : prismaActor.openid,
-      account: prismaActor.account,
-    }
+    return agentFromPrisma(prismaActor)
   } else {
-    actorObject = {
-      objectType: 'Group',
-      name: prismaActor.name == null ? undefined : prismaActor.name,
-      mbox: prismaActor.mbox == null ? undefined : prismaActor.mbox,
-      mbox_sha1sum:
-        prismaActor.mbox_sha1sum == null ? undefined : prismaActor.mbox_sha1sum,
-      openid: prismaActor.openid == null ? undefined : prismaActor.openid,
-      account: prismaActor.account,
-      member: prismaActor.member
-        ? prismaActor.member
-            .filter((member) => member.objectType == 'Agent')
-            .map((member) => agent.parse(actorFromPrisma(member)))
-        : undefined,
-    }
+    return groupFromPrisma(prismaActor)
   }
-  const result = actor.safeParse(actorObject)
-  if (!result.success) {
-    console.error(result.error)
-    throw new Error('Invalid actor')
-  }
-  return result.data
 }
 
 export const groupFromPrisma = (
@@ -209,9 +181,56 @@ export const groupFromPrisma = (
   return result.data
 }
 
+export const agentFromPrisma = (
+  prismaActor: Actor & {
+    account?: XapiAccount | undefined
+  }
+): actorType => {
+  let actorObject: actorType
+  if (prismaActor.objectType !== 'Agent') throw new Error('Not an agent')
+
+  actorObject = {
+    objectType: prismaActor.objectType,
+    name: prismaActor.name == null ? undefined : prismaActor.name,
+    mbox: prismaActor.mbox == null ? undefined : prismaActor.mbox,
+    mbox_sha1sum:
+      prismaActor.mbox_sha1sum == null ? undefined : prismaActor.mbox_sha1sum,
+    openid: prismaActor.openid == null ? undefined : prismaActor.openid,
+    account: prismaActor.account,
+  }
+
+  const result = agent.safeParse(actorObject)
+  if (!result.success) {
+    console.error(result.error)
+    throw new Error('Invalid actor')
+  }
+  return result.data
+}
+
 export const actorInclude: Prisma.ActorInclude = {
   member: {
     include: {
+      account: true,
+    },
+  },
+  account: true,
+}
+
+export const actorSelect: Prisma.ActorSelect = {
+  id: true,
+  objectType: true,
+  name: true,
+  mbox: true,
+  mbox_sha1sum: true,
+  openid: true,
+  member: {
+    select: {
+      id: true,
+      objectType: true,
+      name: true,
+      mbox: true,
+      mbox_sha1sum: true,
+      openid: true,
       account: true,
     },
   },

@@ -30,3 +30,8 @@ export const verbFromPrisma = (prismaverb: Verb): verbType => {
   }
   return result.data
 }
+
+export const verbSelect: Prisma.VerbSelect = {
+  iri: true,
+  display: true,
+}
