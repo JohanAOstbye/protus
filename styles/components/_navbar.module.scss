@@ -4,12 +4,17 @@
 .container {
   display: flex;
   background-color: $surf-bg;
-  // font-size: larger;
   color: $surf-text;
   grid-gap: 0.3em;
-  padding-top: 0.3em;
-  padding-left: 0.3em;
-  padding-bottom: 0.2em;
+  padding-top: 0.5em;
+  padding-left: 0.5em;
+  padding-bottom: 0.3em;
+  margin-bottom: 0.5em;
+  @include breakpoint-sm {
+    padding-top: 1em;
+    padding-left: 1.5em;
+
+  }
 } 
 
 .protus {
@@ -31,7 +36,7 @@
   }
 }
 
-label{
+.courseText{
   font-size: 9px;
   color: grey;
   @include breakpoint-sm {
@@ -56,7 +61,7 @@ ul{
       position: relative;
       font-size: 18px;
       @include breakpoint-sm {
-        font-size: 23px;
+          font-size: 23px;
       }
       ul{ 
         padding-left: 1em;
@@ -64,12 +69,17 @@ ul{
         display: none;
         position: absolute;
         overflow: auto;
-        width: 5em; 
+        width: 7em; 
         background-color: $surf-bg;
-        border-bottom: 3px solid darken(white, 20%);
-        border-right: 3px solid darken(white, 20%);
-        border-bottom-right-radius: 10%;
-        border-bottom-left-radius: 10%;
+        // border-bottom: 3px solid darken(white, 20%);
+        // border-right: 3px solid darken(white, 20%);
+        // border-top-right-radius: 10px;
+        // border-bottom-right-radius: 10px;
+        @include box-shadow(1px,3px,5px,1px, rgb(255, 255, 255,0.6));
+
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        z-index: 2;
         li{
           float: none;
         }

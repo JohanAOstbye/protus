@@ -1,20 +1,61 @@
 @use 'styles/utils/_colors.scss' as *;
-
+@use 'styles/utils/_mixins.scss' as *;
 
 .sidebar {
+    position: fixed;
     list-style-type: none;
     background-color: $surf-bg;
-    width: 5em;
+    width: 80%;
     opacity: 90%;
     display: grid;
+    font-size: 25px;
+    gap: 0.5em;
+    padding: 1em;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    @include box-shadow(5px,0,10px,5px, rgb(255, 255, 255,0.6));
+    @include breakpoint-sm {
+        width: 40%;
+    }  
+    @include breakpoint-me {
+        width: 22%;
+        padding-left: 1.5em;
+        gap: 0.3em;
+    }     
+    @include breakpoint-la {
+        width: 18%;
+    } 
+} 
 
+.currentCourse {
+    font-weight: bolder;
+    letter-spacing: 0.02em;
+    font-size: 25px;
+    @include breakpoint-sm {
+        font-size: 22px;
+    }  
+    @include breakpoint-me {
+        font-size: 20px;
+    }  
 }
 
 a {
-     color: $surf-text;
+    color: $surf-text;
     text-decoration: none;
+    @include breakpoint-sm {
+        font-size: 20px;
+    }
+    @include breakpoint-me {
+        font-size: 16px;
+    }      
     &:hover {
         text-decoration: underline;
     }
+}
+
+.closebtn::after {
+    content: "\00d7"; 
+    opacity: 0.7;
+    float: right;
 }
 

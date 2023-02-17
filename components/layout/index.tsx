@@ -13,7 +13,7 @@ export const Layout = ({ children }: { children?: React.ReactNode }) => {
     <div className={style.layout}>
       <Navbar courses={courses} selectedCourse={course} />
       {course.name && course.slugs && (
-        <Sidebar chapters={course.slugs} courseSlug={course.name} />
+        <Sidebar closed={false} chapters={course.slugs} courseSlug={course.name} />
       )}
       <main>{children}</main>
       <Button text="variables"></Button>

@@ -1,9 +1,7 @@
-// Loading.stories.ts|tsx
-
 import React  from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import Button from 'components/elements/Button';
+import { Button } from 'components/elements/Button';
 
 export default {
   /* 👇 The title prop is optional.

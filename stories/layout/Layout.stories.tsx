@@ -10,7 +10,11 @@ const mock:Course = {
     page: {
         _id:'sad'
     },
-    slugs: [{title:"Chapter 1", slug:"lol"},{title:"Chapter 2", slug:"lol"}]
+    slugs: [{title:'Variables and Operators',slug:'ole',},
+      {title:'String',slug:'dole'},
+      {title:'Boolean Expressions',slug:'doffen'},
+      {title:'If-Else',slug:'donald'},
+      {title:'Two-Dimensional Arrays',slug:'donald'}]
   }
   
   const mock2:Course[] = [{
