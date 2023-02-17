@@ -1,13 +1,14 @@
 import { isDeepEqual } from 'lib/deepCompare'
 import { prisma } from 'lib/server/db'
 import { defineEndpoints } from 'lib/server/rest'
-import { IRI } from 'lib/types/x-api'
+import { IRI, withIdRequired } from 'lib/types/x-api'
 import {
   agent,
   identifiedgroup,
   inverseFunctionalIdentifier,
 } from 'lib/types/x-api/actor'
 import {
+  PrismaStatement,
   statement,
   statementFromPrisma,
   statementInclude,
@@ -183,6 +184,21 @@ export default defineEndpoints({
             ? statementSelect
             : statementSelectWithoutAttachments,
       })
+      if (attachments) {
+        res.setHeader('content-type', 'multipart/mixed')
+        res.end()
+      } else {
+        res.setHeader('content-type', 'application/json')
+        res.end({
+          statements: statements
+            .filter(
+              (statement): statement is withIdRequired<PrismaStatement> =>
+                !!statement.id
+            )
+            .map((statement) => statementFromPrisma(statement)),
+          more: undefined,
+        })
+      }
     },
   },
   POST: {

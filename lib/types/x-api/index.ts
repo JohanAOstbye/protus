@@ -35,3 +35,7 @@ export const recordFromPrismaArray = (
   array.forEach((item) => (record[item.key] = JSON.parse(item.value)))
   return record
 }
+
+export type withIdRequired<T> = T & { id: string }
+export type ArrayElement<ArrayType extends readonly unknown[]> =
+  ArrayType extends readonly (infer ElementType)[] ? ElementType : never

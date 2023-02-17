@@ -117,27 +117,29 @@ export const statementToPrisma = (
   return prismaStatment
 }
 
+export type PrismaStatement = Statement & {
+  object?: Object | undefined
+  actor?:
+    | Actor
+    | (Actor & {
+        account?: XapiAccount | undefined
+      })
+    | undefined
+  verb?: Verb | undefined
+  context?: Context | null | undefined
+  authority?:
+    | Actor
+    | (Actor & {
+        account?: XapiAccount | undefined
+      })
+    | undefined
+  _count?: Prisma.StatementCountOutputType | undefined
+  contextref?: Context[] | undefined
+  objectref?: Object[] | undefined
+}
+
 export const statementFromPrisma = (
-  prismaStatement: Statement & {
-    object?: Object | undefined
-    actor?:
-      | Actor
-      | (Actor & {
-          account?: XapiAccount | undefined
-        })
-      | undefined
-    verb?: Verb | undefined
-    context?: Context | null | undefined
-    authority?:
-      | Actor
-      | (Actor & {
-          account?: XapiAccount | undefined
-        })
-      | undefined
-    _count?: Prisma.StatementCountOutputType | undefined
-    contextref?: Context[] | undefined
-    objectref?: Object[] | undefined
-  }
+  prismaStatement: PrismaStatement
 ): statementType => {
   if (
     !prismaStatement.actor ||
