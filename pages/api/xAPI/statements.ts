@@ -186,19 +186,18 @@ export default defineEndpoints({
       })
       if (attachments) {
         res.setHeader('content-type', 'multipart/mixed')
-        res.end()
       } else {
         res.setHeader('content-type', 'application/json')
-        res.end({
-          statements: statements
-            .filter(
-              (statement): statement is withIdRequired<PrismaStatement> =>
-                !!statement.id
-            )
-            .map((statement) => statementFromPrisma(statement)),
-          more: undefined,
-        })
       }
+      res.end({
+        statements: statements
+          .filter(
+            (statement): statement is withIdRequired<PrismaStatement> =>
+              !!statement.id
+          )
+          .map((statement) => statementFromPrisma(statement)),
+        more: undefined,
+      })
     },
   },
   POST: {
