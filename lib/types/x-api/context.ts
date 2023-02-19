@@ -1,9 +1,16 @@
 import { z } from 'zod'
-import { actor, group } from './actor'
-import { activityObject } from './object'
-import { languageTag, extensions, mapToArray } from '.'
-import { Prisma } from '@prisma/client'
+import {
+  actor,
+  actorInclude,
+  group,
+  actorFromPrisma,
+  groupFromPrisma,
+  actorSelect,
+} from './actor'
+import { languageTag, extensions, recordToPrismaArray } from '.'
+import { Actor, Context, Prisma, XapiAccount } from '@prisma/client'
 import { isArray } from 'sanity'
+import { objectInclude, objectSelect } from './object'
 
 const contextActivitiesObject = z.map(
   z
@@ -59,7 +66,79 @@ export const contextToPrisma = (context: contextType) => {
     statement: context.statement
       ? { connect: { id: context.statement } }
       : undefined,
-    extensions: context.extensions ? mapToArray(context.extensions) : undefined,
+    extensions: context.extensions
+      ? recordToPrismaArray(context.extensions)
+      : undefined,
   }
   return prismaStatment
+}
+
+export const contextFromPrisma = (
+  prismacontext: Context & {
+    object?: Object | undefined
+    instructor?: Actor | undefined
+    team?:
+      | (Actor & {
+          account?: XapiAccount | undefined
+          member?: (Actor & {
+            account?: XapiAccount | undefined
+          })[]
+        })
+      | undefined
+  }
+): contextType => {
+  const contextObject: contextType = {
+    ...prismacontext,
+    instructor: prismacontext.instructor
+      ? actorFromPrisma(prismacontext.instructor)
+      : undefined,
+    team: prismacontext.team ? groupFromPrisma(prismacontext.team) : undefined,
+    revision:
+      prismacontext.revision === null ? undefined : prismacontext.revision,
+    platform:
+      prismacontext.platform === null ? undefined : prismacontext.platform,
+    language:
+      prismacontext.language === null ? undefined : prismacontext.language,
+    statement: prismacontext.statementId,
+  }
+  const result = context.safeParse(contextObject)
+  if (!result.success) {
+    console.error(result.error)
+    throw new Error('Invalid context')
+  }
+  return result.data
+}
+
+export const contextInclude: Prisma.ContextInclude = {
+  instructor: { include: actorInclude },
+  team: { include: actorInclude },
+  contextActivities: {
+    include: {
+      value: {
+        include: {
+          Object: { include: objectInclude },
+        },
+      },
+    },
+  },
+}
+
+export const contextSelect: Prisma.ContextSelect = {
+  registration: true,
+  revision: true,
+  platform: true,
+  language: true,
+  statementId: true,
+  extensions: true,
+  instructor: { select: actorSelect },
+  team: { select: actorSelect },
+  contextActivities: {
+    select: {
+      value: {
+        select: {
+          Object: { select: objectSelect },
+        },
+      },
+    },
+  },
 }

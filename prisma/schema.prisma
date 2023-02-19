@@ -97,6 +97,8 @@ type Attachment {
 
 enum objectType {
     Activity
+    Agent
+    Group
     StatementRef
     SubStatement
 }
@@ -139,11 +141,13 @@ model Object {
     statement             Statement?              @relation(fields: [statementId], references: [id], onUpdate: NoAction, onDelete: NoAction, name: "statementobjectref")
     objectType            objectType
     actor                 Actor?                  @relation(fields: [actorId], references: [id], name: "substatementActor")
+    objectActor           Actor?                  @relation(fields: [objectActorId], references: [id], name: "objectActor")
     verb                  Verb?                   @relation(fields: [verbId], references: [id], name: "substatementVerb")
     object                Object?                 @relation(fields: [objectId], references: [mongoid], onUpdate: NoAction, onDelete: NoAction, name: "substatementObject")
     id                    String?                 @unique
     definition            definition?
     actorId               String?                 @db.ObjectId
+    objectActorId         String?                 @db.ObjectId
     statementId           String?                 @db.ObjectId
     verbId                String?                 @db.ObjectId
     objectId              String?                 @db.ObjectId
@@ -179,25 +183,32 @@ model XapiAccount {
     @@unique([name, homePage])
 }
 
+enum actorObjectType {
+    Agent
+    Group
+}
+
 model Actor {
-    id                String       @id @default(uuid()) @map("_id") @db.ObjectId
+    id                String           @id @default(uuid()) @map("_id") @db.ObjectId
     name              String?
-    objectType        String       @default("Agent")
-    member            Actor[]      @relation(name: "member")
-    mbox              String?      @unique
-    mbox_sha1sum      String?      @unique
-    openid            String?      @unique
-    account           XapiAccount? @relation(fields: [accountId], references: [id])
-    profile           User?        @relation(fields: [profileId], references: [id])
-    Actor             Actor?       @relation(fields: [actorId], references: [id], name: "member", onDelete: NoAction, onUpdate: NoAction)
-    profileId         String?      @unique @db.ObjectId
-    accountId         String?      @unique @db.ObjectId
-    actorId           String?      @db.ObjectId
+    objectType        actorObjectType? @default(Agent)
+    member            Actor[]          @relation(name: "member", references: [id], fields: [memberIDs])
+    mbox              String?          @unique
+    mbox_sha1sum      String?          @unique
+    openid            String?          @unique
+    account           XapiAccount?     @relation(fields: [accountId], references: [id])
+    profile           User?            @relation(fields: [profileId], references: [id])
+    memberIDs         String[]         @db.ObjectId
+    profileId         String?          @unique @db.ObjectId
+    accountId         String?          @unique @db.ObjectId
     Statement         Statement[]
-    teamContext       Context[]    @relation(name: "team")
-    InsturctorContext Context[]    @relation(name: "instructor")
-    Object            Object[]     @relation(name: "substatementActor")
-    Authorities       Statement[]  @relation(name: "authority")
+    teamContext       Context[]        @relation(name: "team")
+    InsturctorContext Context[]        @relation(name: "instructor")
+    subObjects        Object[]         @relation(name: "substatementActor")
+    Objects           Object[]         @relation(name: "objectActor")
+    Authorities       Statement[]      @relation(name: "authority")
+    groups            Actor[]          @relation(name: "member", references: [id], fields: [groupIDs])
+    groupIDs          String[]         @db.ObjectId
 }
 
 // Necessary for Next auth
