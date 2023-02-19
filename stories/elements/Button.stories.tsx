@@ -12,4 +12,4 @@ export default {
   component: Button,
 } as ComponentMeta<typeof Button>;
 
-export const Primary: ComponentStory<typeof Button> = () => <Button children="button"/>;
+export const Primary: ComponentStory<typeof Button> = () => <Button children="Activities"/>;

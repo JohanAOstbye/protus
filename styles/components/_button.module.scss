@@ -6,9 +6,11 @@
 
 .button {
     border-radius: 6px;
-    width: 200px;
-    height: 200px;
-    font-size: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    height: 40px;
+    font-size: 18px;
+    letter-spacing: 0.01cm;
     &-blue {
         @include gradient(left, $surf-gradient);
         color: black
@@ -17,14 +19,12 @@
         @include gradient(left, $surf-gradient-dark);
         color: $surf-text;
     }
-
+    &:hover{
+       opacity: 0.8;
+    }
     @include breakpoint-sm {
-        color: red;
-        font-size: 50px;
-        width: 100px;
-        height: 100px;
-}
-   
-   
+        font-size: 14px;
+        height: 30px;
+    }   
 }
 
