@@ -181,8 +181,8 @@ export default defineEndpoints({
           format == 'ids'
             ? { id: true }
             : attachments
-            ? statementSelect
-            : statementSelectWithoutAttachments,
+            ? statementSelect(5)
+            : statementSelectWithoutAttachments(5),
       })
       if (attachments) {
         res.setHeader('content-type', 'multipart/mixed')
