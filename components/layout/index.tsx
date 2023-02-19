@@ -1,27 +1,31 @@
-import { useCourse } from 'components/context/courseContext'
 import { Button } from 'components/elements/Button'
-import React from 'react'
-import Footer from './Footer'
-import Navbar from './Navbar'
-import Sidebar from './Sidebar'
-import style from "styles/layout/_layout.module.scss"
+import { ProtusLabel } from 'components/elements/ProtusLabel'
+import style from 'styles/layout/_frontpageLayout.module.scss'
+import frontpageImage from 'public/frontpageImage.svg'
 
-export const Layout = ({ children }: { children?: React.ReactNode }) => {
-  const {course, courses}  = useCourse()
-  
-  return (
-    <div className={style.layout}>
-      <Navbar courses={courses} selectedCourse={course} />
-      <div className={style.content}>
-        {course.name && course.slugs && (
-          <Sidebar course={course.name} closed={false} chapters={course.slugs} courseSlug={course.name} />
-        )}
-        <main>{children}</main>
-        <Button text="variables"></Button>
-      </div>
-      <Footer />
-    </div>
-  )
+export const Layout = () => {
+
+    return (
+        <>
+        <div className={style.navText}>
+            <ProtusLabel />
+        </div>
+        <div className={style.container}>
+            <div className={style.content}>
+                <div className={style.welcome}>Welcome to</div>
+                <div className={style.protusV}>ProTus v4?</div>
+                <div className={style.desc}>
+                    A programming tutoring systemdesigned for learners with no programming experience.
+                </div>
+                <div className={style.btn}>
+                    <Button text='Login'></Button>
+                </div>
+                </div>
+            <img src={frontpageImage} alt="online learning image" />
+        </div>
+        </>
+    )
 }
+
 
 export default Layout
