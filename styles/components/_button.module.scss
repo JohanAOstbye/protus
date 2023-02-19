@@ -1,8 +1,30 @@
 @use 'styles/utils/_colors.scss' as *;
+@use 'styles/utils/_mixins.scss' as *;
+@use 'styles/utils/_variables.scss' as *;
+
 
 
 .button {
-    @include gradient(left, $surf-gradient);
     border-radius: 6px;
-    color: black;
+    padding-left: 30px;
+    padding-right: 30px;
+    height: 40px;
+    font-size: 18px;
+    letter-spacing: 0.01cm;
+    &-blue {
+        @include gradient(left, $surf-gradient);
+        color: black
+    }
+    &-blue-dark {
+        @include gradient(left, $surf-gradient-dark);
+        color: $surf-text;
+    }
+    &:hover{
+       opacity: 0.8;
+    }
+    @include breakpoint-sm {
+        font-size: 14px;
+        height: 30px;
+    }   
 }
+

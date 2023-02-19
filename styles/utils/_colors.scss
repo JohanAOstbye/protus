@@ -10,7 +10,7 @@ $surf-dark-grad2: #0881B6;
 
 $surf-gradient: $surf-grad1, $surf-grad2;
 
-$surf-dark-gradient: $surf-dark-grad1, $surf-dark-grad2;
+$surf-gradient-dark: $surf-dark-grad1, $surf-dark-grad2;
 
 // -- background gradients --
 @mixin gradient($direction, $list) { 

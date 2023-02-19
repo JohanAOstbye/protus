@@ -8,12 +8,15 @@ const Navbar = ({ courses, selectedCourse }:{courses:courseType[], selectedCours
 
   return <ul className={style.container}>
     <li className={style.protus}>ProTus </li>
-    <li>|</li>
-    <li className={style.coursesDrop}>{selectedCourse.name}
+    <li className={style.lineSeperator}>|</li>
+    <div className={style.courseContainer}>
+      <label className={style.courseText}>Course</label>
+    <li>{selectedCourse.name}
       <ul>
         {courseList.map((course,i)=><li key={i}><Link href={`${course.name}`} >{course.name}</Link></li>)}
       </ul>
     </li>
+    </div>
   </ul>
   }
 
