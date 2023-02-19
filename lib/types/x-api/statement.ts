@@ -135,7 +135,9 @@ export type PrismaStatement = Statement & {
     | undefined
   _count?: Prisma.StatementCountOutputType | undefined
   contextref?: Context[] | undefined
-  objectref?: Object[] | undefined
+  objectref?:
+    | (Object & { Statement?: PrismaStatement | undefined })[]
+    | undefined
 }
 
 export const statementFromPrisma = (
@@ -195,29 +197,79 @@ export const statementInclude: Prisma.StatementInclude = {
   authority: { include: actorInclude },
 }
 
-export const statementSelect: Prisma.StatementSelect = {
-  id: true,
-  actor: { select: actorSelect },
-  verb: { select: verbSelect },
-  object: { select: objectSelect },
-  result: { select: resultSelect },
-  context: { select: contextSelect },
-  timestamp: true,
-  stored: true,
-  authority: { select: actorSelect },
-  version: true,
-  attachments: { select: attachmentSelect },
+export function statementSelect(depth: number): Prisma.StatementSelect {
+  if (depth === 0) {
+    return {
+      id: true,
+      actor: { select: actorSelect },
+      verb: { select: verbSelect },
+      object: { select: objectSelect },
+      result: { select: resultSelect },
+      context: { select: contextSelect },
+      timestamp: true,
+      stored: true,
+      authority: { select: actorSelect },
+      version: true,
+      attachments: { select: attachmentSelect },
+    }
+  }
+  return {
+    id: true,
+    actor: { select: actorSelect },
+    verb: { select: verbSelect },
+    object: { select: objectSelect },
+    result: { select: resultSelect },
+    context: { select: contextSelect },
+    timestamp: true,
+    stored: true,
+    authority: { select: actorSelect },
+    version: true,
+    attachments: { select: attachmentSelect },
+    objectref: {
+      select: {
+        Statement: {
+          select: statementSelect(depth - 1),
+        },
+      },
+    },
+  }
 }
 
-export const statementSelectWithoutAttachments: Prisma.StatementSelect = {
-  id: true,
-  actor: { select: actorSelect },
-  verb: { select: verbSelect },
-  object: { select: objectSelect },
-  result: { select: resultSelect },
-  context: { select: contextSelect },
-  timestamp: true,
-  stored: true,
-  authority: { select: actorSelect },
-  version: true,
+export function statementSelectWithoutAttachments(
+  depth: number
+): Prisma.StatementSelect {
+  if (depth === 0) {
+    return {
+      id: true,
+      actor: { select: actorSelect },
+      verb: { select: verbSelect },
+      object: { select: objectSelect },
+      result: { select: resultSelect },
+      context: { select: contextSelect },
+      timestamp: true,
+      stored: true,
+      authority: { select: actorSelect },
+      version: true,
+    }
+  }
+  return {
+    id: true,
+    actor: { select: actorSelect },
+    verb: { select: verbSelect },
+    object: { select: objectSelect },
+    result: { select: resultSelect },
+    context: { select: contextSelect },
+    timestamp: true,
+    stored: true,
+    authority: { select: actorSelect },
+    version: true,
+    attachments: { select: attachmentSelect },
+    objectref: {
+      select: {
+        Statement: {
+          select: statementSelectWithoutAttachments(depth - 1),
+        },
+      },
+    },
+  }
 }
