@@ -6,6 +6,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import Sidebar from 'components/layout/Sidebar';
 import { Chapter } from 'lib/sanity/sanity.queries';
 
+const currentCourse = "Java"
 const mockdata:Chapter[] = [
   {_id: "test", title:'Variables and Operators',slug:'ole',},
   {_id: "test2", title:'String',slug:'dole'},
@@ -22,4 +23,4 @@ export default {
   component: Sidebar,
 } as ComponentMeta<typeof Sidebar>;
 
-export const Primary: ComponentStory<typeof Sidebar> = () => <Sidebar  courseSlug="livet" chapters={mockdata} />;
+export const Primary: ComponentStory<typeof Sidebar> = () => <Sidebar course={currentCourse} courseSlug="livet" chapters={mockdata} />;

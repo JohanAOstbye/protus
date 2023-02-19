@@ -15,17 +15,18 @@
     border-bottom-right-radius: 10px;
     @include box-shadow(5px,0,10px,5px, rgb(255, 255, 255,0.6));
     @include breakpoint-sm {
-        width: 40%;
+        margin-right: 2em;
+        width: 10em;
+        position: relative;
     }  
     @include breakpoint-me {
-        width: 22%;
         padding-left: 1.5em;
         gap: 0.3em;
     }     
-    @include breakpoint-la {
-        width: 18%;
-    } 
 } 
+
+
+
 
 .currentCourse {
     font-weight: bolder;
@@ -53,9 +54,36 @@ a {
     }
 }
 
-.closebtn::after {
-    content: "\00d7"; 
-    opacity: 0.7;
+.sidebarOpen {
+    width: 10px;
+    background-color: green;
+}
+
+.btnOpen {
+    position: relative;
+    z-index: 2;
     float: right;
 }
 
+
+.btnOpen::after {
+    content: "\00d7"; 
+    opacity: 0.7;
+}
+
+.btnClose {
+    width: 3em;
+    position: fixed;
+    z-index: 2;
+    opacity: 90%;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    @include box-shadow(5px,0,10px,5px, rgb(255, 255, 255,0.6));
+    @include breakpoint-sm {
+        width: 2em;
+        height: 3em;
+    }
+    &:hover {
+        background-color: rgb(70, 70, 70);
+    }   
+}

@@ -2,60 +2,44 @@ import Link from 'next/link'
 import style from 'styles/components/_sidebar.module.scss'
 import { courseType } from 'lib/types/sanity';
 import { useState } from 'react';
+import arrowRight from 'public/arrow-right.svg'
+
+export interface SidebarProps {
+  closed: boolean
+  chapters: { title: string; slug: string }[]
+  courseSlug: string
+  course: string
+}
 
 export const Sidebar = ({
   chapters,
   courseSlug,
-  // course
-  closed,
-}: {
-  chapters: { title: string; slug: string }[]
-  courseSlug: string
-  closed: boolean
-  // course:courseType
-}) => {
+  course
+}: SidebarProps) => {
 
-  const [isOpen, setIsopen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-    const Sidebar = () => {
-        isOpen === true ? setIsopen(false) : setIsopen(true);
-        console.log(isOpen);
-        
-    }
-
-  // console.log(chapters);
-  // console.log(course);
-  // console.log(courseSlug);
-  const course = courseSlug
-
-  
-  
-  // if (closed === false)
   return (
-    <div >
-      <>
-        {/* <div className="btnSome" onClick={Sidebar} ></div> */}
-        {/* <div className={`sidebar ${isOpen == true ? 'active' : ''}`}></div> */}
-      </>
-      <ul className={style.sidebar}>
+      <div className={isExpanded ? "style.sidebar" :  "style.sidebarClosed"}>
+      
+        {!isExpanded && (
+          <ul className={style.sidebar}>
         <div>
-          <label className={style.currentCourse}>{courseSlug.toLocaleUpperCase()}</label>
-          <a onClick={Sidebar} className={style.closebtn}></a>
-        </div>
-        {chapters.map((chapter, i) => (
+          <a onClick={() => setIsExpanded(!isExpanded)} className={style.btnOpen}></a>
+          <label className={style.currentCourse}>{course}</label>
+          </div>
+          {chapters.map((chapter, i) => (
           <li key={i}>
             <Link href={`${courseSlug}/${chapter.slug}`}>{chapter.title}</Link>
           </li>
         ))}
       </ul>
-      {/* <div className={`sidebar-overlay ${isOpen == true ? 'active' : ''}`} onClick={Sidebar}></div> */}
+      )}    
+      {isExpanded && (
+        <img src={arrowRight} onClick={() => setIsExpanded(!isExpanded)} className={style.btnClose}></img>
+      )}
     </div>
-  )
-  // else return (
-  //   <div>
-  //     <a href="" className={style.close}></a>
-  //   </div>
-  // )
+  ) 
 }
 
 export default Sidebar
