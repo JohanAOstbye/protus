@@ -16,6 +16,17 @@ datasource db {
 
 // X-API
 
+model Document {
+    registration String    @id @default(uuid()) @map("_id") @db.ObjectId
+    stateId      String    @unique
+    timestamp    DateTime? @updatedAt
+    contents     String
+    agent        Actor?    @relation(fields: [agentId], references: [id])
+    activityId   String?
+    activity     Object?   @relation(fields: [activityId], references: [id])
+    agentId      String?   @db.ObjectId
+}
+
 model Statement {
     id          String       @id @default(uuid()) @map("_id") @db.ObjectId
     actor       Actor        @relation(fields: [actorId], references: [id])
@@ -154,6 +165,7 @@ model Object {
     ContextActivityObject ContextActivityObject[]
     Statement             Statement?              @relation(name: "statementObject")
     Objects               Object[]                @relation(name: "substatementObject")
+    documents             Document[]
 }
 
 model Verb {
@@ -209,6 +221,7 @@ model Actor {
     Authorities       Statement[]      @relation(name: "authority")
     groups            Actor[]          @relation(name: "member", references: [id], fields: [groupIDs])
     groupIDs          String[]         @db.ObjectId
+    documents         Document[]
 }
 
 // Necessary for Next auth
