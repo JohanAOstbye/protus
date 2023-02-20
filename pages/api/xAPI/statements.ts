@@ -27,7 +27,7 @@ export default defineEndpoints({
   GET: {
     input: {
       contentType: 'application/json',
-      body: z.object({
+      query: z.object({
         statementId: z.string().uuid().optional(),
         voidedStatementId: z.string().uuid().optional(),
         agent: agent.or(identifiedgroup).optional(),
@@ -46,6 +46,7 @@ export default defineEndpoints({
         attachments: z.boolean().default(false).optional(),
         ascending: z.boolean().default(false).optional(),
       }),
+      body: undefined,
     },
     output: [
       {
@@ -114,13 +115,15 @@ export default defineEndpoints({
       }
 
       if (statementId || voidedStatementId) {
-        const statement = await prisma.statement.findUnique({
+        const PrismaStatement = await prisma.statement.findUnique({
           where: { id: statementId || voidedStatementId },
           include: statementInclude,
         })
-        if (statement !== null) {
+        if (PrismaStatement !== null) {
+          const statement = statementFromPrisma(PrismaStatement)
           res.setHeader('content-type', 'application/json')
-          res.end(statementFromPrisma(statement))
+          if (statement.stored) res.setHeader('Last-Modified', statement.stored)
+          res.end(statement)
         } else {
           res.setHeader('content-type', 'application/json')
           res.end({ statements: [], more: undefined })
@@ -257,9 +260,9 @@ export default defineEndpoints({
   PUT: {
     input: {
       contentType: 'application/json',
-      body: z.object({
-        id: z.string(),
-        statement: statement,
+      body: statement,
+      query: z.object({
+        statementId: z.string(),
       }),
     },
     output: [
@@ -274,13 +277,21 @@ export default defineEndpoints({
         schema: undefined,
       },
     ],
-    handler: async ({ res, req: { body }, params: { session } }) => {
+    handler: async ({
+      res,
+      req: {
+        body,
+        query: { statementId },
+      },
+      params: { session },
+    }) => {
       const parsed = statement.safeParse(body)
       if (!parsed.success) {
         res.status(400)
         return
       }
       const parsedStatement = parsed.data
+      parsedStatement.id = statementId
       const stored = await prisma.statement.findUnique({
         where: { id: parsedStatement.id },
         include: statementInclude,
