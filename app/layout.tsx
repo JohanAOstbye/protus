@@ -1,7 +1,7 @@
 'use client'
 
 import { CourseContextProvider } from 'components/context/courseContext'
-import Layout from 'components/layout'
+import Layout from 'components/layout/ChapterLayout'
 
 import {
   QueryClient,
