@@ -42,6 +42,15 @@ export const agent = z
   .and(actorBase)
   .and(inverseFunctionalIdentifier)
 
+export const person = z.object({
+  objectType: z.literal('Person'),
+  name: z.array(z.string()).optional(),
+  mbox: z.array(z.string().email()).optional(),
+  mbox_sha1sum: z.array(z.string()).optional(),
+  openid: z.array(z.string().url()).optional(),
+  account: z.array(account).optional(),
+})
+
 export const anongroup = z
   .object({
     objectType: z.literal('Group'),
