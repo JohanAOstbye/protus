@@ -227,10 +227,8 @@ export default defineEndpoints({
     handler: async ({
       res,
       req: {
-        body: document,
         query: { activityId, agent, registration, stateId },
       },
-      params: { session },
     }) => {
       res.setHeader('content-type', 'application/json')
       if (stateId) {

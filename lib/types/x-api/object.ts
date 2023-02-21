@@ -15,7 +15,9 @@ import {
 import { IRI, languageMap, recordFromPrismaArray, recordToPrismaArray } from '.'
 import { Actor, Prisma, Verb, Object, interactionType } from '@prisma/client'
 
-const objectBase = z.object({})
+const objectBase = z.object({
+  mongoid: z.string().uuid().optional(),
+})
 
 const definition = z.object({
   name: languageMap.optional(),
@@ -299,7 +301,8 @@ export const objectToPrisma = (object: objectType) => {
 }
 
 export const objectFromPrisma = (
-  prismaobject: Object & {
+  prismaobject: Omit<Object, 'mongoid'> & {
+    mongoid?: string | undefined
     actor?: Actor | undefined
     verb?: Verb | undefined
     object?:
