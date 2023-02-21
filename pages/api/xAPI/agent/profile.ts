@@ -99,6 +99,7 @@ export default defineEndpoints({
     }) => {
       res.setHeader('content-type', 'application/json')
       try {
+        const old = await prisma.document.findUnique({ where: { profileId } })
         await prisma.document
           .create({
             data: {
@@ -109,7 +110,15 @@ export default defineEndpoints({
                   where: inverseFunctionalIdentifier.parse(agent),
                 },
               },
-              contents: body.contents,
+              contents:
+                old !== null
+                  ? JSON.stringify(
+                      mergeDocuments(
+                        JSON.parse(old.contents),
+                        JSON.parse(body.contents)
+                      )
+                    )
+                  : body.contents,
             },
           })
           .then(() => {
@@ -147,6 +156,7 @@ export default defineEndpoints({
     }) => {
       res.setHeader('content-type', 'application/json')
       try {
+        const old = await prisma.document.findUnique({ where: { profileId } })
         await prisma.document
           .create({
             data: {
@@ -157,7 +167,15 @@ export default defineEndpoints({
                   where: inverseFunctionalIdentifier.parse(agent),
                 },
               },
-              contents: body.contents,
+              contents:
+                old !== null
+                  ? JSON.stringify(
+                      mergeDocuments(
+                        JSON.parse(old.contents),
+                        JSON.parse(body.contents)
+                      )
+                    )
+                  : body.contents,
             },
           })
           .then(() => {
