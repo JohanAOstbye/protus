@@ -15,10 +15,8 @@ export default defineEndpoints({
       contentType: 'application/json',
       body: undefined,
       query: z.object({
-        activityId: IRI,
         agent: agent,
-        registration: z.string().uuid().optional(),
-        stateId: z.string().optional(),
+        profileId: z.string().optional(),
         since: z.string().datetime().optional(),
       }),
     },
@@ -37,17 +35,13 @@ export default defineEndpoints({
     handler: async ({
       res,
       req: {
-        body,
-        query: { activityId, agent, registration, stateId, since },
+        query: { agent, profileId, since },
       },
-      params: { session },
     }) => {
-      if (stateId) {
+      if (profileId) {
         const prismaDocument = await prisma.document.findFirst({
           where: {
-            stateId,
-            registration,
-            activityId,
+            profileId,
             agent: inverseFunctionalIdentifier.parse(agent),
           },
         })
@@ -61,18 +55,16 @@ export default defineEndpoints({
       } else {
         const prismaDocuments = await prisma.document.findMany({
           where: {
-            registration,
-            activityId,
             agent: inverseFunctionalIdentifier.parse(agent),
             timestamp: { gte: since },
           },
           select: {
-            stateId: true,
+            profileId: true,
           },
         })
         if (prismaDocuments) {
           let parsedDocuments = prismaDocuments
-            .map((prismaDocument) => prismaDocument.stateId)
+            .map((prismaDocument) => prismaDocument.profileId)
             .filter((id): id is string => {
               return !!id
             })
@@ -87,10 +79,8 @@ export default defineEndpoints({
       contentType: 'application/json',
       body: document,
       query: z.object({
-        activityId: IRI,
         agent: agent,
-        registration: z.string().uuid().optional(),
-        stateId: z.string(),
+        profileId: z.string(),
       }),
     },
     output: [
@@ -104,28 +94,15 @@ export default defineEndpoints({
       res,
       req: {
         body,
-        query: { activityId, agent, registration, stateId },
+        query: { agent, profileId },
       },
-      params: { session },
     }) => {
       res.setHeader('content-type', 'application/json')
       try {
         await prisma.document
           .create({
             data: {
-              stateId,
-              registration,
-              activity: {
-                connectOrCreate: {
-                  create: {
-                    id: activityId,
-                    objectType: 'Activity',
-                  },
-                  where: {
-                    id: activityId,
-                  },
-                },
-              },
+              profileId,
               agent: {
                 connectOrCreate: {
                   create: actorToPrisma(agent),
@@ -150,10 +127,8 @@ export default defineEndpoints({
       contentType: 'application/json',
       body: document,
       query: z.object({
-        activityId: IRI,
         agent: agent,
-        registration: z.string().uuid().optional(),
-        stateId: z.string(),
+        profileId: z.string(),
       }),
     },
     output: [
@@ -167,28 +142,15 @@ export default defineEndpoints({
       res,
       req: {
         body,
-        query: { activityId, agent, registration, stateId },
+        query: { agent, profileId },
       },
-      params: { session },
     }) => {
       res.setHeader('content-type', 'application/json')
       try {
         await prisma.document
           .create({
             data: {
-              stateId,
-              registration,
-              activity: {
-                connectOrCreate: {
-                  create: {
-                    id: activityId,
-                    objectType: 'Activity',
-                  },
-                  where: {
-                    id: activityId,
-                  },
-                },
-              },
+              profileId,
               agent: {
                 connectOrCreate: {
                   create: actorToPrisma(agent),
@@ -213,10 +175,8 @@ export default defineEndpoints({
       contentType: 'application/json',
       body: undefined,
       query: z.object({
-        activityId: IRI,
         agent: agent,
-        registration: z.string().uuid().optional(),
-        stateId: z.string(),
+        profileId: z.string(),
       }),
     },
     output: [
@@ -229,17 +189,16 @@ export default defineEndpoints({
     handler: async ({
       res,
       req: {
-        query: { activityId, agent, registration, stateId },
+        query: { agent, profileId },
       },
     }) => {
       res.setHeader('content-type', 'application/json')
-      if (stateId) {
+      if (profileId) {
         try {
           await prisma.document.deleteMany({
             where: {
-              stateId,
-              registration,
-              activityId,
+              profileId,
+
               agent: inverseFunctionalIdentifier.parse(agent),
             },
           })
@@ -252,8 +211,6 @@ export default defineEndpoints({
           try {
             await prisma.document.deleteMany({
               where: {
-                registration,
-                activityId,
                 agent: inverseFunctionalIdentifier.parse(agent),
               },
             })
