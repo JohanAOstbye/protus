@@ -1,8 +1,7 @@
-import { useCourse } from 'components/context/course'
 import ChapterPage from 'components/pages/chapter/ChapterPage'
 import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage'
 
-import { getCourse, getInitialCourse, getSettings } from 'lib/sanity.client'
+import { getCourse, getInitialCourse, getSettings } from 'lib/sanity/sanity.client'
 // import { PreviewSuspense } from 'next-sanity/preview'
 // import { previewData } from 'next/headers'
 // import { notFound } from 'next/navigation'

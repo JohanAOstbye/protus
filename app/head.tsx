@@ -1,6 +1,6 @@
 
-import * as demo from 'lib/demo.data'
-import { getSettings } from 'lib/sanity.client'
+import * as demo from 'lib/sanity/demo.data'
+import { getSettings } from 'lib/sanity/sanity.client'
 
 export default async function PageHead() {
   const {

@@ -3,7 +3,7 @@
 import ChapterPage from 'components/pages/chapter/ChapterPage';
 import ChapterLayout from 'components/pages/chapter/ChapterPage';
 import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage';
-import { getChapter, getInitialChapter, getSettings } from 'lib/sanity.client'
+import { getChapter, getInitialChapter, getSettings } from 'lib/sanity/sanity.client'
 // import { PreviewSuspense } from 'next-sanity/preview';
 import { previewData } from 'next/headers'
 

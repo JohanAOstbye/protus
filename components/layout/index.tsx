@@ -21,7 +21,7 @@ export const Layout = () => {
                     <Button text='Login'></Button>
                 </div>
                 </div>
-            <img src={frontpageImage} alt="online learning image" />
+            <img className={style.image} src={frontpageImage} alt="online learning image" />
         </div>
         </>
     )

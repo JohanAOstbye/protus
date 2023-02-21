@@ -5,9 +5,15 @@ import Footer from './Footer'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import style from "styles/layout/_chapterLayout.module.scss"
+import DescriptionBlock from 'schemas/blocks/descriptionBlock'
+import { getChapter } from 'lib/sanity/sanity.client'
 
 export const ChapterLayout = ({ children }: { children?: React.ReactNode }) => {
   const {course, courses}  = useCourse()
+  // const chapter = getChapter()
+  if (!course) return <>course not set</>
+  console.log(course.name);
+  
   
   return (
     <div className={style.layout}>
@@ -17,7 +23,8 @@ export const ChapterLayout = ({ children }: { children?: React.ReactNode }) => {
           <Sidebar course={course.name} closed={false} chapters={course.slugs} courseSlug={course.name} />
         )}
         <main>{children}</main>
-        <Button text="variables"></Button>
+        {/* <Button text="Activities"></Button> */}
+        {/* <DescriptionBlock title={course.name} ></DescriptionBlock> */}
       </div>
       <Footer />
     </div>

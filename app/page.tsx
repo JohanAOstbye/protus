@@ -1,7 +1,8 @@
 import ChapterLayout from 'components/pages/chapter/ChapterPage'
-import { getChapter, getCourse, getSettings } from 'lib/sanity.client'
+import { getChapter, getCourse, getSettings } from 'lib/sanity/sanity.client'
 // import { PreviewSuspense } from 'next-sanity/preview'
 import { previewData } from 'next/headers'
+import Layout from './layout'
 
 
 
@@ -10,7 +11,7 @@ export default async function IndexRoute() {
   const [settings, courses] = await Promise.all([getSettings(), ,])
 
   
-  return <ChapterLayout data={getChapter(getCourse)}><div></div></ChapterLayout> //data ={getChapter?}
+  return <Layout ><div></div></Layout> //data ={getChapter?}
 }
 
 // FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`

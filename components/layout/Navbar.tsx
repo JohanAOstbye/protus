@@ -12,9 +12,9 @@ const Navbar = ({ courses, selectedCourse }:{courses:courseType[], selectedCours
     <li className={style.lineSeperator}>|</li>
     <div className={style.courseContainer}>
       <label className={style.courseText}>Course</label>
-    <li>{selectedCourse.name}
-      <ul>
-        {courseList.map((course,i)=><li key={i}><Link href={`${course.name}`} >{course.name}</Link></li>)}
+    <li className={style.thisCourse}>{selectedCourse.name}
+      <ul className={style.test}>
+        {courseList.map((course,i)=><li className={style.listItems} key={i}><Link href={`${course.name}`} >{course.name}</Link></li>)}
       </ul>
     </li>
     </div>
