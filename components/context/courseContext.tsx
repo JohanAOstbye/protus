@@ -9,24 +9,32 @@ import React, {
 } from 'react'
 
 type courseContextType =
-  | {
-      course: courseType
+  {
+      course: courseType | undefined
       courses: courseType[]
       updateCourse: (course: courseType) => void
       updateCourses: (courses: courseType[]) => void
     }
-  | undefined
 
-const CourseContext = createContext<courseContextType>(undefined)
+const courseContextDefaultvalue: courseContextType = {
+  course: undefined,
+  courses: [],
+  updateCourse: function (course: courseType): void {
+    throw new Error('Function not implemented.')
+  },
+  updateCourses: function (courses: courseType[]): void {
+    throw new Error('Function not implemented.')
+  }
+}
+
+const CourseContext = createContext<courseContextType>(courseContextDefaultvalue)
 
 interface courseContextProviderProps {
   children: React.ReactNode
-  course: courseType
-  courses: courseType[]
 }
 export const CourseContextProvider = (props: courseContextProviderProps) => {
-  const [course, setCourse] = useState<courseType>(props.course)
-  const [courses, setCourses] = useState<courseType[]>(props.courses)
+  const [course, setCourse] = useState<courseType | undefined>(undefined)
+  const [courses, setCourses] = useState<courseType[]>([])
 
   const updateCourse = (course: courseType) => setCourse(course)
   const updateCourses = (courses: courseType[]) => setCourses(courses)

@@ -24,7 +24,9 @@ export default function RootLayout({
       <body className="bg-white text-black">
       <QueryClientProvider client={queryClient}>
         <CourseContextProvider >
+          <Layout>
             {children}
+            </Layout>
         </CourseContextProvider>
         </QueryClientProvider>
       </body>

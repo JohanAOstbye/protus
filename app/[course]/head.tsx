@@ -1,7 +1,7 @@
 
-import * as demo from 'lib/demo.data'
-import { getCourse, getSettings } from 'lib/sanity.client'
-import { urlForImage } from 'lib/sanity.image'
+import * as demo from 'lib/sanity/demo.data'
+import { getCourse, getSettings } from 'lib/sanity/sanity.client'
+import { urlForImage } from 'lib/sanity/sanity.image'
 
 export default async function SlugHead({
   params,
