@@ -1,10 +1,6 @@
 import { defineEndpoints } from 'lib/server/rest'
 import { IRI } from 'lib/types/x-api'
-import {
-  actorToPrisma,
-  agent,
-  inverseFunctionalIdentifier,
-} from 'lib/types/x-api/actor'
+import { inverseFunctionalIdentifier } from 'lib/types/x-api/actor'
 import { document, mergeDocuments } from 'lib/types/x-api/document'
 import { z } from 'zod'
 import { prisma } from 'lib/server/db'
@@ -16,9 +12,7 @@ export default defineEndpoints({
       body: undefined,
       query: z.object({
         activityId: IRI,
-        agent: agent,
-        registration: z.string().uuid().optional(),
-        stateId: z.string().optional(),
+        profileId: z.string().optional(),
         since: z.string().datetime().optional(),
       }),
     },
@@ -37,16 +31,14 @@ export default defineEndpoints({
     handler: async ({
       res,
       req: {
-        query: { activityId, agent, registration, stateId, since },
+        query: { activityId, profileId, since },
       },
     }) => {
-      if (stateId) {
+      if (profileId) {
         const prismaDocument = await prisma.document.findFirst({
           where: {
-            stateId,
-            registration,
+            profileId,
             activityId,
-            agent: inverseFunctionalIdentifier.parse(agent),
           },
         })
         if (prismaDocument) {
@@ -59,18 +51,16 @@ export default defineEndpoints({
       } else {
         const prismaDocuments = await prisma.document.findMany({
           where: {
-            registration,
             activityId,
-            agent: inverseFunctionalIdentifier.parse(agent),
             timestamp: { gte: since },
           },
           select: {
-            stateId: true,
+            profileId: true,
           },
         })
         if (prismaDocuments) {
           let parsedDocuments = prismaDocuments
-            .map((prismaDocument) => prismaDocument.stateId)
+            .map((prismaDocument) => prismaDocument.profileId)
             .filter((id): id is string => {
               return !!id
             })
@@ -86,9 +76,7 @@ export default defineEndpoints({
       body: document,
       query: z.object({
         activityId: IRI,
-        agent: agent,
-        registration: z.string().uuid().optional(),
-        stateId: z.string(),
+        profileId: z.string(),
       }),
     },
     output: [
@@ -102,17 +90,16 @@ export default defineEndpoints({
       res,
       req: {
         body,
-        query: { activityId, agent, registration, stateId },
+        query: { activityId, profileId },
       },
     }) => {
       res.setHeader('content-type', 'application/json')
       try {
-        const old = await prisma.document.findUnique({ where: { stateId } })
+        const old = await prisma.document.findUnique({ where: { profileId } })
         await prisma.document
           .create({
             data: {
-              stateId,
-              registration,
+              profileId,
               activity: {
                 connectOrCreate: {
                   create: {
@@ -122,12 +109,6 @@ export default defineEndpoints({
                   where: {
                     id: activityId,
                   },
-                },
-              },
-              agent: {
-                connectOrCreate: {
-                  create: actorToPrisma(agent),
-                  where: inverseFunctionalIdentifier.parse(agent),
                 },
               },
               contents:
@@ -157,9 +138,7 @@ export default defineEndpoints({
       body: document,
       query: z.object({
         activityId: IRI,
-        agent: agent,
-        registration: z.string().uuid().optional(),
-        stateId: z.string(),
+        profileId: z.string(),
       }),
     },
     output: [
@@ -173,17 +152,16 @@ export default defineEndpoints({
       res,
       req: {
         body,
-        query: { activityId, agent, registration, stateId },
+        query: { activityId, profileId },
       },
     }) => {
       res.setHeader('content-type', 'application/json')
       try {
-        const old = await prisma.document.findUnique({ where: { stateId } })
+        const old = await prisma.document.findUnique({ where: { profileId } })
         await prisma.document
           .create({
             data: {
-              stateId,
-              registration,
+              profileId,
               activity: {
                 connectOrCreate: {
                   create: {
@@ -193,12 +171,6 @@ export default defineEndpoints({
                   where: {
                     id: activityId,
                   },
-                },
-              },
-              agent: {
-                connectOrCreate: {
-                  create: actorToPrisma(agent),
-                  where: inverseFunctionalIdentifier.parse(agent),
                 },
               },
               contents:
@@ -228,9 +200,7 @@ export default defineEndpoints({
       body: undefined,
       query: z.object({
         activityId: IRI,
-        agent: agent,
-        registration: z.string().uuid().optional(),
-        stateId: z.string(),
+        profileId: z.string(),
       }),
     },
     output: [
@@ -243,18 +213,16 @@ export default defineEndpoints({
     handler: async ({
       res,
       req: {
-        query: { activityId, agent, registration, stateId },
+        query: { activityId, profileId },
       },
     }) => {
       res.setHeader('content-type', 'application/json')
-      if (stateId) {
+      if (profileId) {
         try {
           await prisma.document.deleteMany({
             where: {
-              stateId,
-              registration,
+              profileId,
               activityId,
-              agent: inverseFunctionalIdentifier.parse(agent),
             },
           })
         } catch (error) {
@@ -266,9 +234,7 @@ export default defineEndpoints({
           try {
             await prisma.document.deleteMany({
               where: {
-                registration,
                 activityId,
-                agent: inverseFunctionalIdentifier.parse(agent),
               },
             })
           } catch (error) {
