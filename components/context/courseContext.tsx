@@ -31,10 +31,12 @@ const CourseContext = createContext<courseContextType>(courseContextDefaultvalue
 
 interface courseContextProviderProps {
   children: React.ReactNode
+  course?: courseType | undefined
+  courses?: courseType[]
 }
 export const CourseContextProvider = (props: courseContextProviderProps) => {
-  const [course, setCourse] = useState<courseType | undefined>(undefined)
-  const [courses, setCourses] = useState<courseType[]>([])
+  const [course, setCourse] = useState<courseType | undefined>(props.course ? props.course : undefined)
+  const [courses, setCourses] = useState<courseType[]>(props.courses ? props.courses : [])
 
   const updateCourse = (course: courseType) => setCourse(course)
   const updateCourses = (courses: courseType[]) => setCourses(courses)

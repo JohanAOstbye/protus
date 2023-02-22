@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import style from 'styles/components/_sidebar.module.scss'
-import { courseType } from 'lib/types/sanity';
 import { useState } from 'react';
 import arrowRight from 'public/arrow-right.svg'
 
