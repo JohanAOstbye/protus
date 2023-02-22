@@ -18,7 +18,8 @@ datasource db {
 
 model Document {
     registration String    @id @default(uuid()) @map("_id") @db.ObjectId
-    stateId      String    @unique
+    stateId      String?   @unique
+    profileId    String?   @unique
     timestamp    DateTime? @updatedAt
     contents     String
     agent        Actor?    @relation(fields: [agentId], references: [id])
