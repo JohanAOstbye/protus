@@ -45,4 +45,4 @@ export default {
 } as ComponentMeta<typeof ChapterLayout>;
 
 export const Primary: ComponentStory<typeof ChapterLayout> = () => 
-<CourseContextProvider course={mock} courses={mock2}><ChapterLayout></ChapterLayout></CourseContextProvider>;
+<CourseContextProvider course={mock} courses={mock2}><ChapterLayout ></ChapterLayout></CourseContextProvider>;

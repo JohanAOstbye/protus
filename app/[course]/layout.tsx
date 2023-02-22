@@ -1,6 +1,6 @@
 'use client'
 
-import { CourseContextProvider } from 'components/context/courseContext'
+import { CourseContextProvider, useCourse } from 'components/context/courseContext'
 import Layout from 'components/layout/ChapterLayout'
 import { getCourse, getCourses } from 'lib/sanity/sanity.client'
 
@@ -16,6 +16,8 @@ export default function RootLayout({
 }) {
 
   const queryClient = new QueryClient()
+
+  const course = useCourse()
   
 
   return (
@@ -23,8 +25,8 @@ export default function RootLayout({
       <head />
       <body className="bg-white text-black">
       <QueryClientProvider client={queryClient}>
-        <CourseContextProvider >
-          <Layout>
+        <CourseContextProvider>
+          <Layout >
             {children}
             </Layout>
         </CourseContextProvider>

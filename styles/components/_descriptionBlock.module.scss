@@ -7,7 +7,7 @@
     max-width: 1000px
 }
 
-.title {
+.titleText {
     @include gradient(left, $surf-gradient);
     color: black;
     font-weight: 600;
