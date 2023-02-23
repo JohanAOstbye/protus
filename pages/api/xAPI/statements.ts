@@ -114,93 +114,99 @@ export default defineEndpoints({
         res.status(400)
       }
 
-      if (statementId || voidedStatementId) {
-        const PrismaStatement = await prisma.statement.findUnique({
-          where: { id: statementId || voidedStatementId },
-          include: statementInclude,
-        })
-        if (PrismaStatement !== null) {
-          const statement = statementFromPrisma(PrismaStatement)
-          res.setHeader('content-type', 'application/json')
-          if (statement.stored) res.setHeader('Last-Modified', statement.stored)
-          res.end(statement)
-        } else {
-          res.setHeader('content-type', 'application/json')
-          res.end({ statements: [], more: undefined })
+      try {
+        if (statementId || voidedStatementId) {
+          const PrismaStatement = await prisma.statement.findUnique({
+            where: { id: statementId || voidedStatementId },
+            include: statementInclude,
+          })
+          if (PrismaStatement !== null) {
+            const statement = statementFromPrisma(PrismaStatement)
+            res.setHeader('content-type', 'application/json')
+            if (statement.stored)
+              res.setHeader('Last-Modified', statement.stored)
+            res.end(statement)
+          } else {
+            res.setHeader('content-type', 'application/json')
+            res.end({ statements: [], more: undefined })
+          }
         }
-      }
-      const statements = await prisma.statement.findMany({
-        where: {
-          id: registration ? registration : undefined,
-          actor: agent
-            ? {
-                OR: [
-                  inverseFunctionalIdentifier.parse(agent),
-                  {
-                    member: {
-                      some: inverseFunctionalIdentifier.parse(agent),
-                    },
-                  },
-                ],
-              }
-            : undefined,
-          object: activity
-            ? { objectType: 'Activity', id: activity }
-            : agent
-            ? {
-                AND: [
-                  {
-                    objectType: {
-                      in: ['Agent', 'Group'],
-                    },
-                  },
-                  {
-                    objectActor: {
-                      OR: [
-                        inverseFunctionalIdentifier.parse(agent),
-                        {
-                          member: {
-                            some: inverseFunctionalIdentifier.parse(agent),
-                          },
-                        },
-                      ],
-                    },
-                  },
-                ],
-              }
-            : undefined,
-          verb: verb ? { id: verb } : undefined,
-          timestamp:
-            since || until
+        const statements = await prisma.statement.findMany({
+          where: {
+            id: registration ? registration : undefined,
+            actor: agent
               ? {
-                  lte: since ? since : undefined,
-                  gte: until ? until : undefined,
+                  OR: [
+                    inverseFunctionalIdentifier.parse(agent),
+                    {
+                      member: {
+                        some: inverseFunctionalIdentifier.parse(agent),
+                      },
+                    },
+                  ],
                 }
               : undefined,
-        },
-        orderBy: { timestamp: ascending ? 'asc' : undefined },
-        take: limit !== 0 ? limit : undefined,
-        select:
-          format == 'ids'
-            ? { id: true }
-            : attachments
-            ? statementSelect(5)
-            : statementSelectWithoutAttachments(5),
-      })
-      if (attachments) {
-        res.setHeader('content-type', 'multipart/mixed')
-      } else {
-        res.setHeader('content-type', 'application/json')
+            object: activity
+              ? { objectType: 'Activity', id: activity }
+              : agent
+              ? {
+                  AND: [
+                    {
+                      objectType: {
+                        in: ['Agent', 'Group'],
+                      },
+                    },
+                    {
+                      objectActor: {
+                        OR: [
+                          inverseFunctionalIdentifier.parse(agent),
+                          {
+                            member: {
+                              some: inverseFunctionalIdentifier.parse(agent),
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                }
+              : undefined,
+            verb: verb ? { id: verb } : undefined,
+            timestamp:
+              since || until
+                ? {
+                    lte: since ? since : undefined,
+                    gte: until ? until : undefined,
+                  }
+                : undefined,
+          },
+          orderBy: { timestamp: ascending ? 'asc' : undefined },
+          take: limit !== 0 ? limit : undefined,
+          select:
+            format == 'ids'
+              ? { id: true }
+              : attachments
+              ? statementSelect(5)
+              : statementSelectWithoutAttachments(5),
+        })
+        if (attachments) {
+          res.setHeader('content-type', 'multipart/mixed')
+        } else {
+          res.setHeader('content-type', 'application/json')
+        }
+        res.end({
+          statements: statements
+            .filter(
+              (statement): statement is withIdRequired<PrismaStatement> =>
+                !!statement.id
+            )
+            .map((statement) => statementFromPrisma(statement)),
+          more: undefined,
+        })
+      } catch (error) {
+        console.error(error)
+        res.status(400).end()
       }
-      res.end({
-        statements: statements
-          .filter(
-            (statement): statement is withIdRequired<PrismaStatement> =>
-              !!statement.id
-          )
-          .map((statement) => statementFromPrisma(statement)),
-        more: undefined,
-      })
     },
   },
   POST: {
@@ -217,44 +223,48 @@ export default defineEndpoints({
     ],
     handler: async ({ res, req: { body: statements } }) => {
       res.setHeader('content-type', 'application/json')
+      try {
+        const ids = statements
+          .map((statement) => statement.id)
+          .filter((id): id is string => {
+            return !!id
+          })
 
-      const ids = statements
-        .map((statement) => statement.id)
-        .filter((id): id is string => {
-          return !!id
+        if (new Set(ids).size !== ids.length) res.status(400)
+
+        const existingStatements = await prisma.statement.findMany({
+          where: { id: { in: ids } },
+          include: statementInclude,
         })
 
-      if (new Set(ids).size !== ids.length) res.status(400)
+        existingStatements.forEach((statement) => {
+          if (
+            isDeepEqual(
+              statement,
+              statements.find((el) => el.id === statement.id)
+            )
+          ) {
+            res.status(409)
+          }
+        })
 
-      const existingStatements = await prisma.statement.findMany({
-        where: { id: { in: ids } },
-        include: statementInclude,
-      })
-
-      existingStatements.forEach((statement) => {
-        if (
-          isDeepEqual(
-            statement,
-            statements.find((el) => el.id === statement.id)
-          )
-        ) {
-          res.status(409)
-        }
-      })
-
-      const createStatements = statements.filter(
-        ({ id }) => !existingStatements.find((el) => el.id === id)
-      )
-      await Promise.all(
-        createStatements.map((statement) =>
-          prisma.statement.create({
-            data: statementToPrisma(statement, {}, undefined),
-          })
+        const createStatements = statements.filter(
+          ({ id }) => !existingStatements.find((el) => el.id === id)
         )
-      )
+        await Promise.all(
+          createStatements.map((statement) =>
+            prisma.statement.create({
+              data: statementToPrisma(statement, {}, undefined),
+            })
+          )
+        )
 
-      // Any other status or JSON format will lead to TS error.
-      res.status(200).json(ids)
+        // Any other status or JSON format will lead to TS error.
+        res.status(200).json(ids)
+      } catch (error) {
+        console.error(error)
+        res.status(400).end()
+      }
     },
   },
   PUT: {
@@ -285,34 +295,39 @@ export default defineEndpoints({
       },
       params: { session },
     }) => {
-      const parsed = statement.safeParse(body)
-      if (!parsed.success) {
-        res.status(400)
-        return
-      }
-      const parsedStatement = parsed.data
-      parsedStatement.id = statementId
-      const stored = await prisma.statement.findUnique({
-        where: { id: parsedStatement.id },
-        include: statementInclude,
-      })
-      if (stored) {
-        const parsedstored = statementFromPrisma(stored)
-        if (isDeepEqual(parsedstored, parsedStatement)) {
-          res.status(204)
-        } else {
-          res.status(409)
+      try {
+        const parsed = statement.safeParse(body)
+        if (!parsed.success) {
+          res.status(400)
+          return
         }
-        return
-      }
-      prisma.statement.create({
-        data: statementToPrisma(parsedStatement, {}, session?.user),
-      })
-      // Any other content type will lead to TS error.
-      res.setHeader('content-type', 'application/json')
+        const parsedStatement = parsed.data
+        parsedStatement.id = statementId
+        const stored = await prisma.statement.findUnique({
+          where: { id: parsedStatement.id },
+          include: statementInclude,
+        })
+        if (stored) {
+          const parsedstored = statementFromPrisma(stored)
+          if (isDeepEqual(parsedstored, parsedStatement)) {
+            res.status(204)
+          } else {
+            res.status(409)
+          }
+          return
+        }
+        prisma.statement.create({
+          data: statementToPrisma(parsedStatement, {}, session?.user),
+        })
+        // Any other content type will lead to TS error.
+        res.setHeader('content-type', 'application/json')
 
-      // Any other status or JSON format will lead to TS error.
-      res.status(204)
+        // Any other status or JSON format will lead to TS error.
+        res.status(204)
+      } catch (error) {
+        console.error(error)
+        res.status(400).end()
+      }
     },
   },
   openApiSpec: {

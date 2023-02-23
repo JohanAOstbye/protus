@@ -1,7 +1,11 @@
 import { defineEndpoints } from 'lib/server/rest'
 import { IRI } from 'lib/types/x-api'
-import { inverseFunctionalIdentifier } from 'lib/types/x-api/actor'
-import { document, mergeDocuments } from 'lib/types/x-api/document'
+import {
+  createEtag,
+  decodeEtag,
+  document,
+  mergeDocuments,
+} from 'lib/types/x-api/document'
 import { z } from 'zod'
 import { prisma } from 'lib/server/db'
 
@@ -42,6 +46,8 @@ export default defineEndpoints({
           },
         })
         if (prismaDocument) {
+          const newEtag = createEtag(prismaDocument)
+          res.setHeader('ETag', newEtag)
           let parsedDocument = document.parse(prismaDocument)
           res.setHeader('content-type', 'application/json')
           res.status(200).json(parsedDocument)
@@ -56,6 +62,7 @@ export default defineEndpoints({
           },
           select: {
             profileId: true,
+            timestamp: true,
           },
         })
         if (prismaDocuments) {
@@ -64,6 +71,14 @@ export default defineEndpoints({
             .filter((id): id is string => {
               return !!id
             })
+          let lastModified = prismaDocuments
+            .map((doc) => doc.timestamp)
+            .filter((id): id is Date => {
+              return !!id
+            })
+            .sort()
+            .reverse()[0]
+          res.setHeader('Last-Modified', lastModified.toISOString())
           res.setHeader('content-type', 'application/json')
           res.status(200).json(parsedDocuments)
         }
@@ -89,6 +104,7 @@ export default defineEndpoints({
     handler: async ({
       res,
       req: {
+        headers: { 'If-None-Match': ifNoneMatch, 'If-Match': ifMatch },
         body,
         query: { activityId, profileId },
       },
@@ -96,6 +112,17 @@ export default defineEndpoints({
       res.setHeader('content-type', 'application/json')
       try {
         const old = await prisma.document.findUnique({ where: { profileId } })
+        if (old !== null) {
+          const etag = createEtag(old)
+          if (ifNoneMatch === etag) {
+            res.status(304).end()
+            return
+          }
+          if (ifMatch && ifMatch !== etag) {
+            res.status(412).end()
+            return
+          }
+        }
         await prisma.document
           .create({
             data: {
@@ -151,6 +178,7 @@ export default defineEndpoints({
     handler: async ({
       res,
       req: {
+        headers: { 'If-None-Match': ifNoneMatch, 'If-Match': ifMatch },
         body,
         query: { activityId, profileId },
       },
@@ -158,6 +186,17 @@ export default defineEndpoints({
       res.setHeader('content-type', 'application/json')
       try {
         const old = await prisma.document.findUnique({ where: { profileId } })
+        if (old !== null) {
+          const etag = createEtag(old)
+          if (ifNoneMatch === etag) {
+            res.status(304).end()
+            return
+          }
+          if (ifMatch && ifMatch !== etag) {
+            res.status(412).end()
+            return
+          }
+        }
         await prisma.document
           .create({
             data: {
@@ -213,35 +252,76 @@ export default defineEndpoints({
     handler: async ({
       res,
       req: {
+        headers: { 'If-Match': ifMatch },
         query: { activityId, profileId },
       },
     }) => {
       res.setHeader('content-type', 'application/json')
-      if (profileId) {
-        try {
-          await prisma.document.deleteMany({
-            where: {
-              profileId,
-              activityId,
-            },
-          })
-        } catch (error) {
-          console.error(error)
-          res.status(400).end()
-        }
-      } else {
-        {
-          try {
-            await prisma.document.deleteMany({
+      try {
+        if (profileId) {
+          if (ifMatch && ifMatch !== '*' && typeof ifMatch === 'string') {
+            const old = await prisma.document.findFirst({
               where: {
+                profileId,
                 activityId,
               },
             })
-          } catch (error) {
-            console.error(error)
-            res.status(400).end()
+            if (old === null) res.status(400).end()
+            if (old !== null) {
+              const etag = createEtag(old)
+              if (ifMatch !== etag) {
+                res.status(412).end()
+                return
+              }
+            }
+            await prisma.document.deleteMany({
+              where: {
+                profileId,
+                activityId,
+              },
+            })
+          } else {
+            if (ifMatch && ifMatch !== '*' && typeof ifMatch !== 'string') {
+              ifMatch.forEach(async (etag) => {
+                const old = await prisma.document.findFirst({
+                  where: {
+                    profileId,
+                    activityId,
+                  },
+                })
+                if (old === null) res.status(400).end()
+                if (old !== null) {
+                  const newEtag = createEtag(old)
+                  if (etag !== newEtag) {
+                    res.status(412).end()
+                    return
+                  }
+                }
+                await prisma.document.deleteMany({
+                  where: {
+                    profileId,
+                    activityId,
+                  },
+                })
+              })
+            }
+            await prisma.document.deleteMany({
+              where: {
+                profileId,
+                activityId,
+              },
+            })
           }
+        } else {
+          await prisma.document.deleteMany({
+            where: {
+              activityId,
+            },
+          })
         }
+      } catch (error) {
+        console.error(error)
+        res.status(400).end()
       }
     },
   },
