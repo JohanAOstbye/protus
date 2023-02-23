@@ -1,31 +1,22 @@
 'use client'
 
 import { CourseContextProvider } from 'components/context/courseContext'
-import Layout from 'components/layout/ChapterLayout'
-import { getCourse, getCourses } from 'lib/sanity/sanity.client'
 
-import {
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-
   const queryClient = new QueryClient()
-  
 
   return (
     <html lang="en">
       <head />
-      <body className="bg-white text-black">
-      <QueryClientProvider client={queryClient}>
-        <CourseContextProvider >
-            {children}
-        </CourseContextProvider>
+      <body>
+        <QueryClientProvider client={queryClient}>
+          <CourseContextProvider>{children}</CourseContextProvider>
         </QueryClientProvider>
       </body>
     </html>

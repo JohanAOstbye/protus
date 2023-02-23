@@ -5,8 +5,8 @@ import {
   projectId,
   readToken,
   useCdn,
-} from 'lib/sanity.api'
-import { chapterBySlugAndCourseQuery } from 'lib/sanity.queries'
+} from 'lib/sanity/sanity.api'
+import { chapterBySlugAndCourseQuery } from 'lib/sanity/sanity.queries'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { PageConfig } from 'next/types'
 import { createClient } from 'next-sanity'
@@ -56,7 +56,7 @@ export default async function preview(
 
   // If a secret is present in the URL, verify it and if valid we upgrade to token based preview mode, which works in Safari and Incognito mode
   if (req.query.secret) {
-    const token = process.env.SANITY_API_READ_TOKEN
+    const token = process.env.TEST
     if (!token) {
       throw new Error(
         'A secret is provided but there is no `SANITY_API_READ_TOKEN` environment variable setup.'
@@ -80,7 +80,7 @@ export default async function preview(
     // Fallback to using the WRITE token until https://www.sanity.io/docs/vercel-integration starts shipping a READ token.
     // As this client only exists on the server and the token is never shared with the browser, we don't risk escalating permissions to untrustworthy users
     token:
-      process.env.SANITY_API_READ_TOKEN || process.env.SANITY_API_WRITE_TOKEN,
+      process.env.TEST || process.env.SANITY_API_WRITE_TOKEN,
   })
   const chapter = await client.fetch(chapterBySlugAndCourseQuery, {
     slug: req.query.slug,
