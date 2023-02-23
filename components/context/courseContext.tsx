@@ -1,20 +1,19 @@
 'use client'
-
 import { courseType } from 'lib/types/sanity'
 import React, {
   createContext,
   useState,
   useContext,
   useMemo,
+  useEffect,
 } from 'react'
 
-type courseContextType =
-  {
-      course: courseType | undefined
-      courses: courseType[]
-      updateCourse: (course: courseType) => void
-      updateCourses: (courses: courseType[]) => void
-    }
+type courseContextType = {
+  course: courseType | undefined
+  courses: courseType[]
+  updateCourse: (course: courseType) => void
+  updateCourses: (courses: courseType[]) => void
+}
 
 const courseContextDefaultvalue: courseContextType = {
   course: undefined,
@@ -24,10 +23,12 @@ const courseContextDefaultvalue: courseContextType = {
   },
   updateCourses: function (courses: courseType[]): void {
     throw new Error('Function not implemented.')
-  }
+  },
 }
 
-const CourseContext = createContext<courseContextType>(courseContextDefaultvalue)
+const CourseContext = createContext<courseContextType>(
+  courseContextDefaultvalue
+)
 
 interface courseContextProviderProps {
   children: React.ReactNode
@@ -35,11 +36,19 @@ interface courseContextProviderProps {
   courses?: courseType[]
 }
 export const CourseContextProvider = (props: courseContextProviderProps) => {
-  const [course, setCourse] = useState<courseType | undefined>(props.course ? props.course : undefined)
-  const [courses, setCourses] = useState<courseType[]>(props.courses ? props.courses : [])
+  const [course, setCourse] = useState<courseType | undefined>(undefined)
+  const [courses, setCourses] = useState<courseType[]>([])
 
   const updateCourse = (course: courseType) => setCourse(course)
   const updateCourses = (courses: courseType[]) => setCourses(courses)
+
+  useEffect(() => {
+    setCourse(props.course)
+  }, [props.course])
+
+  useEffect(() => {
+    if (props.courses) setCourses(props.courses)
+  }, [props.courses])
 
   const memoedCourse = useMemo(
     () => ({

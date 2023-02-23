@@ -14,7 +14,6 @@ import {
   settingsQuery,
   chapterBySlugAndCourseQuery,
   coursesQuery,
-  CoursePageQuery,
   courseQuery,
 } from 'lib/sanity/sanity.queries'
 import { createClient } from 'next-sanity'

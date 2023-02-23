@@ -1,4 +1,5 @@
 import { groq } from 'next-sanity'
+import { TypedObject } from 'sanity'
 
 const chapterFields = groq`
   _id,
@@ -6,6 +7,7 @@ const chapterFields = groq`
   date,
   excerpt,
   coverImage,
+  content,
   "slug": slug.current,
   "author": author->{name, picture},
 `
@@ -68,7 +70,7 @@ type descriptionBlock = {
   content: string[]
 }
 
-type contentBlock = string | descriptionBlock
+type contentBlock = TypedObject
 
 type content = contentBlock[]
 
