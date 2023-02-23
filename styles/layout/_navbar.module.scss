@@ -2,6 +2,7 @@
 @use 'styles/utils/_mixins.scss' as *;
 
 .container {
+  @include reset;
   display: flex;
   grid-gap: 0.3em;
   padding-top: 0.5em;
@@ -41,38 +42,35 @@
   }
 }
 
-@mixin reset{ margin: 0; padding: 0; }
-ul{
-    @include reset;
+.thisCourse{
     display: block;
     list-style: none;
-    li{
-      position: relative;
-      font-size: 18px;
-      @include breakpoint-sm {
-          font-size: 23px;
-      }
-      ul{ 
-        padding-left: 1em;
-        padding-bottom: 0.3em;
-        display: none;
-        position: absolute;
-        overflow: auto;
-        width: 7em; 
-        background-color: $surf-bg;
-        // border-bottom: 3px solid darken(white, 20%);
-        // border-right: 3px solid darken(white, 20%);
-        // border-top-right-radius: 10px;
-        // border-bottom-right-radius: 10px;
-        @include box-shadow(1px,3px,5px,1px, rgb(255, 255, 255,0.6));
-
-        border-bottom-right-radius: 5px;
-        border-bottom-left-radius: 5px;
-        z-index: 2;
-        li{
-          float: none;
-        }
-      }
-      &:hover ul{ display: block; }
+    position: relative;
+    font-size: 18px;
+    @include breakpoint-sm {
+        font-size: 23px;
     }
+    ul{ 
+      padding-left: 1em;
+      padding-bottom: 0.3em;
+      display: none;
+      position: absolute;
+      overflow: auto;
+      width: 7em; 
+      background-color: $surf-bg;
+      // border-bottom: 3px solid darken(white, 20%);
+      // border-right: 3px solid darken(white, 20%);
+      // border-top-right-radius: 10px;
+      // border-bottom-right-radius: 10px;
+      @include box-shadow(1px,3px,5px,1px, rgb(255, 255, 255,0.6));
+
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 5px;
+      z-index: 2;
+      li{
+        float: none;
+        list-style: none;
+      }
+    }
+    &:hover ul{ display: block; }
   }

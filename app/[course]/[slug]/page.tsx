@@ -1,11 +1,15 @@
-
-
-import ChapterPage from 'components/pages/chapter/ChapterPage';
-import ChapterLayout from 'components/pages/chapter/ChapterPage';
-import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage';
-import { getChapter, getInitialChapter, getSettings } from 'lib/sanity.client'
+import Loading from 'components/elements/Loading'
+import ChapterPage from 'components/pages/chapter/ChapterPage'
+import ChapterLayout from 'components/pages/chapter/ChapterPage'
+import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage'
+import {
+  getChapter,
+  getInitialChapter,
+  getSettings,
+} from 'lib/sanity/sanity.client'
 // import { PreviewSuspense } from 'next-sanity/preview';
 import { previewData } from 'next/headers'
+import { Suspense } from 'react'
 
 export default async function SlugRoute({
   params,
@@ -23,7 +27,7 @@ export default async function SlugRoute({
   //       fallback={
   //         <ChapterLayout
   //           loading
-  //           preview           
+  //           preview
   //         ><div></div></ChapterLayout>
   //       }
   //     >
@@ -33,8 +37,6 @@ export default async function SlugRoute({
   // }
 
   const data = getChapter(params.slug, params.course)
-
-  console.log(await data)
 
   return <ChapterPage data={await data} />
 }

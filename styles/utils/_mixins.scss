@@ -296,3 +296,4 @@
     -moz-box-shadow: $top $left $blur $size $color;
     box-shadow: $top $left $blur $size $color;
  }
+ @mixin reset{ margin: 0; padding: 0; }

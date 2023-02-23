@@ -7,7 +7,7 @@ export const projectId =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'PROJECT_ID'
 export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'DATASET'
 export const readToken =
-  process.env.NEXT_PUBLIC_SANITY_READ_TOKEN || 'READ_TOKEN'
+  process.env.TEST || 'READ_TOKEN'
 
 // see https://www.sanity.io/docs/api-versioning for how versioning works
 export const apiVersion =

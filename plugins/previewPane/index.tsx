@@ -8,7 +8,7 @@ import { DefaultDocumentNodeResolver } from 'sanity/desk'
 import authorType from 'schemas/author'
 import chapterType from 'schemas/chapter'
 
-import AuthorAvatarPreviewPane from './AuthorAvatarPreviewPane'
+// import AuthorAvatarPreviewPane from './AuthorAvatarPreviewPane'
 import ChapterPreviewPane from './ChapterPreviewPane'
 
 export const previewDocumentNode = ({
@@ -20,19 +20,7 @@ export const previewDocumentNode = ({
 }): DefaultDocumentNodeResolver => {
   return (S, { schemaType }) => {
     switch (schemaType) {
-      case authorType.name:
-        return S.document().views([
-          S.view.form(),
-          S.view
-            .component(({ document }) => (
-              <AuthorAvatarPreviewPane
-                name={document.displayed.name as any}
-                picture={document.displayed.picture as any}
-              />
-            ))
-            .title('Preview'),
-        ])
-
+      
       case chapterType.name:
         return S.document().views([
           S.view.form(),
