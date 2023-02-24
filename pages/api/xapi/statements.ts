@@ -1,6 +1,7 @@
 import { isDeepEqual } from 'lib/deepCompare'
 import { prisma } from 'lib/server/db'
 import { defineEndpoints } from 'lib/server/rest'
+import { getServerAuthSession } from 'lib/server/auth'
 import { IRI, withIdRequired } from 'lib/types/x-api'
 import {
   agent,
@@ -215,7 +216,15 @@ export default defineEndpoints({
         schema: z.array(z.string().uuid()),
       },
     ],
-    handler: async ({ res, req: { body: statements } }) => {
+    // middleware: async ({ req, res }) => {
+    //   const session = await getServerAuthSession({ req, res })
+    //   return { session }
+    // },
+    handler: async ({
+      res,
+      req: { body: statements },
+      // params: { session },
+    }) => {
       res.setHeader('content-type', 'application/json')
 
       const ids = statements
@@ -248,6 +257,7 @@ export default defineEndpoints({
       await Promise.all(
         createStatements.map((statement) =>
           prisma.statement.create({
+            // data: statementToPrisma(statement, {}, session),
             data: statementToPrisma(statement, {}, undefined),
           })
         )
@@ -277,13 +287,17 @@ export default defineEndpoints({
         schema: undefined,
       },
     ],
+    // middleware: async ({ req, res }) => {
+    //   const session = await getServerAuthSession({ req, res })
+    //   return { session }
+    // },
     handler: async ({
       res,
       req: {
         body,
         query: { statementId },
       },
-      params: { session },
+      // params: { session },
     }) => {
       const parsed = statement.safeParse(body)
       if (!parsed.success) {
@@ -306,7 +320,8 @@ export default defineEndpoints({
         return
       }
       prisma.statement.create({
-        data: statementToPrisma(parsedStatement, {}, session?.user),
+        // data: statementToPrisma(parsedStatement, {}, session?.user),
+        data: statementToPrisma(parsedStatement, {}, undefined),
       })
       // Any other content type will lead to TS error.
       res.setHeader('content-type', 'application/json')

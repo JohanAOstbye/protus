@@ -4,23 +4,7 @@ import React, { ReactPropTypes } from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import ChapterPage from '../../components/pages/chapter/ChapterPage'
-
-const mockdata: React.ComponentProps<typeof ChapterPage> = {
-  data: {
-    _id: 'morenDin',
-    title: 'ch1',
-    coverImage: undefined,
-    date: 'SURF',
-    excerpt: 'hallo?',
-    author: {
-      name: 'Padejo',
-      picture: undefined,
-    },
-    slug: 'te',
-    content: ['kelly', 'slater'],
-    course: 'Java',
-  },
-}
+import { coursePageMock } from 'stories/assets/mockdata/course'
 
 export default {
   /* 👇 The title prop is optional.
@@ -32,5 +16,5 @@ export default {
 } as ComponentMeta<typeof ChapterPage>
 
 export const Primary: ComponentStory<typeof ChapterPage> = () => (
-  <ChapterPage {...mockdata} />
+  <ChapterPage data={coursePageMock} />
 )
