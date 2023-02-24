@@ -59,7 +59,7 @@ export default async function revalidate(
     return res.status(200).send(updatedRoutes)
   } catch (err) {
     console.error(err)
-    return res.status(500).send(err?.message || 'Internal server error')
+    return res.status(500).send('Internal server error')
   }
 }
 

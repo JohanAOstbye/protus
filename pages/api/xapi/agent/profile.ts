@@ -1,11 +1,10 @@
 import { defineEndpoints } from 'lib/server/rest'
-import { IRI } from 'lib/types/x-api'
 import {
   actorToPrisma,
   agent,
   inverseFunctionalIdentifier,
 } from 'lib/types/x-api/actor'
-import { document } from 'lib/types/x-api/document'
+import { document, mergeDocuments } from 'lib/types/x-api/document'
 import { z } from 'zod'
 import { prisma } from 'lib/server/db'
 
