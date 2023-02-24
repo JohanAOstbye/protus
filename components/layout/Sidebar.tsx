@@ -42,6 +42,7 @@ export const Sidebar = ({ chapters, courseSlug, course }: SidebarProps) => {
           src={arrowRight}
           onClick={() => setIsExpanded(!isExpanded)}
           className={style.btnClose}
+          alt="open sidebar button"
         ></img>
       )}
     </div>
