@@ -10,9 +10,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className={style.layout}>
       <Navbar courses={courses} selectedCourse={course} />
-      <div className={style.Content}>
-      {children}
-      </div>
+      <div className={style.Content}>{children}</div>
       <Footer />
     </div>
   )
