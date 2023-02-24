@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 import ActivityCard from 'components/elements/ActivityCard'
 
 const title = 'Time Operator'
-const type = 'Exercise'
+const type = 'Challenge'
 
 export default {
   /* 👇 The title prop is optional.
