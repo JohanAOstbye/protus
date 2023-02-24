@@ -1,0 +1,52 @@
+@use 'styles/utils/_colors.scss' as *;
+@use 'styles/utils/_mixins.scss' as *;
+
+.container{
+    margin: 0.5em;
+    @include breakpoint-sm{
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+}
+
+.activitiesLabel{
+    font-size: 12px;
+    margin-left: 1.2em;
+    @include breakpoint-sm{
+        font-size: 14px;
+        margin-left: 1em;
+    }
+}
+
+.searchBox {
+    display: flex;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.search {
+    background-color: $surf-whitegrey;
+    color: $surf-text;
+    border: 0;
+    border-radius: 20px;
+    padding-left: 1em;
+    font-size: 16px;
+    height: 30px;
+    width: 100%;
+}
+
+.searchIcon {
+    position: absolute;
+    background: transparent;
+    right: 10px;
+    height: 27px;
+    @include breakpoint-sm{
+        // margin-left: 1em;
+        margin-right: 0.7em;
+    }
+}
+
+.search::placeholder {
+    color: $surf-text;
+  }
+
