@@ -20,7 +20,7 @@
  * 14. Redeploy with `npx vercel --prod` to apply the new environment variable
  */
 
-import { apiVersion, dataset, projectId } from 'lib/sanity.api'
+import { apiVersion, dataset, projectId } from 'lib/sanity/sanity.api'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { type SanityClient, createClient, groq } from 'next-sanity'
 import { type ParseBody, parseBody } from 'next-sanity/webhook'
@@ -59,7 +59,7 @@ export default async function revalidate(
     return res.status(200).send(updatedRoutes)
   } catch (err) {
     console.error(err)
-    return res.status(500).send(err.message)
+    return res.status(500).send('Internal server error')
   }
 }
 
@@ -118,7 +118,7 @@ async function queryAllRoutes(client: SanityClient): Promise<StaleRoute[]> {
 }
 
 async function mergeWithMoreStories(
-  client,
+  client: SanityClient,
   slugs: string[]
 ): Promise<string[]> {
   const moreStories = await client.fetch(
@@ -145,7 +145,7 @@ async function queryStaleAuthorRoutes(
 
   if (slugs.length > 0) {
     slugs = await mergeWithMoreStories(client, slugs)
-    return ['/', ...slugs.map((slug) => `/chapters/${slug}`)]
+    return ['/', ...slugs.map((slug: string) => `/chapters/${slug}`)]
   }
 
   return []
@@ -162,5 +162,5 @@ async function queryStaleChapterRoutes(
 
   slugs = await mergeWithMoreStories(client, slugs)
 
-  return ['/', ...slugs.map((slug) => `/chapters/${slug}`)]
+  return ['/', ...slugs.map((slug: string) => `/chapters/${slug}`)]
 }

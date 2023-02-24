@@ -2,17 +2,17 @@
 @use 'styles/utils/_mixins.scss' as *;
 
 .container {
-    border-radius: 10px;
-    overflow: hidden;
-    max-width: 1000px
+  border-radius: 10px;
+  overflow: hidden;
+  max-width: 1000px;
 }
 
 .titleText {
-    @include gradient(left, $surf-gradient);
-    color: black;
-    font-weight: 600;
-    padding: 15px;
-    padding-bottom: 10px;
+  @include gradient(to-right, $surf-gradient);
+  color: black;
+  font-weight: 600;
+  padding: 15px;
+  padding-bottom: 10px;
 }
 
 .list {
@@ -31,5 +31,3 @@
         padding-left: 1em;
     }
 }
-
-
