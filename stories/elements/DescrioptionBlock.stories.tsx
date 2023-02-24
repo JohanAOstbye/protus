@@ -54,7 +54,7 @@ export default {
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-DescriptionBlock
    * to learn how to generate automatic titles
    */
-  title: 'Elements/DescriptionBlock',
+  title: 'Block/DescriptionBlock',
   component: Content,
 } as ComponentMeta<typeof Content>
 

@@ -1,0 +1,50 @@
+@use 'styles/utils/_colors.scss' as *;
+@use 'styles/utils/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    gap: 0.6em;
+    margin: 2px;
+}
+
+.itemText {
+    font-size: 16px;  
+}
+
+
+.checkbox {
+  position: relative;
+  cursor: pointer;
+    
+}
+.checkbox:before {
+  content: "";
+  display: block;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  top: 4px;
+  left: 0;
+  border: 1px solid $surf-text;
+  border-radius: 3px;
+  background-color: $surf-bg;
+  padding: 1px;
+}
+.checkbox:checked::before {
+  background-color: $surf-text;
+}
+
+.checkbox:checked::after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 10px;
+  border: solid $surf-bg;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: absolute;
+  top: 5px;
+  left: 6px;
+}

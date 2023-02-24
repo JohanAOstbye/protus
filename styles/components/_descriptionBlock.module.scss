@@ -18,13 +18,13 @@
 .list {
     @include list-style-reset;
     padding: 0.7em;
-    background-color: $surf-grey;
+    background-color: $surf-darkgrey;
 
 }
 
 .items{
     font-size: 16px;
-    background-color: $surf-grey;
+    background-color: $surf-darkgrey;
     padding-top: 0.3em;
     @include breakpoint-sm{
         font-size: 14px;
