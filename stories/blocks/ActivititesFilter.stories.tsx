@@ -10,7 +10,7 @@ export default {
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-ActivitiesFilter
    * to learn how to generate automatic titles
    */
-  title: 'Block/ActivitiesFilter',
+  title: 'Elements/ActivitiesFilter',
   component: ActivitiesFilter,
 } as ComponentMeta<typeof ActivitiesFilter>
 

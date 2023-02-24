@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import style from 'styles/layout/_sidebar.module.scss'
 import { useState } from 'react'
-import arrowRight from 'public/arrow-right.svg'
 import { Chapter } from 'lib/sanity/sanity.queries'
+import arrowRight from 'public/icons/arrow-right.svg'
 
 export interface SidebarProps {
   closed: boolean
