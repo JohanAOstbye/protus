@@ -1,8 +1,8 @@
-import style from 'styles/components/_activitiesFilter.module.scss'
+import style from 'styles/components/_activitiesMenu.module.scss'
 import Filter from './Filter'
 import search from 'public/icons/search.svg'
 
-export const ActivitiesFilter = () => {
+export const ActivitiesMenu = () => {
   return (
     <div className={style.container}>
       <div className={style.activitiesLabel}>Activities</div>
@@ -14,4 +14,4 @@ export const ActivitiesFilter = () => {
     </div>
   )
 }
-export default ActivitiesFilter
+export default ActivitiesMenu
