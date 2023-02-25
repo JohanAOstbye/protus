@@ -1,7 +1,7 @@
 @use 'styles/utils/_colors.scss' as *;
 
 // --- Global styling ---
-* {
+body, html {
     color: $surf-text;
     background-color: $surf-bg;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
