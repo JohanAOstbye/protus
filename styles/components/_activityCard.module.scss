@@ -5,12 +5,13 @@
     background-color: $surf-grey;
     border-radius: 10px;
     width: 9em;
+    height: 10.5em;
     padding: 1em;
     cursor: pointer;
     background-color: $surf-grey;
-    & .cardTitle, .cardTitle, .activity, .icon {
+    border-radius: 10px;
+    & .cardTitle, .cardTitle, .activity, .icon{
         background-color: inherit;
-        border-radius: 10px;
     }
     &:hover {
         background-color: $surf-hovergrey;
@@ -19,13 +20,21 @@
 
 
 
+
 .cardTitle {
     font-size: 18px;
     margin-top: 4px;
 }
 
-.activity {
+.activityLabel {
     font-size: 14px;
+    font-weight: 600;
+    &-red {
+        color: red;
+    }
+    &-purple {
+        color: $surf-purple;
+    }
 }
 
 .icon{

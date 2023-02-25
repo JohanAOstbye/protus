@@ -2,12 +2,6 @@
 @use 'styles/utils/_mixins.scss' as *;
 
 // --- Global styling ---
-* {
-  color: $surf-text;
-  background-color: $surf-bg;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
 *,
 *::before,
 *::after {
@@ -22,6 +16,9 @@
 html,
 body {
   height: 100%;
+  color: $surf-text;
+  background-color: $surf-bg;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 body {

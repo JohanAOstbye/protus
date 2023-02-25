@@ -2,11 +2,9 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import ActivityCard from 'components/elements/ActivityCard'
-import challengeIcon from 'public/icons/challenge.svg'
 
 const title = 'Time Operator'
-const type = 'Challenge'
-const icon = challengeIcon
+const type = 'Exercise'
 
 export default {
   /* 👇 The title prop is optional.
@@ -18,5 +16,5 @@ export default {
 } as ComponentMeta<typeof ActivityCard>
 
 export const Primary: ComponentStory<typeof ActivityCard> = () => (
-  <ActivityCard title={title} type={type} icon={icon} />
+  <ActivityCard title={title} type={type} />
 )
