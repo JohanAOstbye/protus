@@ -16,6 +16,9 @@
     &:hover {
         background-color: $surf-hovergrey;
     }
+    @include breakpoint-sm {
+        width: 11em;
+    }
 }
 
 
