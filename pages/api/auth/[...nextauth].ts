@@ -1,7 +1,7 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
-import DiscordProvider from 'next-auth/providers/discord'
-// Prisma adapter for NextAuth, optional and can be removed
+import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import * as bcrypt from 'bcrypt'
 
 import { prisma } from 'lib/server/db'
 
@@ -18,19 +18,45 @@ export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
   providers: [
-    DiscordProvider({
-      clientId: process.env.DISCORD_CLIENT_ID || '',
-      clientSecret: process.env.DISCORD_CLIENT_SECRET || '',
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: {
+          label: 'Email',
+          type: 'text',
+          placeholder: 'example@gmail.com',
+        },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials, req) {
+        if (!credentials) return null
+
+        let user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        })
+        if (!user) {
+          const hash = await bcrypt.hash(credentials.password, 10)
+          user = await prisma.user.create({
+            data: {
+              email: credentials.email,
+              password: hash,
+            },
+          })
+        }
+        if (user === null || user.password === null) {
+          throw new Error('User not found, or is not a credentials user')
+        }
+        const isPasswordCorrect = await bcrypt.compare(
+          credentials.password,
+          user.password
+        )
+        if (!isPasswordCorrect) {
+          throw new Error('Password is not correct')
+        }
+        // Any user object returned here will be saved in the JSON Web Token
+        return user
+      },
     }),
-    /**
-     * ...add more providers here
-     *
-     * Most other providers require a bit more work than the Discord provider.
-     * For example, the GitHub provider requires you to add the
-     * `refresh_token_expires_in` field to the Account model. Refer to the
-     * NextAuth.js docs for the provider you want to use. Example:
-     * @see https://next-auth.js.org/providers/github
-     */
   ],
 }
 
