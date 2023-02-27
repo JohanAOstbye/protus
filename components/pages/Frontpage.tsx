@@ -1,10 +1,5 @@
-
-
 const FrontPage = () => {
-  return (
-    <>
-    </>
-  )
+  return <></>
 }
 
 export default FrontPage

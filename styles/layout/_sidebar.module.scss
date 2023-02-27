@@ -2,10 +2,10 @@
 @use 'styles/utils/_mixins.scss' as *;
 
 .sidebar {
-    position: fixed;
+    position: absolute;
     list-style-type: none;
     background-color: $surf-bg;
-    width: 90%;
+    width: 100%;
     opacity: 90%;
     display: grid;
     font-size: 25px;
@@ -15,18 +15,17 @@
     border-bottom-right-radius: 10px;
     @include box-shadow(5px,0,10px,5px, rgb(255, 255, 255,0.6));
     @include breakpoint-sm {
-        margin-right: 2em;
         width: 11em;
-        position: relative;
     }  
     @include breakpoint-me {
         padding-left: 1.5em;
         gap: 0.3em;
-    }     
+        position: relative;
+        box-shadow: none;
+    }
+    @include breakpoint-la {
+    }   
 } 
-
-
-
 
 .currentCourse {
     font-weight: bolder;
@@ -57,7 +56,6 @@
 
 .sidebarOpen {
     width: 10px;
-    background-color: green;
 }
 
 .btnOpen {
@@ -70,13 +68,17 @@
 .btnOpen::after {
     content: "\00d7"; 
     opacity: 0.7;
+    @include breakpoint-me {
+        content: '';
+    }
 }
 
 .btnClose {
+    background-color: $surf-bg;
     width: 3em;
-    position: fixed;
+    position: absolute;
     z-index: 2;
-    opacity: 90%;
+    opacity: 80%;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     @include box-shadow(5px,0,10px,5px, rgb(255, 255, 255,0.6));

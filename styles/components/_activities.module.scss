@@ -3,24 +3,29 @@
 
 .container {
     @include list-style-reset;
-    max-width: 1200px;
-    margin: 0 auto;
     display: grid;
     place-content: center;
     grid-template-columns: auto auto;
     gap: 0.5rem;
     @include breakpoint-sm {
         grid-template-columns: auto auto auto;
-        gap: 1rem;
-        place-content: left;
     }
     @include breakpoint-smme {
-        grid-template-columns: auto auto auto  ;
+        grid-template-columns: auto auto auto auto;
+
     }
     @include breakpoint-me {
-        grid-template-columns: auto auto auto auto ;
+    border-left: 2px solid $surf-lightgrey;
+    padding-left: 2em;
+       
     }
     @include breakpoint-la {
         grid-template-columns: auto auto auto auto auto;
+    }
+    @include breakpoint-xla {
+        grid-template-columns: auto auto auto auto auto auto;
+    }
+    @include breakpoint-xxla {
+        grid-template-columns: auto auto auto auto auto auto auto;
     }
 }

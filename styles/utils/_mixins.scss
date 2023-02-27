@@ -114,6 +114,11 @@
       @content;
     }
   }
+  @mixin breakpoint-xsm {
+    @media screen and (min-width: $breakpoint-s) {
+      @content;
+    }
+  }
   
   @mixin breakpoint-me {
     @media screen and (min-width: $breakpoint-m) {
@@ -128,13 +133,18 @@
     }
   }
   
-
-  
   @mixin breakpoint-xla {
     @media screen and (min-width: $breakpoint-xl) {
       @content;
     }
   }
+
+  @mixin breakpoint-xxla {
+    @media screen and (min-width: $breakpoint-xxl) {
+      @content;
+    }
+  }
+
   
   @mixin button-style-reset {
     padding: 0;
