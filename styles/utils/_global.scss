@@ -1,8 +1,98 @@
 @use 'styles/utils/_colors.scss' as *;
+@use 'styles/utils/_mixins.scss' as *;
 
 // --- Global styling ---
-body, html {
-    color: $surf-text;
-    background-color: $surf-bg;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  line-height: calc(1em + 0.5rem);
+}
+
+html,
+body {
+  height: 100%;
+  color: $surf-text;
+  background-color: $surf-bg;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}
+
+h1 {
+  font-size: convert-to-rem(20px);
+  margin-block: 0;
+  @include breakpoint-s {
+    font-size: convert-to-rem(27px);
+  }
+}
+
+h2 {
+  font-size: convert-to-rem(17px);
+  margin-block: 0;
+  @include breakpoint-s {
+    font-size: convert-to-rem(24px);
+  }
+}
+
+h3 {
+  font-size: convert-to-rem(16px);
+  margin-block: 0;
+  @include breakpoint-s {
+    font-size: convert-to-rem(22px);
+  }
+}
+
+h4 {
+  font-size: convert-to-rem(16px);
+  margin-block: 0;
+  @include breakpoint-s {
+    font-size: convert-to-rem(20px);
+  }
+}
+
+h5 {
+  font-size: convert-to-rem(14px);
+  margin-block: 0;
+  @include breakpoint-s {
+    font-size: convert-to-rem(18px);
+  }
+}
+
+h6 {
+  font-size: convert-to-rem(12px);
+  margin-block: 0;
+  @include breakpoint-s {
+    font-size: convert-to-rem(16px);
+  }
 }

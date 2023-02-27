@@ -260,6 +260,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     actor         Actor?
+    password      String?
 }
 
 model VerificationToken {

@@ -1,33 +1,38 @@
+$surf-bg: #1d1d1d;
+$surf-text: #d9d9d9;
 
-$surf-bg: #1D1D1D;
-$surf-text: #D9D9D9;
+$surf-bg: #1d1d1d;
+$surf-text: #d9d9d9;
 
 $surf-darkgrey: #292929;
 $surf-grey: #363636;
 $surf-lightgrey: #676767;
 $surf-hovergrey: #4b4b4b;
 
-$surf-purple:rgb(176, 0, 176);
+$surf-purple: rgb(176, 0, 176);
 
-$surf-grad1: #008BC7;
-$surf-grad2: #76FFFF;
+$surf-grad1: #008bc7;
+$surf-grad2: #76ffff;
 
-$surf-dark-grad1: #00298E;
-$surf-dark-grad2: #0881B6;
+$surf-grad1: #008bc7;
+$surf-grad2: #76ffff;
+
+$surf-dark-grad1: #00298e;
+$surf-dark-grad2: #0881b6;
 
 $surf-gradient: $surf-grad1, $surf-grad2;
 
 $surf-gradient-dark: $surf-dark-grad1, $surf-dark-grad2;
 
 // -- background gradients --
-@mixin gradient($direction, $list) { 
-    background: -webkit-linear-gradient($direction, $list);
-    background: -moz-linear-gradient($direction, $list);
-    background: -o-linear-gradient($direction, $list);
-    background: linear-gradient($direction, $list);  
-  }
+@mixin gradient($direction, $list) {
+  background: -webkit-linear-gradient($direction, $list);
+  background: -moz-linear-gradient($direction, $list);
+  background: -o-linear-gradient($direction, $list);
+  background: linear-gradient($direction, $list);
+}
 
- /* usage
+/* usage
 .sidebar {
     @include gradient(left, $surf-gradient);
 }

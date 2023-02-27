@@ -2,29 +2,27 @@
 @use 'styles/utils/_mixins.scss' as *;
 @use 'styles/utils/_variables.scss' as *;
 
-
-
 .button {
-    border-radius: 6px;
-    padding-left: 30px;
-    padding-right: 30px;
-    height: 40px;
+  @include button-style-reset;
+  border-radius: 6px;
+  padding-left: 30px;
+  padding-right: 30px;
+  height: 30px;
+  font-size: 14px;
+  letter-spacing: 0.01cm;
+  &-blue {
+    @include gradient(90deg, $surf-gradient);
+    color: black;
+  }
+  &-blue-dark {
+    @include gradient(90deg, $surf-gradient-dark);
+    color: $surf-text;
+  }
+  &:hover {
+    opacity: 0.8;
+  }
+  @include breakpoint-sm {
     font-size: 18px;
-    letter-spacing: 0.01cm;
-    &-blue {
-        @include gradient(left, $surf-gradient);
-        color: black
-    }
-    &-blue-dark {
-        @include gradient(left, $surf-gradient-dark);
-        color: $surf-text;
-    }
-    &:hover{
-       opacity: 0.8;
-    }
-    @include breakpoint-sm {
-        font-size: 14px;
-        height: 30px;
-    }   
+    height: 40px;
+  }
 }
-
