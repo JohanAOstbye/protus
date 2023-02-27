@@ -4,8 +4,9 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import Activities from 'components/blocks/Activities'
+import { ActivityCardProps } from 'components/elements/ActivityCard'
 
-const mock = [
+const mock: ActivityCardProps[] = [
   { title: 'Time Operator', type: 'Exercise' },
   { title: 'Variables', type: 'Challenge' },
   { title: 'Time Operator', type: 'Exercise' },
@@ -24,6 +25,7 @@ const mock = [
   { title: 'streams & stuff', type: 'Challenge' },
 ]
 
+const mock2 = {}
 export default {
   /* 👇 The title prop is optional.
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-Activities

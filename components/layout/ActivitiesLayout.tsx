@@ -10,7 +10,6 @@ import { useState } from 'react'
 
 export const ActivitiesLayout = () => {
   const { course, courses } = useCourse()
-  const [isExpandedd, setIsExpandedd] = useState(false)
 
   const mockdata: ActivityCardProps[] = [
     { title: 'Time Operator', type: 'Exercise' },
