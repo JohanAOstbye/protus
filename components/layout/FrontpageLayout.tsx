@@ -1,7 +1,7 @@
 import { Button } from 'components/elements/Button'
 import { ProtusLabel } from 'components/elements/ProtusLabel'
 import style from 'styles/layout/_frontpageLayout.module.scss'
-import frontpageImage from 'public/icons/frontpageImage.svg'
+import frontpageImage from 'assets/icons/frontpageImage.svg'
 import 'styles/utils/_global.scss'
 
 export const Layout = () => {
