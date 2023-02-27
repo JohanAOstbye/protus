@@ -2,14 +2,14 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "build-sb": "build-storybook",
     "dev": "next",
     "format": "npx prettier --write . --ignore-path .gitignore",
     "lint": "next lint -- --ignore-path .gitignore",
     "lint:fix": "npm run format && npm run lint -- --fix",
+    "sb": "start-storybook -p 6006",
     "start": "next start",
-    "type-check": "tsc --noEmit",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "type-check": "tsc --noEmit"
   },
   "prettier": {
     "semi": false,

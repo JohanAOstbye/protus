@@ -7,13 +7,13 @@ export const Navbar = ({
   courses,
   selectedCourse,
 }: {
-  courses: courseType[]
+  courses?: courseType[]
   selectedCourse?: courseType
 }) => {
   return (
     <div className={style.container}>
       <ProtusLabel />
-      {selectedCourse && (
+      {courses && selectedCourse && (
         <>
           <div className={style.lineSeperator}>|</div>
           <div className={style.courseContainer}>

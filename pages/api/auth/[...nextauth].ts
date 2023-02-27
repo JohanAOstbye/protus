@@ -19,7 +19,37 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
+      name: 'credentials',
+      credentials: {
+        email: {
+          label: 'Email',
+          type: 'text',
+          placeholder: 'example@gmail.com',
+        },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials, req) {
+        if (!credentials) return null
+
+        let user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        })
+        if (user === null || user.password === null) {
+          throw new Error('User not found, or is not a credentials user')
+        }
+        const isPasswordCorrect = await bcrypt.compare(
+          credentials.password,
+          user.password
+        )
+        if (!isPasswordCorrect) {
+          throw new Error('Password is not correct')
+        }
+        // Any user object returned here will be saved in the JSON Web Token
+        return user
+      },
+    }),
+    CredentialsProvider({
+      name: 'credentials-register',
       credentials: {
         email: {
           label: 'Email',
@@ -42,18 +72,9 @@ export const authOptions: NextAuthOptions = {
               password: hash,
             },
           })
+        } else {
+          throw new Error('User already exists')
         }
-        if (user === null || user.password === null) {
-          throw new Error('User not found, or is not a credentials user')
-        }
-        const isPasswordCorrect = await bcrypt.compare(
-          credentials.password,
-          user.password
-        )
-        if (!isPasswordCorrect) {
-          throw new Error('Password is not correct')
-        }
-        // Any user object returned here will be saved in the JSON Web Token
         return user
       },
     }),

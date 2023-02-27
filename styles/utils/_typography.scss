@@ -1,74 +1,11 @@
-@mixin type--body-36 {
-  font-size: 36px;
-  letter-spacing: 0em;
-}
+@use 'styles/utils/_mixins.scss' as *;
 
-@mixin type--body-30 {
-  font-size: 30px;
-  letter-spacing: 0em;
-}
-
-@mixin type--body-24 {
-  font-size: 24px;
-  letter-spacing: 0em;
-}
-
-@mixin type--body-22 {
-  font-size: 22px;
-  letter-spacing: 0em;
-}
-
-@mixin type--body-20 {
-  font-size: 20px;
-  letter-spacing: 0em;
-}
-
-@mixin type--body-18 {
-  font-size: 18px;
-  letter-spacing: 0em;
-}
-
-@mixin type--body-16 {
-  font-size: 16px;
-  letter-spacing: 0em;
-}
-
-@mixin type--body-14 {
-  font-size: 14px;
-  letter-spacing: 0em;
-}
-
-@mixin type--body-12 {
-  font-size: 12px;
-  letter-spacing: 0em;
-}
-
-@mixin type--body-10 {
-  font-size: 10px;
-  letter-spacing: 0em;
-}
-
-@mixin type--label-14 {
-  font-size: 14px;
-  letter-spacing: 0em;
-}
-
-@mixin type--label-12 {
-  font-size: 12px;
-  letter-spacing: 0em;
-}
-
-@mixin type--caption {
-  font-size: 12px;
-  letter-spacing: 0em;
-}
-
-@mixin type--display-60 {
-  font-size: 45px;
-}
-
-@mixin type--display-52 {
-  font-size: 25px;
+@mixin type($font-size) {
+  font-size: convert-to-rem($font-size * 0.8);
+  margin-block: 0;
+  @include breakpoint-s {
+    font-size: convert-to-rem($font-size);
+  }
 }
 
 h1 {

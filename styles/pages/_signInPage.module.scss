@@ -1,0 +1,23 @@
+@use 'styles/utils/_variables.scss' as *;
+@use 'styles/utils/_mixins.scss' as *;
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing--xxs;
+  padding: $spacing--m;
+}
+
+.title {
+  padding-bottom: $spacing--m;
+}
+
+.link {
+  @include link-style-reset;
+  @include underline-animation(expand, 'span');
+}
+
+.separator {
+  padding-bottom: $spacing--xxs;
+}
