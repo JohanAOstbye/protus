@@ -7,8 +7,13 @@ import ActivitiesMenu from 'components/blocks/ActivitiesMenu'
 import Activities, { ActivitiesProps } from 'components/blocks/Activities'
 import { ActivityCardProps } from 'components/elements/ActivityCard'
 import { useState } from 'react'
+import { FilterItemProps } from 'components/elements/FilterItem'
 
-export const ActivitiesLayout = () => {
+export interface ActivitiesLayoutProps {
+  filterList: FilterItemProps[]
+}
+
+export const ActivitiesLayout = ({ filterList }: ActivitiesLayoutProps) => {
   const { course, courses } = useCourse()
 
   const mockdata: ActivityCardProps[] = [
@@ -33,7 +38,7 @@ export const ActivitiesLayout = () => {
   return (
     <>
       <Navbar courses={courses} selectedCourse={course} />
-      <ActivitiesMenu />
+      <ActivitiesMenu filterList={filterList} />
       <div className={style.layout}>
         {course && course.name && course.slugs && (
           <Sidebar

@@ -45,6 +45,11 @@ const mock2: Course[] = [
   },
 ]
 
+const filterList = [
+  { text: 'Examples', type: 'Examples', checked: false },
+  { text: 'Exercises', type: 'Exercises', checked: true },
+  { text: 'Challenges', type: 'Challenges', checled: true },
+]
 export default {
   /* 👇 The title prop is optional.
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-Index
@@ -56,6 +61,6 @@ export default {
 
 export const Primary: ComponentStory<typeof ActivitiesLayout> = () => (
   <CourseContextProvider course={mock} courses={mock2}>
-    <ActivitiesLayout></ActivitiesLayout>
+    <ActivitiesLayout filterList={filterList}></ActivitiesLayout>
   </CourseContextProvider>
 )

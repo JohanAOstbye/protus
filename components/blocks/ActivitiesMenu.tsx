@@ -1,8 +1,13 @@
 import style from 'styles/components/_activitiesMenu.module.scss'
-import Filter from './Filter'
+import Filter, { FilterProps } from './Filter'
 import search from 'public/icons/search.svg'
+import { FilterItemProps } from 'components/elements/FilterItem'
 
-export const ActivitiesMenu = () => {
+export interface ActivitiesMenuProps {
+  filterList: FilterItemProps[]
+}
+
+export const ActivitiesMenu = ({ filterList }: ActivitiesMenuProps) => {
   return (
     <div className={style.container}>
       <div className={style.activitiesLabel}>Activities</div>
@@ -10,7 +15,7 @@ export const ActivitiesMenu = () => {
         <input type="text" className={style.search} placeholder="Search..." />
         <img src={search} alt="Search icon" className={style.searchIcon} />
       </div>
-      <Filter filterList={[]} />
+      <Filter filterList={filterList} />
     </div>
   )
 }
