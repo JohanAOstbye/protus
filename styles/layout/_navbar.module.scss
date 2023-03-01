@@ -1,74 +1,73 @@
 @use 'styles/utils/_colors.scss' as *;
 @use 'styles/utils/_variables.scss' as *;
 @use 'styles/utils/_mixins.scss' as *;
+@use 'styles/utils/_typography.scss' as *;
 
 .container {
   @include content-wrapper(l);
+  background-color: $surf-darkgrey;
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  height: $spacing--xl;
+  height: $spacing--l;
+  padding: $spacing--s;
+}
+
+.logoAndCourse {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing--xxxs;
 }
 
 .lineSeperator {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  display: contents;
-  font-size: 23px;
-  font-weight: 100;
-  @include breakpoint-sm {
-    font-size: 30px;
-  }
-}
-
-.courseText {
-  font-size: 9px;
-  color: grey;
-  @include breakpoint-sm {
-    font-size: 12px;
-  }
+  background-color: currentColor;
+  width: 2px;
+  height: 2rem;
 }
 
 .courseContainer {
   display: block;
-  font-size: 0;
-  .courseContainer > .label {
-    float: left;
+  position: relative;
+  &:hover {
+    cursor: pointer;
   }
 }
 
-.thisCourse {
-  display: block;
-  list-style: none;
-  position: relative;
-  font-size: 18px;
-  @include breakpoint-sm {
-    font-size: 23px;
-  }
-  ul {
-    padding-left: 1em;
-    padding-bottom: 0.3em;
-    display: none;
-    position: absolute;
-    overflow: auto;
-    width: 7em;
-    background-color: $surf-bg;
-    // border-bottom: 3px solid darken(white, 20%);
-    // border-right: 3px solid darken(white, 20%);
-    // border-top-right-radius: 10px;
-    // border-bottom-right-radius: 10px;
-    @include box-shadow(1px, 3px, 5px, 1px, rgb(255, 255, 255, 0.6));
+.courseButton {
+  @include button-style-reset;
 
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    z-index: 2;
-    li {
-      float: none;
-      list-style: none;
+  p {
+    line-height: 0.75rem;
+  }
+  span {
+    color: grey;
+    @include type($font--tiny);
+    line-height: 0;
+  }
+
+  & > div > div {
+  }
+}
+
+.courseDropdown {
+  @include list-style-reset;
+  position: absolute;
+  top: calc(100% + $spacing--tiny);
+  left: 0 -$spacing--xs;
+  background-color: $surf-darkgrey;
+  padding-inline: $spacing--xs;
+  padding-block: $spacing--xxxs;
+
+  li {
+    padding-block: $spacing--tiny;
+    &:hover {
+      cursor: pointer;
     }
   }
-  &:hover ul {
-    display: block;
+  z-index: 1;
+  a {
+    @include link-style-reset;
   }
 }

@@ -5,6 +5,8 @@ import React, { ReactPropTypes } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import ChapterPage from '../../components/pages/chapter/ChapterPage'
 import { coursePageMock } from 'stories/assets/mockdata/course'
+import Layout from 'components/layout'
+import ChapterLayout from 'components/layout/ChapterLayout'
 
 export default {
   /* 👇 The title prop is optional.
@@ -16,5 +18,9 @@ export default {
 } as ComponentMeta<typeof ChapterPage>
 
 export const Primary: ComponentStory<typeof ChapterPage> = () => (
-  <ChapterPage data={coursePageMock} />
+  <Layout>
+    <ChapterLayout>
+      <ChapterPage data={coursePageMock} />
+    </ChapterLayout>
+  </Layout>
 )

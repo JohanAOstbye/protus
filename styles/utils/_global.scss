@@ -1,5 +1,7 @@
 @use 'styles/utils/_colors.scss' as *;
+@use 'styles/utils/_variables.scss' as *;
 @use 'styles/utils/_mixins.scss' as *;
+@use 'styles/utils/_typography.scss' as *;
 
 // --- Global styling ---
 *,
@@ -19,6 +21,7 @@ body {
   color: $surf-text;
   background-color: $surf-bg;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  @include type($font--s);
 }
 
 body {
