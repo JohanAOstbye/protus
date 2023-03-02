@@ -1,6 +1,6 @@
 import style from 'styles/components/_activitiesFilter.module.scss'
 import Filter from './Filter'
-import search from 'public/icons/search.svg'
+import search from 'lib/assets/icons/search.svg'
 
 export const ActivitiesFilter = () => {
   return (

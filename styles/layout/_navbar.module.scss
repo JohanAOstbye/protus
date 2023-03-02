@@ -37,6 +37,16 @@
 
 .courseButton {
   @include button-style-reset;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing--xxxs;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing--xxxs;
+  }
 
   p {
     line-height: 0.75rem;
@@ -44,10 +54,10 @@
   span {
     color: grey;
     @include type($font--tiny);
-    line-height: 0;
+    line-height: 0.25rem;
   }
-
-  & > div > div {
+  svg {
+    margin-top: $spacing--xxxs;
   }
 }
 
@@ -55,7 +65,34 @@
   @include list-style-reset;
   position: absolute;
   top: calc(100% + $spacing--tiny);
-  left: 0 -$spacing--xs;
+  left: -$spacing--xs;
+  background-color: $surf-darkgrey;
+  padding-inline: $spacing--xs;
+  padding-block: $spacing--xxxs;
+
+  li {
+    padding-block: $spacing--tiny;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  z-index: 1;
+  a {
+    @include link-style-reset;
+  }
+}
+
+.auth {
+  svg {
+    height: $spacing--sm;
+  }
+}
+
+.authDropdown {
+  @include list-style-reset;
+  position: absolute;
+  top: calc(100% + $spacing--tiny);
+  left: -$spacing--xs;
   background-color: $surf-darkgrey;
   padding-inline: $spacing--xs;
   padding-block: $spacing--xxxs;
