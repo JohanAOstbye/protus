@@ -1,3 +1,4 @@
+'use client'
 import Footer from './Footer'
 import Navbar from './Navbar'
 import style from 'styles/layout/_layout.module.scss'
@@ -10,7 +11,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className={style.layout}>
       <Navbar courses={courses} selectedCourse={course} />
-      <div className={style.Content}>{children}</div>
+      <div className={style.content}>{children}</div>
       <Footer />
     </div>
   )

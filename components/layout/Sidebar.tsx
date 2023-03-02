@@ -2,7 +2,7 @@ import Link from 'next/link'
 import style from 'styles/layout/_sidebar.module.scss'
 import { useState } from 'react'
 import { Chapter } from 'lib/sanity/sanity.queries'
-import arrowRight from 'public/icons/arrow-right.svg'
+import arrowRight from 'lib/assets/icons/arrow-right.svg'
 
 export interface SidebarProps {
   closed: boolean

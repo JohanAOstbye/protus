@@ -1,27 +1,35 @@
-'use client'
-
-import { CourseContextProvider } from 'components/context/courseContext'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { Session } from 'next-auth'
+import { headers } from 'next/headers'
 import Layout from 'components/layout'
 import 'styles/utils/_global.scss'
+import ContextWrapper from 'components/context/ContextWrapper'
 
-import { QueryClient, QueryClientProvider } from 'react-query'
+async function getSession(cookie: string): Promise<Session> {
+  const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/session`, {
+    headers: {
+      cookie,
+    },
+  })
 
-export default function RootLayout({
+  const session = await response.json()
+
+  return Object.keys(session).length > 0 ? session : null
+}
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const queryClient = new QueryClient()
-
+  const session = await getSession(headers().get('cookie') ?? '')
   return (
     <html lang="en">
       <head />
       <body>
-        <QueryClientProvider client={queryClient}>
-          <CourseContextProvider>
-            <Layout>{children}</Layout>
-          </CourseContextProvider>
-        </QueryClientProvider>
+        <ContextWrapper session={session}>
+          <Layout>{children}</Layout>
+        </ContextWrapper>
       </body>
     </html>
   )

@@ -1,8 +1,8 @@
 import { Colors } from 'lib/types/style'
 import Link from 'next/link'
 import style from 'styles/components/_activityCard.module.scss'
-import exerciseIcon from 'public/icons/exercise.svg'
-import challengeIcon from 'public/icons/challenge.svg'
+import exerciseIcon from 'lib/assets/icons/exercise.svg'
+import challengeIcon from 'lib/assets/icons/challenge.svg'
 
 export interface ActivityCardProps {
   title?: string
