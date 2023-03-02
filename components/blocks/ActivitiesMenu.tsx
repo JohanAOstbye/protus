@@ -1,6 +1,6 @@
 import style from 'styles/components/_activitiesMenu.module.scss'
 import Filter, { FilterProps } from './Filter'
-import search from 'assets/icons/search.svg'
+import search from 'lib/assets/icons/search.svg'
 import { FilterItemProps } from 'components/elements/FilterItem'
 
 export interface ActivitiesMenuProps {
