@@ -2,28 +2,30 @@
 @use 'styles/utils/_mixins.scss' as *;
 
 .sidebar {
-  position: fixed;
-  list-style-type: none;
-  background-color: $surf-bg;
-  width: 90%;
-  opacity: 90%;
-  display: grid;
-  font-size: 25px;
-  gap: 0.5em;
-  padding: 1em;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  @include box-shadow(5px, 0, 10px, 5px, rgb(255, 255, 255, 0.6));
-  @include breakpoint-sm {
-    margin-right: 2em;
-    width: 11em;
-    position: relative;
-  }
-  @include breakpoint-m {
-    padding-left: 1.5em;
-    gap: 0.3em;
-  }
-}
+    position: absolute;
+    list-style-type: none;
+    background-color: $surf-bg;
+    width: 100%;
+    opacity: 90%;
+    display: grid;
+    font-size: 25px;
+    gap: 0.5em;
+    padding: 1em;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    @include box-shadow(5px,0,10px,5px, rgb(255, 255, 255,0.6));
+    @include breakpoint-sm {
+        width: 11em;
+    }  
+    @include breakpoint-me {
+        padding-left: 1.5em;
+        gap: 0.3em;
+        position: relative;
+        box-shadow: none;
+    }
+    @include breakpoint-la {
+    }   
+} 
 
 .currentCourse {
   font-weight: bolder;
@@ -32,7 +34,7 @@
   @include breakpoint-sm {
     font-size: 22px;
   }
-  @include breakpoint-m {
+  @include breakpoint-me {
     font-size: 20px;
   }
 }
@@ -44,7 +46,7 @@
   @include breakpoint-sm {
     font-size: 18px;
   }
-  @include breakpoint-m {
+  @include breakpoint-me {
     font-size: 16px;
   }
   &:hover {
@@ -53,8 +55,7 @@
 }
 
 .sidebarOpen {
-  width: 10px;
-  background-color: green;
+    width: 10px;
 }
 
 .btnOpen {
@@ -64,23 +65,27 @@
 }
 
 .btnOpen::after {
-  content: '\00d7';
-  opacity: 0.7;
+    content: "\00d7"; 
+    opacity: 0.7;
+    @include breakpoint-me {
+        content: '';
+    }
 }
 
 .btnClose {
-  width: 3em;
-  position: fixed;
-  z-index: 2;
-  opacity: 90%;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  @include box-shadow(5px, 0, 10px, 5px, rgb(255, 255, 255, 0.6));
-  @include breakpoint-sm {
-    width: 2em;
-    height: 3em;
-  }
-  &:hover {
-    background-color: rgb(70, 70, 70);
-  }
+    background-color: $surf-bg;
+    width: 3em;
+    position: absolute;
+    z-index: 2;
+    opacity: 80%;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    @include box-shadow(5px,0,10px,5px, rgb(255, 255, 255,0.6));
+    @include breakpoint-sm {
+        width: 2em;
+        height: 3em;
+    }
+    &:hover {
+        background-color: rgb(70, 70, 70);
+    }   
 }

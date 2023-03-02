@@ -29,7 +29,7 @@
   @include breakpoint-sm {
     width: 40%;
   }
-  @include breakpoint-m {
+  @include breakpoint-me {
     width: 30%;
     margin-left: 10%;
     margin-top: 5em;
@@ -67,7 +67,7 @@
   @include breakpoint-sm {
     width: 50%;
   }
-  @include breakpoint-m {
+  @include breakpoint-me {
     margin-left: 0;
   }
 }

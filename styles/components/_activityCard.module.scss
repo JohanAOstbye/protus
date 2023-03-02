@@ -2,23 +2,24 @@
 @use 'styles/utils/_mixins.scss' as *;
 
 .container {
-  background-color: $surf-grey;
-  border-radius: 10px;
-  width: 9em;
-  height: 10.5em;
-  padding: 1em;
-  cursor: pointer;
-  background-color: $surf-grey;
-  border-radius: 10px;
-  & .cardTitle,
-  .cardTitle,
-  .activity,
-  .icon {
-    background-color: inherit;
-  }
-  &:hover {
-    background-color: $surf-hovergrey;
-  }
+    @include link-style-reset;
+    background-color: $surf-grey;
+    border-radius: 10px;
+    width: 9em;
+    height: 10.5em;
+    padding: 1em;
+    cursor: pointer;
+    background-color: $surf-grey;
+    border-radius: 10px;
+    & .cardTitle, .cardTitle, .activity, .icon{
+        background-color: inherit;
+    }
+    &:hover {
+        background-color: $surf-hovergrey;
+    }
+    @include breakpoint-sm {
+        width: 11em;
+    }
 }
 
 .cardTitle {
@@ -27,14 +28,14 @@
 }
 
 .activityLabel {
-  font-size: 14px;
-  font-weight: 600;
-  &-red {
-    color: red;
-  }
-  &-purple {
-    color: $surf-purple;
-  }
+    font-size: 14px;
+    font-weight: 600;
+    &-red {
+        color: $surf-orange;
+    }
+    &-purple {
+        color: $surf-purple;
+    }
 }
 
 .icon {

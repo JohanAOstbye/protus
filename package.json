@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "build-sb": "build-storybook",
+    "prebuild": "npx prisma generate",
     "dev": "next",
     "format": "npx prettier --write . --ignore-path .gitignore",
     "lint": "next lint -- --ignore-path .gitignore",

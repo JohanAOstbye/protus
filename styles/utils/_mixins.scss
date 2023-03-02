@@ -1,299 +1,309 @@
 @use './variables' as *;
 
-@mixin content-wrapper(
-  $size: m,
-  $side: full,
-  $percent-width: 100%,
-  $spacing: s
-) {
-  @if ($side == left or $side == right) and $percent-width == 100% {
-    $percent-width: 50%;
-  }
-  $content-width: $content-max-width;
-  @if $size == l {
-    $content-width: $content-l-max-width;
-  }
-
-  @if $size == m {
+@mixin content-wrapper($size: m, $side: full, $percent-width: 100%, $spacing: s) {
+    @if ($side == left or $side == right) and $percent-width == 100% {
+      $percent-width: 50%;
+    }
     $content-width: $content-max-width;
-  }
-
-  @if $size == sm {
-    $content-width: $content-sm-max-width;
-  }
-
-  @if $size == s {
-    $content-width: $content-s-max-width;
-  }
-  @if $size == xs {
-    $content-width: $content-xs-max-width;
-  }
-  @if $size == xxs {
-    $content-width: $content-xxs-max-width;
-  }
-
-  max-width: $content-width;
-  margin-inline: auto;
-
-  @if $spacing == l {
-    padding-inline: $spacing--m;
-
-    @include breakpoint-s {
-      padding-inline: $spacing--xl;
+    @if $size == l {
+      $content-width: $content-l-max-width;
     }
-  }
+  
+    @if $size == m {
+      $content-width: $content-max-width;
+    }
+  
+    @if $size == sm {
+      $content-width: $content-sm-max-width;
 
-  @if $spacing == m {
-    padding-inline: $spacing--s;
-
-    @include breakpoint-s {
+    }
+  
+    @if $size == s {
+      $content-width: $content-s-max-width;
+    }
+    @if $size == xs {
+      $content-width: $content-xs-max-width;
+    }
+    @if $size == xxs {
+      $content-width: $content-xxs-max-width;
+    }
+  
+    max-width: $content-width;
+    margin-inline: auto;
+  
+    @if $spacing == l {
       padding-inline: $spacing--m;
+  
+      @include breakpoint-sm {
+        padding-inline: $spacing--xl;
+      }
     }
-  }
-
-  @if $spacing == s {
-    padding-inline: $spacing--xxs;
-
-    @include breakpoint-s {
+  
+    @if $spacing == m {
       padding-inline: $spacing--s;
-    }
-  }
-
-  @include breakpoint-sm {
-    //splitting the screen on mobile makes no sense
-    @if $percent-width != 100% {
-      @if $side == left {
-        // works as a min(240px, x%)
-        padding-right: min(
-          calc(100% - $spacing--xxl * 3),
-          (100% - $percent-width),
-          calc($content-width * (100% - $percent-width) / 100%)
-        ) !important;
-      } @else if $side == right {
-        padding-left: min(
-          calc(100% - $spacing--xxl * 3),
-          (100% - $percent-width),
-          calc($content-width * ($percent-width) / 100%)
-        ) !important;
+  
+      @include breakpoint-sm {
+        padding-inline: $spacing--m;
       }
     }
-  }
-
-  @include breakpoint-m {
-    padding-inline: $spacing--l;
-    @if $percent-width != 100% {
-      @if $side == left {
-        // works by leaving max($spacing--xxl * 3 + $spacing--sm, percentage) - padding as width
-        padding-right: min(
-          calc(100% - $spacing--xxl * 3 - $spacing--sm),
-          (100% - $percent-width),
-          calc($content-width * (100% - $percent-width) / 100%)
-        ) !important;
-      } @else if $side == right {
-        padding-left: min(
-          calc(100% - $spacing--xxl * 3 - $spacing--sm),
-          (100% - $percent-width),
-          calc($content-width * ($percent-width) / 100%)
-        ) !important;
+  
+    @if $spacing == s {
+      padding-inline: $spacing--xxs;
+  
+      @include breakpoint-sm {
+        padding-inline: $spacing--s;
       }
     }
-  }
-}
-// BREAKPOINTS
-
-@mixin breakpoint-xxs {
-  @media screen and (min-width: $breakpoint-xs) {
-    @content;
-  }
-}
-
-@mixin breakpoint-s {
-  @media screen and (min-width: $breakpoint-s) {
-    @content;
-  }
-}
-
-@mixin breakpoint-sm {
-  @media screen and (min-width: $breakpoint-sm) {
-    @content;
-  }
-}
-
-@mixin breakpoint-m {
-  @media screen and (min-width: $breakpoint-m) {
-    @content;
-  }
-}
-
-@mixin breakpoint-l {
-  @media screen and (min-width: $breakpoint-l) {
-    @content;
-  }
-}
-
-@mixin breakpoint-xl {
-  @media screen and (min-width: $breakpoint-xl) {
-    @content;
-  }
-}
-
-@mixin button-style-reset {
-  padding: 0;
-  margin: 0;
-  appearance: none;
-  border: none;
-  font-family: inherit;
-  background: inherit;
-  cursor: pointer;
-  font-size: inherit;
-  color: inherit;
-}
-
-@mixin link-style-reset {
-  text-decoration: none;
-  display: inline-block;
-  color: inherit;
-}
-
-@mixin list-style-reset {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  > li {
-    list-style-type: none;
-  }
-  padding: 0;
-  margin: 0;
-}
-
-@mixin input-style-reset {
-  appearance: none;
-  border: none;
-  font: inherit;
-  &:focus {
-    outline: none;
-  }
-}
-
-@mixin grid {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  grid-gap: 20px;
-  grid-auto-flow: column;
-}
-
-@mixin sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-@mixin underline-animation($theme, $target, $direction: left) {
-  //Target needs to be a span element for the animation to work correctly
-  #{$target} {
-    padding-bottom: 2px;
-    background-image: linear-gradient(currentColor, currentColor);
-    background-repeat: no-repeat;
-    transition: background-size 0.5s;
-  }
-
-  @if $direction == right {
-    @if $theme == expand {
-      #{$target} {
-        background-size: 0% 1px;
-        background-position: 100% 100%;
-      }
-
-      &:hover #{$target},
-      &:focus #{$target} {
-        background-size: 100% 1px;
-      }
-      &:focus #{$target} {
-        .mouse-user & {
-          background-size: 0% 1px;
+  
+    @include breakpoint-sm {
+      //splitting the screen on mobile makes no sense
+      @if $percent-width != 100% {
+        @if $side == left {
+          // works as a min(240px, x%)
+          padding-right: min(
+            calc(100% - $spacing--xxl * 3),
+            (100% - $percent-width),
+            calc($content-width * (100% - $percent-width) / 100%)
+          ) !important;
+        } @else if $side == right {
+          padding-left: min(
+            calc(100% - $spacing--xxl * 3),
+            (100% - $percent-width),
+            calc($content-width * ($percent-width) / 100%)
+          ) !important;
         }
       }
     }
-
-    @if $theme == shrink {
-      #{$target} {
-        background-position: 0% 100%;
-        background-size: 100% 1px;
+  
+    @include breakpoint-me {
+      padding-inline: $spacing--l;
+      @if $percent-width != 100% {
+        @if $side == left {
+          // works by leaving max($spacing--xxl * 3 + $spacing--sm, percentage) - padding as width
+          padding-right: min(
+            calc(100% - $spacing--xxl * 3 - $spacing--sm),
+            (100% - $percent-width),
+            calc($content-width * (100% - $percent-width) / 100%)
+          ) !important;
+        } @else if $side == right {
+          padding-left: min(
+            calc(100% - $spacing--xxl * 3 - $spacing--sm),
+            (100% - $percent-width),
+            calc($content-width * ($percent-width) / 100%)
+          ) !important;
+        }
       }
-      &:hover #{$target},
-      &:focus #{$target} {
-        background-size: 0% 1px;
-      }
+    }
+  }
+  // BREAKPOINTS
+  
+  @mixin breakpoint-xsm {
+    @media screen and (min-width: $breakpoint-xs) {
+      @content;
+    }
+  }
+  
+  @mixin breakpoint-sm {
+    @media screen and (min-width: $breakpoint-s) {
+      @content;
+    }
+  }
+  
+  @mixin breakpoint-smme {
+    @media screen and (min-width: $breakpoint-sm) {
+      @content;
+    }
+  }
+  @mixin breakpoint-xsm {
+    @media screen and (min-width: $breakpoint-s) {
+      @content;
+    }
+  }
+  
+  @mixin breakpoint-me {
+    @media screen and (min-width: $breakpoint-m) {
+      @content;
+    }
+  }
+  
 
-      &:focus #{$target} {
-        .mouse-user & {
+  @mixin breakpoint-la {
+    @media screen and (min-width: $breakpoint-l) {
+      @content;
+    }
+  }
+  
+  @mixin breakpoint-xla {
+    @media screen and (min-width: $breakpoint-xl) {
+      @content;
+    }
+  }
+
+  @mixin breakpoint-xxla {
+    @media screen and (min-width: $breakpoint-xxl) {
+      @content;
+    }
+  }
+
+  
+  @mixin button-style-reset {
+    padding: 0;
+    margin: 0;
+    appearance: none;
+    border: none;
+    font-family: inherit;
+    background: inherit;
+    cursor: pointer;
+    font-size: inherit;
+    color: inherit;
+  }
+  
+  @mixin link-style-reset {
+    text-decoration: none;
+    display: inline-block;
+    color: inherit;
+  }
+  
+  @mixin list-style-reset {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    > li {
+      list-style-type: none;
+    }
+    padding: 0;
+    margin: 0;
+  }
+  
+  @mixin input-style-reset {
+    appearance: none;
+    border: none;
+    font: inherit;
+    &:focus {
+      outline: none;
+    }
+  }
+  
+  @mixin grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-gap: 20px;
+    grid-auto-flow: column;
+  }
+  
+  @mixin sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  @mixin underline-animation($theme, $target, $direction: left) {
+    //Target needs to be a span element for the animation to work correctly
+    #{$target} {
+      padding-bottom: 2px;
+      background-image: linear-gradient(currentColor, currentColor);
+      background-repeat: no-repeat;
+      transition: background-size 0.5s;
+    }
+  
+    @if $direction == right {
+      @if $theme == expand {
+        #{$target} {
+          background-size: 0% 1px;
+          background-position: 100% 100%;
+        }
+  
+        &:hover #{$target},
+        &:focus #{$target} {
           background-size: 100% 1px;
         }
-      }
-    }
-  } @else if $direction == left {
-    @if $theme == expand {
-      #{$target} {
-        background-size: 0% 1px;
-        background-position: 0% 100%;
-      }
-
-      &:hover #{$target},
-      &:focus #{$target} {
-        background-size: 100% 1px;
-      }
-      &:focus #{$target} {
-        .mouse-user & {
-          background-size: 0% 1px;
+        &:focus #{$target} {
+          .mouse-user & {
+            background-size: 0% 1px;
+          }
         }
       }
-    }
-
-    @if $theme == shrink {
-      #{$target} {
-        background-position: 0% 100%;
-        background-size: 100% 1px;
-      }
-      &:hover #{$target},
-      &:focus #{$target} {
-        background-size: 0% 1px;
-      }
-
-      &:focus #{$target} {
-        .mouse-user & {
+  
+      @if $theme == shrink {
+        #{$target} {
+          background-position: 0% 100%;
           background-size: 100% 1px;
         }
+        &:hover #{$target},
+        &:focus #{$target} {
+          background-size: 0% 1px;
+        }
+  
+        &:focus #{$target} {
+          .mouse-user & {
+            background-size: 100% 1px;
+          }
+        }
+      }
+    } @else if $direction == left {
+      @if $theme == expand {
+        #{$target} {
+          background-size: 0% 1px;
+          background-position: 0% 100%;
+        }
+  
+        &:hover #{$target},
+        &:focus #{$target} {
+          background-size: 100% 1px;
+        }
+        &:focus #{$target} {
+          .mouse-user & {
+            background-size: 0% 1px;
+          }
+        }
+      }
+  
+      @if $theme == shrink {
+        #{$target} {
+          background-position: 0% 100%;
+          background-size: 100% 1px;
+        }
+        &:hover #{$target},
+        &:focus #{$target} {
+          background-size: 0% 1px;
+        }
+  
+        &:focus #{$target} {
+          .mouse-user & {
+            background-size: 100% 1px;
+          }
+        }
       }
     }
   }
-}
-
-@mixin disable-underline-animation($target) {
-  #{$target} {
-    background-size: 0% 1px;
-    background-position: 0% 100%;
-  }
-
-  &:hover #{$target},
-  &:focus #{$target} {
-    background-size: 0% 1px;
-  }
-  &:focus #{$target} {
-    .mouse-user & {
+  
+  @mixin disable-underline-animation($target) {
+    #{$target} {
+      background-size: 0% 1px;
+      background-position: 0% 100%;
+    }
+  
+    &:hover #{$target},
+    &:focus #{$target} {
       background-size: 0% 1px;
     }
+    &:focus #{$target} {
+      .mouse-user & {
+        background-size: 0% 1px;
+      }
+    }
   }
-}
-
-// Box Shoadow
-@mixin box-shadow($top, $left, $blur, $size, $color) {
-  -webkit-box-shadow: $top $left $blur $size $color;
-  -moz-box-shadow: $top $left $blur $size $color;
-  box-shadow: $top $left $blur $size $color;
-}
+  
+  // Box Shoadow
+  @mixin box-shadow($top, $left, $blur, $size, $color) {
+    -webkit-box-shadow: $top $left $blur $size $color;
+    -moz-box-shadow: $top $left $blur $size $color;
+    box-shadow: $top $left $blur $size $color;
+ }
+ @mixin reset{ margin: 0; padding: 0; }

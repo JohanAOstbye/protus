@@ -55,7 +55,7 @@ h6 {
 h1 {
   font-size: convert-to-rem(20px);
   margin-block: 0;
-  @include breakpoint-s {
+  @include breakpoint-sm {
     font-size: convert-to-rem(27px);
   }
 }
@@ -63,7 +63,7 @@ h1 {
 h2 {
   font-size: convert-to-rem(17px);
   margin-block: 0;
-  @include breakpoint-s {
+  @include breakpoint-sm {
     font-size: convert-to-rem(24px);
   }
 }
@@ -71,7 +71,7 @@ h2 {
 h3 {
   font-size: convert-to-rem(16px);
   margin-block: 0;
-  @include breakpoint-s {
+  @include breakpoint-sm {
     font-size: convert-to-rem(22px);
   }
 }
@@ -79,7 +79,7 @@ h3 {
 h4 {
   font-size: convert-to-rem(16px);
   margin-block: 0;
-  @include breakpoint-s {
+  @include breakpoint-sm {
     font-size: convert-to-rem(20px);
   }
 }
@@ -87,7 +87,7 @@ h4 {
 h5 {
   font-size: convert-to-rem(14px);
   margin-block: 0;
-  @include breakpoint-s {
+  @include breakpoint-sm {
     font-size: convert-to-rem(18px);
   }
 }
@@ -95,7 +95,7 @@ h5 {
 h6 {
   font-size: convert-to-rem(12px);
   margin-block: 0;
-  @include breakpoint-s {
+  @include breakpoint-sm {
     font-size: convert-to-rem(16px);
   }
 }
