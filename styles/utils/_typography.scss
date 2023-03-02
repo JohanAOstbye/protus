@@ -3,7 +3,7 @@
 @mixin type($font-size) {
   font-size: convert-to-rem($font-size * 0.8);
   margin-block: 0;
-  @include breakpoint-s {
+  @include breakpoint-sm {
     font-size: convert-to-rem($font-size);
   }
 }

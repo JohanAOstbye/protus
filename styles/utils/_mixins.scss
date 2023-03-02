@@ -34,7 +34,7 @@
     @if $spacing == l {
       padding-inline: $spacing--m;
   
-      @include breakpoint-s {
+      @include breakpoint-sm {
         padding-inline: $spacing--xl;
       }
     }
@@ -42,7 +42,7 @@
     @if $spacing == m {
       padding-inline: $spacing--s;
   
-      @include breakpoint-s {
+      @include breakpoint-sm {
         padding-inline: $spacing--m;
       }
     }
@@ -50,7 +50,7 @@
     @if $spacing == s {
       padding-inline: $spacing--xxs;
   
-      @include breakpoint-s {
+      @include breakpoint-sm {
         padding-inline: $spacing--s;
       }
     }
@@ -75,7 +75,7 @@
       }
     }
   
-    @include breakpoint-m {
+    @include breakpoint-me {
       padding-inline: $spacing--l;
       @if $percent-width != 100% {
         @if $side == left {
