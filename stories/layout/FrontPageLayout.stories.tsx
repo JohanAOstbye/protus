@@ -21,11 +21,33 @@ const mock: Course = {
 
 const mock2: Course[] = [
   {
+const mock: Course = {
+  _id: 'string1',
+  name: 'Java',
+  page: {
+    _id: 'sad',
+  },
+  slugs: [
+    { title: 'Variables and Operators', slug: 'ole' },
+    { title: 'String', slug: 'dole' },
+    { title: 'Boolean Expressions', slug: 'doffen' },
+    { title: 'If-Else', slug: 'donald' },
+    { title: 'Two-Dimensional Arrays', slug: 'donald' },
+  ],
+}
+
+const mock2: Course[] = [
+  {
     _id: 'string2',
     name: 'Java',
     page: {
       _id: 'sad',
+      _id: 'sad',
     },
+    slugs: [
+      { title: 'Chapter 1', slug: 'lol' },
+      { title: 'Chapter 2', slug: 'lol' },
+    ],
     slugs: [
       { title: 'Chapter 1', slug: 'lol' },
       { title: 'Chapter 2', slug: 'lol' },
@@ -33,11 +55,20 @@ const mock2: Course[] = [
   },
 
   {
+
+  {
     _id: 'string2',
     name: 'Python',
     page: {
       _id: 'sad',
+      _id: 'sad',
     },
+    slugs: [
+      { title: 'Chapter 1', slug: 'lol' },
+      { title: 'Chapter 2', slug: 'lol' },
+    ],
+  },
+]
     slugs: [
       { title: 'Chapter 1', slug: 'lol' },
       { title: 'Chapter 2', slug: 'lol' },

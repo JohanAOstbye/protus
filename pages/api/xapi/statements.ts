@@ -330,11 +330,4 @@ export default defineEndpoints({
       res.status(204)
     },
   },
-  openApiSpec: {
-    put: {
-      summary: 'Stores a single Statement with the given id.',
-      description:
-        'Stores a single Statement with the given id. POST can also be used to store single Statements.',
-    },
-  },
 })

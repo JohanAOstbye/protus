@@ -1,6 +1,8 @@
 'use client'
 
 import { CourseContextProvider } from 'components/context/courseContext'
+import Layout from 'components/layout'
+import 'styles/utils/_global.scss'
 
 import { QueryClient, QueryClientProvider } from 'react-query'
 
@@ -16,7 +18,9 @@ export default function RootLayout({
       <head />
       <body>
         <QueryClientProvider client={queryClient}>
-          <CourseContextProvider>{children}</CourseContextProvider>
+          <CourseContextProvider>
+            <Layout>{children}</Layout>
+          </CourseContextProvider>
         </QueryClientProvider>
       </body>
     </html>

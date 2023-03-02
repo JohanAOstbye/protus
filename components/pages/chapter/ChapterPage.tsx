@@ -1,9 +1,7 @@
 'use-client'
 import AlertBanner from 'components/elements/AlertBanner'
-import Loading from 'components/elements/Loading'
 import { chapterType } from 'lib/types/sanity'
 import { Content } from 'components/blocks/Content'
-import { Suspense } from 'react'
 
 const ChapterPage = ({
   preview = false,

@@ -1,4 +1,4 @@
-@use "sass:math";
+@use 'sass:math';
 
 $content-l-max-width: 1440px;
 $content-max-width: 1180px;
@@ -25,8 +25,13 @@ $font-size-base: 16px;
   }
 
   // Turn 0rem into 0
-  @return $value;
+  @return $value * 1rem;
 }
+
+//border-radius
+$border-radius--l: convert-to-rem(24px);
+$border-radius--m: convert-to-rem(12px);
+$border-radius--s: convert-to-rem(6px);
 
 //SPACING
 $spacing--big: convert-to-rem(192px);
@@ -57,7 +62,7 @@ $font--xxxs: convert-to-rem(12px);
 $breakpoint-xs: 400px;
 $breakpoint-s: 500px;
 $breakpoint-sm: 700px;
-$breakpoint-xsm: 850;
+$breakpoint-xsm: 850px;
 $breakpoint-m: 1000px;
 $breakpoint-l: 1312px;
 $breakpoint-xl: 1500px;
