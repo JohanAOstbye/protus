@@ -3,6 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { ActivitiesLayout } from 'components/layout/ActivitiesLayout'
 import { CourseContextProvider } from 'components/context/courseContext'
 import { Course } from 'lib/sanity/sanity.queries'
+import { SessionProvider } from 'next-auth/react'
 
 const mock: Course = {
   _id: 'string1',
@@ -60,7 +61,9 @@ export default {
 } as ComponentMeta<typeof ActivitiesLayout>
 
 export const Primary: ComponentStory<typeof ActivitiesLayout> = () => (
-  <CourseContextProvider course={mock} courses={mock2}>
-    <ActivitiesLayout filterList={filterList}></ActivitiesLayout>
-  </CourseContextProvider>
+  <SessionProvider>
+    <CourseContextProvider course={mock} courses={mock2}>
+      <ActivitiesLayout filterList={filterList}></ActivitiesLayout>
+    </CourseContextProvider>
+  </SessionProvider>
 )

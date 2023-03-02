@@ -1,6 +1,6 @@
-import { Course } from 'lib/sanity/sanity.queries'
+import { Chapter } from 'lib/sanity/sanity.queries'
 
-export const chapterPageMock = {
+export const chapterMock: Chapter = {
   _id: '3a7c3886-addb-416f-9140-69ffd21d22b5',
   content: [
     {
@@ -117,21 +117,3 @@ export const chapterPageMock = {
   date: '2023-01-10T04: 05: 10.072Z',
   slug: 'kapittel-1',
 }
-
-export const courseMock: Course = {
-  _id: 'string2',
-  name: 'Java',
-  page: {
-    _id: 'sad',
-  },
-  slugs: [
-    { title: 'Chapter 1', slug: 'lol' },
-    { title: 'Chapter 2', slug: 'lol' },
-  ],
-}
-
-export const coursesMock: Course[] = [
-  courseMock,
-  { ...courseMock, _id: 'python', name: 'Python' },
-  { ...courseMock, _id: 'test', name: 'Test' },
-]

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import FilterItem, { FilterItemProps } from 'components/elements/FilterItem'
 import style from 'styles/components/_filter.module.scss'
-import filterIcon from 'assets/icons/filterIcon.svg'
+import filterIcon from 'lib/assets/icons/filterIcon.svg'
 
 export interface FilterProps {
   filterList: FilterItemProps[]

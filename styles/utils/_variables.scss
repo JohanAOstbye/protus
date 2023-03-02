@@ -49,14 +49,15 @@ $spacing--tiny: convert-to-rem(4px);
 $spacing--xtiny: convert-to-rem(2px);
 
 //FONTSIZES
-$font--xl: convert-to-rem(96px);
-$font--l: convert-to-rem(60px);
-$font--m: convert-to-rem(36px);
-$font--sm: convert-to-rem(24px);
-$font--s: convert-to-rem(18px);
-$font--xs: convert-to-rem(16px);
-$font--xxs: convert-to-rem(14px);
-$font--xxxs: convert-to-rem(12px);
+$font--xl: 96px;
+$font--l: 60px;
+$font--m: 36px;
+$font--sm: 24px;
+$font--s: 18px;
+$font--xs: 16px;
+$font--xxs: 14px;
+$font--xxxs: 12px;
+$font--tiny: 10px;
 
 //BREAKPOINTS
 $breakpoint-xs: 400px;

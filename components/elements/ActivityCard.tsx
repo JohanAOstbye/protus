@@ -1,8 +1,8 @@
 import { Colors } from 'lib/types/style'
 import Link from 'next/link'
 import style from 'styles/components/_activityCard.module.scss'
-import exerciseIcon from 'assets/icons/exercise.svg'
-import challengeIcon from 'assets/icons/challenge.svg'
+import exerciseIcon from 'lib/assets/icons/exercise.svg'
+import challengeIcon from 'lib/assets/icons/challenge.svg'
 
 export interface ActivityCardProps {
   title?: string
@@ -25,7 +25,6 @@ export const ActivityCard = ({
     color = 'red'
     icon = challengeIcon
   }
-  console.log(icon)
 
   return (
     <div className={style.container}>
