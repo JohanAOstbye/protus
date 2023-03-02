@@ -27,7 +27,7 @@ export const ActivityCard = ({
   }
 
   return (
-    <div className={style.container}>
+    <Link className={style.container} href={''}>
       {/* TODO, replace above tag with <Link> */}
       {/* <Link className={style.link} href={''}> */}
       <img src={exerciseIcon} alt="icon logo" className={style.icon} />
@@ -38,7 +38,7 @@ export const ActivityCard = ({
         {type}
       </div>
       {/* </Link> */}
-    </div>
+    </Link>
   )
 }
 export default ActivityCard

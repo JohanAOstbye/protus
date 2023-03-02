@@ -2,6 +2,7 @@
 @use 'styles/utils/_mixins.scss' as *;
 
 .container {
+    @include link-style-reset;
     background-color: $surf-grey;
     border-radius: 10px;
     width: 9em;
