@@ -15,5 +15,5 @@ export default {
 } as ComponentMeta<typeof CourseChip>
 
 export const Primary: ComponentStory<typeof CourseChip> = () => (
-  <CourseChip text={mock} />
+  <CourseChip name={mock} />
 )

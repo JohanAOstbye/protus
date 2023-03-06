@@ -28,5 +28,5 @@
 
 .chipText {
   color: black;
-  @include type($font--m);
+  @include type($font--sm);
 }
