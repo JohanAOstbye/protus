@@ -7,6 +7,7 @@ import ChapterPage from '../../components/pages/chapter/ChapterPage'
 import { courseMock } from 'stories/assets/mockdata/course'
 import Layout from 'components/layout'
 import ChapterLayout from 'components/layout/ChapterLayout'
+import { SessionProvider } from 'next-auth/react'
 
 export default {
   /* 👇 The title prop is optional.
@@ -18,9 +19,11 @@ export default {
 } as ComponentMeta<typeof ChapterPage>
 
 export const Primary: ComponentStory<typeof ChapterPage> = () => (
-  <Layout>
-    <ChapterLayout>
-      <ChapterPage data={courseMock} />
-    </ChapterLayout>
-  </Layout>
+  <SessionProvider>
+    <Layout>
+      <ChapterLayout>
+        <ChapterPage data={courseMock} />
+      </ChapterLayout>
+    </Layout>
+  </SessionProvider>
 )

@@ -1,0 +1,23 @@
+@use 'styles/utils/_mixins.scss' as *;
+@use 'styles/utils/_variables.scss' as *;
+@use 'styles/utils/_typography.scss' as *;
+
+.container {
+  @include type($font--sm);
+  text-align: -webkit-center;
+  margin-top: 0.5em;
+}
+
+.title {
+  text-align: left;
+}
+
+.courses {
+  display: grid;
+  gap: 1em;
+  margin-top: 1em;
+  @include breakpoint-sm {
+    display: inline-flex;
+    margin: 0;
+  }
+}
