@@ -15,13 +15,12 @@ const ChapterPage = ({
   return (
     <>
       {preview && <AlertBanner loading={loading} />}
-      <main>
-        {data && data.content ? (
-          <Content value={data.content} />
-        ) : (
-          <div>content missing</div>
-        )}
-      </main>
+
+      {data && data.content ? (
+        <Content value={data.content} />
+      ) : (
+        <div>content missing</div>
+      )}
     </>
   )
 }

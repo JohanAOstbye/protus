@@ -1,9 +1,0 @@
-@use 'styles/utils/_mixins.scss' as *;
-@use 'styles/utils/_variables.scss' as *;
-
-@mixin type($font-size) {
-  font-size: convert-to-rem($font-size * 0.9);
-  @include breakpoint-s {
-    font-size: convert-to-rem($font-size);
-  }
-}

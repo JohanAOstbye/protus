@@ -1,86 +1,66 @@
 @use 'styles/utils/_colors.scss' as *;
 @use 'styles/utils/_mixins.scss' as *;
+@use 'styles/utils/_variables.scss' as *;
 
 .sidebar {
   position: fixed;
-  list-style-type: none;
-  background-color: $surf-bg;
-  width: 90%;
-  opacity: 90%;
-  display: grid;
-  font-size: 25px;
-  gap: 0.5em;
-  padding: 1em;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  @include box-shadow(5px, 0, 10px, 5px, rgb(255, 255, 255, 0.6));
+  background-color: $surf-darkgrey;
+  width: 100%;
+  height: calc(100vh - $spacing--l);
+  padding: $spacing--xs;
   @include breakpoint-sm {
     margin-right: 2em;
-    width: 11em;
+    border-bottom-right-radius: $border-radius--m;
+    border-top-right-radius: $border-radius--m;
+    opacity: 90%;
+    width: $spacing--big;
+    @include box-shadow(5px, 0, 10px, 5px, black);
     position: relative;
   }
-  @include breakpoint-m {
-    padding-left: 1.5em;
-    gap: 0.3em;
+
+  ul {
+    @include list-style-reset;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing--xxxs;
+    margin-top: $spacing--xxs;
   }
 }
 
-.currentCourse {
-  font-weight: bolder;
-  letter-spacing: 0.02em;
-  font-size: 25px;
-  @include breakpoint-sm {
-    font-size: 22px;
-  }
-  @include breakpoint-m {
-    font-size: 20px;
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  label {
+    font-weight: bolder;
+    @include type($font--sm);
   }
 }
 
 .items {
   color: $surf-text;
   text-decoration: none;
-  font-size: 22px;
-  @include breakpoint-sm {
-    font-size: 18px;
-  }
-  @include breakpoint-m {
-    font-size: 16px;
-  }
-  &:hover {
-    text-decoration: underline;
-  }
+  @include type($font--s);
+  @include underline-animation(expand, 'span');
 }
 
-.sidebarOpen {
-  width: 10px;
-  background-color: green;
-}
+.button {
+  @include button-style-reset;
 
-.btnOpen {
-  position: relative;
-  z-index: 2;
-  float: right;
-}
-
-.btnOpen::after {
-  content: '\00d7';
-  opacity: 0.7;
-}
-
-.btnClose {
-  width: 3em;
-  position: fixed;
-  z-index: 2;
-  opacity: 90%;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  @include box-shadow(5px, 0, 10px, 5px, rgb(255, 255, 255, 0.6));
-  @include breakpoint-sm {
-    width: 2em;
-    height: 3em;
+  svg {
+    height: $spacing--sm;
+    aspect-ratio: 1;
   }
-  &:hover {
-    background-color: rgb(70, 70, 70);
+
+  &_open {
+    background-color: $surf-darkgrey;
+    border-bottom-right-radius: $border-radius--s;
+    border-top-right-radius: $border-radius--s;
+    padding-block: $spacing--xxs;
+    position: relative;
+    z-index: 2;
+    float: right;
+    margin: $spacing--tiny;
+    margin-left: 0;
   }
 }

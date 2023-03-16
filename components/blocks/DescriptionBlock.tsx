@@ -12,7 +12,7 @@ export const DescriptionBlock: PortableTextTypeComponent<any> = ({
   const { title, content } = value
   return (
     <div className={style.container}>
-      <div className={style.titleText}>{title}</div>
+      <div className={style.title}>{title}</div>
       <div className={style.content}>
         <Content value={content} />
       </div>

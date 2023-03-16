@@ -1,4 +1,9 @@
-
+@use 'styles/utils/_variables.scss' as *;
 .content {
-    display: flex;
+  display: flex;
+}
+
+article {
+  width: 100%;
+  margin: $spacing--xxs;
 }

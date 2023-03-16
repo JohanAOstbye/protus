@@ -2,7 +2,7 @@ import Link from 'next/link'
 import style from 'styles/layout/_sidebar.module.scss'
 import { useState } from 'react'
 import { Chapter } from 'lib/sanity/sanity.queries'
-import arrowRight from 'lib/assets/icons/arrow-right.svg'
+import ArrowRight from 'lib/assets/icons/arrow-right.svg'
 
 export interface SidebarProps {
   closed: boolean
@@ -15,35 +15,38 @@ export const Sidebar = ({ chapters, courseSlug, course }: SidebarProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <div className={isExpanded ? 'style.sidebar' : 'style.sidebarClosed'}>
-      {!isExpanded && (
-        <ul className={style.sidebar}>
-          <div>
-            <a
+    <div className={style.container}>
+      {isExpanded ? (
+        <div className={style.sidebar}>
+          <div className={style.title}>
+            <label>{course}</label>
+            <button
+              className={style.button}
               onClick={() => setIsExpanded(!isExpanded)}
-              className={style.btnOpen}
-            ></a>
-            <label className={style.currentCourse}>{course}</label>
+            >
+              x
+            </button>
           </div>
-          {chapters.map((chapter, i) => (
-            <li key={i}>
-              <Link
-                className={style.items}
-                href={`${courseSlug}/${chapter.slug}`}
-              >
-                {chapter.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
-      {isExpanded && (
-        <img
-          src={arrowRight}
+          <ul>
+            {chapters.map((chapter, i) => (
+              <li key={i}>
+                <Link
+                  className={style.items}
+                  href={`${courseSlug}/${chapter.slug}`}
+                >
+                  <span>{chapter.title}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className={style.btnClose}
-          alt="open sidebar button"
-        ></img>
+          className={`${style.button} ${style.button_open}`}
+        >
+          <ArrowRight />
+        </button>
       )}
     </div>
   )

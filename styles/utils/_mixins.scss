@@ -297,3 +297,10 @@
   -moz-box-shadow: $top $left $blur $size $color;
   box-shadow: $top $left $blur $size $color;
 }
+
+@mixin type($font-size) {
+  font-size: convert-to-rem($font-size * 0.9);
+  @include breakpoint-s {
+    font-size: convert-to-rem($font-size);
+  }
+}

@@ -27,73 +27,92 @@ export const Navbar = ({
 
   return (
     <div className={style.container}>
-      <div className={style.logoAndCourse}>
-        <ProtusLabel />
-        {courses && selectedCourse && (
-          <>
-            <hr className={style.lineSeperator} />
-            <div className={style.courseContainer} ref={courseRef}>
-              <button
-                className={style.courseButton}
-                onClick={() => setCourseIsVisible(!courseIsVisible)}
-              >
-                <div>
-                  <span>Course</span>
-                  <p>{selectedCourse.name}</p>
-                </div>
-                <DownArrow />
-              </button>
-              <ul
-                className={style.courseDropdown}
-                style={{
-                  display:
-                    courseIsVisible && courses.length !== 0 ? 'block' : 'none',
-                }}
-              >
-                {courses
-                  .filter((course) => course._id != selectedCourse._id)
-                  .map((course, i) => (
-                    <li className={style.courseItem} key={i}>
-                      <Link href={`${course.name}`}>{course.name}</Link>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          </>
-        )}
-      </div>
-
-      <div ref={authRef} className={style.auth}>
-        <div onClick={() => setAuthIsVisible(!authIsVisible)}>
-          {status === 'authenticated' ? (
-            session.user && session.user.image ? (
-              <img src={session.user.image} />
-            ) : (
-              <PersonIcon />
-            )
-          ) : (
-            <SignInIcon />
+      <div className={style.navbar}>
+        <div className={style.logoAndCourse}>
+          <Link href={'/'}>
+            <ProtusLabel />
+          </Link>
+          {courses && selectedCourse && (
+            <>
+              <hr className={style.lineSeperator} />
+              <div className={style.courseContainer} ref={courseRef}>
+                <button
+                  className={style.courseButton}
+                  onClick={() => setCourseIsVisible(!courseIsVisible)}
+                >
+                  <div>
+                    <span>Course</span>
+                    <p>{selectedCourse.name}</p>
+                  </div>
+                  <DownArrow />
+                </button>
+                <ul
+                  className={style.courseDropdown}
+                  style={{
+                    display:
+                      courseIsVisible && courses.length !== 0
+                        ? 'block'
+                        : 'none',
+                  }}
+                >
+                  {courses
+                    .filter((course) => course._id != selectedCourse._id)
+                    .map((course, i) => (
+                      <li className={style.courseItem} key={i}>
+                        <Link href={`${course.name}`}>
+                          <span>{course.name}</span>
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </>
           )}
         </div>
-        <ul
-          className={style.authDropdown}
-          style={{ display: authIsVisible ? 'block' : 'none' }}
-        >
-          {status === 'authenticated' ? (
-            <>
+
+        <div ref={authRef} className={style.auth}>
+          <button
+            onClick={() => setAuthIsVisible(!authIsVisible)}
+            className={style.auth_Button}
+          >
+            {status === 'authenticated' ? (
+              session.user && session.user.image ? (
+                // <img src={session.user.image} />
+                <PersonIcon />
+              ) : (
+                <PersonIcon />
+              )
+            ) : (
+              <SignInIcon />
+            )}
+          </button>
+          <ul
+            className={style.auth_Dropdown}
+            style={{ display: authIsVisible ? 'block' : 'none' }}
+            onClick={() => setAuthIsVisible(!authIsVisible)}
+          >
+            {status === 'authenticated' ? (
+              <>
+                <li>
+                  <Link href="/profile">
+                    <span>Profile</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/api/auth/signout">
+                    <span>Sign out</span>
+                  </Link>
+                </li>
+              </>
+            ) : (
               <li>
-                <Link href="/profile">Profile</Link>
+                <Link href="/api/auth/signin">
+                  <span>Sign in</span>
+                </Link>
               </li>
-              <li>
-                <Link href="/api/auth/signout">Sign out</Link>
-              </li>
-            </>
-          ) : (
-            <li>
-              <Link href="/api/auth/signin">Sign in</Link>
-            </li>
-          )}
-        </ul>
+            )}
+          </ul>
+        </div>
       </div>
     </div>
   )
