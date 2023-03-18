@@ -38,7 +38,7 @@
   @if $spacing == l {
     padding-inline: $spacing--m;
 
-    @include breakpoint-s {
+    @include breakpoint-sm {
       padding-inline: $spacing--xl;
     }
   }
@@ -46,7 +46,7 @@
   @if $spacing == m {
     padding-inline: $spacing--s;
 
-    @include breakpoint-s {
+    @include breakpoint-sm {
       padding-inline: $spacing--m;
     }
   }
@@ -54,7 +54,7 @@
   @if $spacing == s {
     padding-inline: $spacing--xxs;
 
-    @include breakpoint-s {
+    @include breakpoint-sm {
       padding-inline: $spacing--s;
     }
   }
@@ -79,7 +79,7 @@
     }
   }
 
-  @include breakpoint-m {
+  @include breakpoint-me {
     padding-inline: $spacing--l;
     @if $percent-width != 100% {
       @if $side == left {
@@ -101,38 +101,49 @@
 }
 // BREAKPOINTS
 
-@mixin breakpoint-xxs {
+@mixin breakpoint-xsm {
   @media screen and (min-width: $breakpoint-xs) {
     @content;
   }
 }
 
-@mixin breakpoint-s {
+@mixin breakpoint-sm {
   @media screen and (min-width: $breakpoint-s) {
     @content;
   }
 }
 
-@mixin breakpoint-sm {
+@mixin breakpoint-smme {
   @media screen and (min-width: $breakpoint-sm) {
     @content;
   }
 }
+@mixin breakpoint-xsm {
+  @media screen and (min-width: $breakpoint-s) {
+    @content;
+  }
+}
 
-@mixin breakpoint-m {
+@mixin breakpoint-me {
   @media screen and (min-width: $breakpoint-m) {
     @content;
   }
 }
 
-@mixin breakpoint-l {
+@mixin breakpoint-la {
   @media screen and (min-width: $breakpoint-l) {
     @content;
   }
 }
 
-@mixin breakpoint-xl {
+@mixin breakpoint-xla {
   @media screen and (min-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+@mixin breakpoint-xxla {
+  @media screen and (min-width: $breakpoint-xxl) {
     @content;
   }
 }

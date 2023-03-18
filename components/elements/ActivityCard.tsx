@@ -25,13 +25,12 @@ export const ActivityCard = ({
     color = 'red'
     icon = challengeIcon
   }
-  console.log(icon)
 
   return (
-    <div className={style.container}>
+    <Link className={style.container} href={''}>
       {/* TODO, replace above tag with <Link> */}
       {/* <Link className={style.link} href={''}> */}
-      <img src={icon} alt="icon logo" className={style.icon} />
+      <img src={exerciseIcon} alt="icon logo" className={style.icon} />
       <div className={style.cardTitle}>{title}</div>
       <div
         className={`${style.activityLabel} ${style[`activityLabel-${color}`]}`}
@@ -39,7 +38,7 @@ export const ActivityCard = ({
         {type}
       </div>
       {/* </Link> */}
-    </div>
+    </Link>
   )
 }
 export default ActivityCard
