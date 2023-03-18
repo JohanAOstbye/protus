@@ -1,0 +1,26 @@
+@use 'styles/utils/_colors.scss' as *;
+@use 'styles/utils/_mixins.scss' as *;
+@use 'styles/utils/_variables.scss' as *;
+
+.filterSection {
+  .button {
+    @include button-style-reset;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    svg {
+      height: $spacing--sm;
+    }
+  }
+
+  .title {
+    text-transform: capitalize;
+
+    font-weight: 700;
+  }
+
+  .content {
+    overflow: hidden;
+  }
+}

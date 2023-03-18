@@ -59,7 +59,7 @@ export const Navbar = ({
                     .filter((course) => course._id != selectedCourse._id)
                     .map((course, i) => (
                       <li className={style.courseItem} key={i}>
-                        <Link href={`${course.name}`}>
+                        <Link href={`/${course.name}`}>
                           <span>{course.name}</span>
                         </Link>
                       </li>

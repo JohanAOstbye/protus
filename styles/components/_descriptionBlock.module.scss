@@ -5,9 +5,7 @@
 .container {
   border-radius: $border-radius--m;
   overflow: hidden;
-
   max-width: 512px;
-
   @include breakpoint-m {
     max-width: 728px;
   }
@@ -24,4 +22,5 @@
   @include list-style-reset;
   padding: $spacing--xxs;
   background-color: $surf-darkgrey;
+  transition: 1s all ease-in-out;
 }

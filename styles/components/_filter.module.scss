@@ -1,33 +1,33 @@
 @use 'styles/utils/_colors.scss' as *;
 @use 'styles/utils/_mixins.scss' as *;
+@use 'styles/utils/_variables.scss' as *;
 
+.filter {
+  width: 100%;
+  @include type($font--s);
+  font-weight: 700;
 
-.filterBtn {
+  transition: all ease-in-out 0.5s;
+  .button {
+    @include button-style-reset;
     display: flex;
-    cursor: pointer;
-    width: max-content;
-    border-radius: 15px;
-    padding: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    &:hover {
-        background-color: $surf-grey;
+
+    svg {
+      height: $spacing--s;
+      aspect-ratio: 1;
     }
-}
-
-.btnText, .filterIcon {
-    background-color: inherit;
-    border-radius: inherit;
-
-}
-
-.filterBox {
+  }
+  ul {
     @include list-style-reset;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing--tiny;
+    padding: $spacing--tiny;
+    padding-right: 0;
+  }
+  .list {
+    gap: $spacing--xxxs;
+    padding: $spacing--xxxs;
     width: max-content;
-    max-width: 15em;
-    padding: 1em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    @include box-shadow(1px,2px,5px,1px, rgb(255, 255, 255,0.6));
-    border-radius: 6px;
+  }
 }
