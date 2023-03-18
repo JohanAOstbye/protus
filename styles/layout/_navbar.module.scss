@@ -1,17 +1,18 @@
 @use 'styles/utils/_colors.scss' as *;
 @use 'styles/utils/_variables.scss' as *;
 @use 'styles/utils/_mixins.scss' as *;
-@use 'styles/utils/_typography.scss' as *;
 
 .container {
-  @include content-wrapper(l);
   background-color: $surf-darkgrey;
+}
+
+.navbar {
+  @include content-wrapper(l);
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: space-between;
   height: $spacing--l;
-  padding: $spacing--s;
 }
 
 .logoAndCourse {
@@ -19,6 +20,13 @@
   align-items: center;
   justify-content: space-between;
   gap: $spacing--xxxs;
+
+  a {
+    @include link-style-reset;
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .lineSeperator {
@@ -57,7 +65,8 @@
     line-height: 0.25rem;
   }
   svg {
-    margin-top: $spacing--xxxs;
+    height: $spacing--sm;
+    aspect-ratio: 1;
   }
 }
 
@@ -79,32 +88,41 @@
   z-index: 1;
   a {
     @include link-style-reset;
+    @include underline-animation(expand, 'span');
   }
 }
 
 .auth {
+  position: relative;
+  display: flex;
+
   svg {
     height: $spacing--sm;
+    aspect-ratio: 1;
   }
-}
+  &_Button {
+    @include button-style-reset;
+  }
+  &_Dropdown {
+    @include list-style-reset;
+    width: max-content;
+    position: absolute;
+    top: calc(100% + $spacing--tiny);
+    right: -$spacing--xs;
+    background-color: $surf-darkgrey;
+    padding-inline: $spacing--xs;
+    padding-block: $spacing--xxxs;
 
-.authDropdown {
-  @include list-style-reset;
-  position: absolute;
-  top: calc(100% + $spacing--tiny);
-  right: -$spacing--xs;
-  background-color: $surf-darkgrey;
-  padding-inline: $spacing--xs;
-  padding-block: $spacing--xxxs;
-
-  li {
-    padding-block: $spacing--tiny;
-    &:hover {
-      cursor: pointer;
+    li {
+      padding-block: $spacing--tiny;
+      &:hover {
+        cursor: pointer;
+      }
     }
-  }
-  z-index: 1;
-  a {
-    @include link-style-reset;
+    z-index: 1;
+    a {
+      @include link-style-reset;
+      @include underline-animation(expand, 'span');
+    }
   }
 }

@@ -29,7 +29,7 @@
   @include breakpoint-sm {
     width: 40%;
   }
-  @include breakpoint-me {
+  @include breakpoint-m {
     width: 30%;
     margin-left: 10%;
     margin-top: 5em;
@@ -67,20 +67,7 @@
   @include breakpoint-sm {
     width: 50%;
   }
-  @include breakpoint-me {
+  @include breakpoint-m {
     margin-left: 0;
-  }
-}
-
-Button {
-  margin-top: 1em;
-  position: absolute;
-  bottom: 4.5em;
-  left: 50%;
-  margin-left: -50px;
-  @include breakpoint-sm {
-    position: unset;
-    margin-left: inherit;
-    margin-top: 1.5em;
   }
 }

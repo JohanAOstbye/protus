@@ -4,6 +4,8 @@ import { headers } from 'next/headers'
 import Layout from 'components/layout'
 import 'styles/utils/_global.scss'
 import ContextWrapper from 'components/context/ContextWrapper'
+import { Suspense } from 'react'
+import Loading from 'components/elements/Loading'
 
 async function getSession(cookie: string): Promise<Session> {
   const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/session`, {
@@ -28,7 +30,9 @@ export default async function RootLayout({
       <head />
       <body>
         <ContextWrapper session={session}>
-          <Layout>{children}</Layout>
+          <Layout>
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+          </Layout>
         </ContextWrapper>
       </body>
     </html>

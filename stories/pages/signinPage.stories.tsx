@@ -5,7 +5,7 @@ import React, { ReactPropTypes } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { SignInPage } from 'components/pages/auth/SignInPage'
 import Layout from 'components/layout'
-import { SessionProvider } from 'next-auth/react'
+import StroyContext from 'stories/assets/StoryContext'
 
 export default {
   /* 👇 The title prop is optional.
@@ -17,9 +17,9 @@ export default {
 } as ComponentMeta<typeof SignInPage>
 
 export const Primary: ComponentStory<typeof SignInPage> = () => (
-  <SessionProvider>
+  <StroyContext>
     <Layout>
-      <SignInPage />
+      <SignInPage csrfToken={'prank'} />
     </Layout>
-  </SessionProvider>
+  </StroyContext>
 )

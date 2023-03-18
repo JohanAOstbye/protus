@@ -1,22 +1,26 @@
 @use 'styles/utils/_colors.scss' as *;
 @use 'styles/utils/_mixins.scss' as *;
+@use 'styles/utils/_variables.scss' as *;
 
 .container {
-  border-radius: 10px;
+  border-radius: $border-radius--m;
   overflow: hidden;
-  max-width: 1000px;
+  max-width: 512px;
+  @include breakpoint-m {
+    max-width: 728px;
+  }
 }
 
-.titleText {
+.title {
   @include gradient(90deg, $surf-gradient);
   color: black;
-  font-weight: 600;
-  padding: 15px;
-  padding-bottom: 10px;
+  font-weight: bolder;
+  padding: $spacing--xxs;
 }
 
 .content {
   @include list-style-reset;
-  padding: 0.7em;
+  padding: $spacing--xxs;
   background-color: $surf-darkgrey;
+  transition: 1s all ease-in-out;
 }
