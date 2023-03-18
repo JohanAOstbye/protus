@@ -3,7 +3,7 @@
 import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Activities from 'components/blocks/Activities'
+import Activities from 'components/blocks/ActivityList'
 import { ActivityCardProps } from 'components/elements/ActivityCard'
 
 const mock: ActivityCardProps[] = [
@@ -36,5 +36,5 @@ export default {
 } as ComponentMeta<typeof Activities>
 
 export const Primary: ComponentStory<typeof Activities> = () => (
-  <Activities activityList={mock} />
+  <Activities list={mock} />
 )

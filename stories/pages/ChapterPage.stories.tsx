@@ -7,7 +7,7 @@ import ChapterPage from '../../components/pages/chapter/ChapterPage'
 import { chapterPageMock } from 'stories/assets/mockdata/course'
 import Layout from 'components/layout'
 import ChapterLayout from 'components/layout/ChapterLayout'
-import StroyContext from 'stories/assets/storyContext'
+import StroyContext from 'stories/assets/StoryContext'
 
 export default {
   /* 👇 The title prop is optional.

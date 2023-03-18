@@ -2,11 +2,7 @@ import * as demo from 'lib/sanity/demo.data'
 import { getSettings } from 'lib/sanity/sanity.client'
 
 export default async function PageHead() {
-  const {
-    title = demo.title,
-    description = demo.description,
-    ogImage = {},
-  } = await getSettings()
+  const { title = demo.title, ogImage = {} } = await getSettings()
   const ogImageTitle = ogImage?.title || demo.ogImageTitle
 
   return (
@@ -16,7 +12,7 @@ export default async function PageHead() {
       <meta
         property="og:image"
         // Because OG images must have a absolute URL, we use the
-        // `NEXTAUTH_URL` environment variable to get the deployment’s URL.
+        // `VERCEL_URL` environment variable to get the deployment’s URL.
         // More info:
         // https://vercel.com/docs/concepts/projects/environment-variables
         content={`${

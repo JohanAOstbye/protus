@@ -1,0 +1,29 @@
+@use 'styles/utils/_colors.scss' as *;
+@use 'styles/utils/_mixins.scss' as *;
+
+.Liast {
+  @include list-style-reset;
+  display: grid;
+  place-content: center;
+  grid-template-columns: repeat(2, auto);
+  gap: 0.5rem;
+  @include breakpoint-s {
+    grid-template-columns: repeat(3, auto);
+  }
+  @include breakpoint-sm {
+    grid-template-columns: repeat(4, auto);
+  }
+  @include breakpoint-m {
+    border-left: 2px solid $surf-lightgrey;
+    padding-left: 2em;
+  }
+  @include breakpoint-l {
+    grid-template-columns: repeat(5, auto);
+  }
+  @include breakpoint-xl {
+    grid-template-columns: repeat(6, auto);
+  }
+  @include breakpoint-xxl {
+    grid-template-columns: repeat(7, auto);
+  }
+}

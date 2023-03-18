@@ -3,7 +3,7 @@ export type Block = {
   data: any
 }
 
-export type activityTypes = 'exercise' | 'example' | 'test'
+export type activityTypes = 'exercise' | 'example' | 'challenge'
 
 export type courseFilterType = {
   name: string

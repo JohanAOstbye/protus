@@ -1,5 +1,3 @@
-import { Content } from 'components/blocks/Content'
-import { useCourse } from 'components/context/courseContext'
 import AlertBanner from 'components/elements/AlertBanner'
 import CourseChip from 'components/elements/CourseChip'
 import { courseType } from 'lib/types/sanity'
