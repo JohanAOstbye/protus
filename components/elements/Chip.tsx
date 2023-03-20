@@ -6,12 +6,14 @@ export interface ChipProps {
 
 export const Chip = ({ text }: ChipProps) => {
   return (
-    <div className={style.container}>
-      <div className={style.chipText}>{text}</div>
-      <a
-        className={style.exitBtn}
-        //   onClick={() => destroy(thisChip)}
-      ></a>
+    <div className={style.chip}>
+      <div className={style.chip_text}>{text}</div>
+      <button
+        className={style.chip_button}
+        onClick={() => console.log('chipfunction not implemented')}
+      >
+        x
+      </button>
     </div>
   )
 }

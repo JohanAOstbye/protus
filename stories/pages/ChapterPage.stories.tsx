@@ -4,10 +4,10 @@ import React, { ReactPropTypes } from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import ChapterPage from '../../components/pages/chapter/ChapterPage'
-import { courseMock } from 'stories/assets/mockdata/course'
+import { chapterPageMock } from 'stories/assets/mockdata/course'
 import Layout from 'components/layout'
 import ChapterLayout from 'components/layout/ChapterLayout'
-import { SessionProvider } from 'next-auth/react'
+import StroyContext from 'stories/assets/StoryContext'
 
 export default {
   /* 👇 The title prop is optional.
@@ -19,11 +19,11 @@ export default {
 } as ComponentMeta<typeof ChapterPage>
 
 export const Primary: ComponentStory<typeof ChapterPage> = () => (
-  <SessionProvider>
+  <StroyContext>
     <Layout>
       <ChapterLayout>
-        <ChapterPage data={courseMock} />
+        <ChapterPage data={chapterPageMock} />
       </ChapterLayout>
     </Layout>
-  </SessionProvider>
+  </StroyContext>
 )

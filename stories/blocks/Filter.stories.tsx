@@ -2,12 +2,7 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import Filter from 'components/blocks/Filter'
-
-const mock = [
-  { text: 'Examples', type: 'Examples', checked: false },
-  { text: 'Exercises', type: 'Exercises', checked: true },
-  { text: 'Challenges', type: 'Challenges', checled: true },
-]
+import FilterWrapper from 'stories/assets/FilterWrapper'
 
 export default {
   /* 👇 The title prop is optional.
@@ -19,5 +14,14 @@ export default {
 } as ComponentMeta<typeof Filter>
 
 export const Primary: ComponentStory<typeof Filter> = () => (
-  <Filter filterList={mock} />
+  <FilterWrapper
+    options={{
+      activitytype: ['example', 'exercise'],
+      course: [
+        { name: 'course 1', chapters: ['chapter 1', 'chapter 2', 'chapter 3'] },
+        { name: 'course 2', chapters: ['chapter 1', 'chapter 2', 'chapter 3'] },
+        { name: 'course 3', chapters: ['chapter 1', 'chapter 2', 'chapter 3'] },
+      ],
+    }}
+  />
 )

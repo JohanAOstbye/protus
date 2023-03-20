@@ -1,6 +1,5 @@
 @use 'styles/utils/_mixins.scss' as *;
 @use 'styles/utils/_variables.scss' as *;
-@use 'styles/utils/_typography.scss' as *;
 
 .container {
   @include type($font--sm);

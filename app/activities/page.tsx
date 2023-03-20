@@ -1,5 +1,5 @@
 import ChapterLayout from 'components/pages/chapter/ChapterPage'
-import FrontPage from 'components/pages/Frontpage'
+import ActivitiesPage from 'components/pages/ActivitiesPage'
 import { getChapter, getCourse, getSettings } from 'lib/sanity/sanity.client'
 // import { PreviewSuspense } from 'next-sanity/preview'
 import { previewData } from 'next/headers'
@@ -8,7 +8,7 @@ export default async function IndexRoute() {
   // Fetch queries in parallel
   const [settings, courses] = await Promise.all([getSettings(), ,])
 
-  return <FrontPage />
+  return <ActivitiesPage />
 }
 
 // FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`

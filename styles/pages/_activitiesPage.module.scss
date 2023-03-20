@@ -1,0 +1,45 @@
+@use 'styles/utils/_colors.scss' as *;
+@use 'styles/utils/_mixins.scss' as *;
+@use 'styles/utils/_variables.scss' as *;
+
+.container {
+  margin: 0.5em;
+  @include breakpoint-sm {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+}
+
+.title {
+  font-size: 12px;
+  margin-left: 1.2em;
+  @include breakpoint-sm {
+    font-size: 14px;
+    margin-left: 1em;
+  }
+}
+
+.search {
+  display: flex;
+  width: 100%;
+  margin-bottom: 5px;
+
+  &_input {
+    background-color: $surf-lightgrey;
+    color: $surf-text;
+    border: 0;
+    border-radius: 20px;
+    padding-left: 1em;
+    font-size: 16px;
+    height: 30px;
+    width: 100%;
+
+    &::placeholder {
+      color: $surf-text;
+    }
+  }
+  svg {
+    height: $spacing--s;
+    aspect-ratio: 1;
+  }
+}

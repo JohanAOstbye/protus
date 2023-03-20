@@ -6,18 +6,18 @@ import { Input } from 'components/elements/Input'
 import Link from 'next/link'
 import style from 'styles/pages/_signInPage.module.scss'
 
-export const SignInPage = () => {
+export const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
   const [isRegister, setRegister] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordVerify, setPasswordVerify] = useState('')
 
   const signin = async () => {
-    await signIn('credentials-login', { email, password })
+    await signIn('credentials', { email, password })
   }
 
   const register = async () => {
-    await signIn('credentials-register', { email, password })
+    await signIn('credentials', { email, password, passwordVerify })
   }
 
   return (
@@ -47,10 +47,10 @@ export const SignInPage = () => {
             name="passwordVerify"
             value={passwordVerify}
             placeholder="Verify password..."
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPasswordVerify(e.target.value)}
           />
           <span className={style.separator} />
-          <Button onClick={register}>Register</Button>
+          <Button onClick={() => register()}>Register</Button>
         </>
       ) : (
         <>
@@ -60,7 +60,7 @@ export const SignInPage = () => {
           >
             <span>Forgot password?</span>
           </Link>
-          <Button onClick={signin}>Sign in</Button>
+          <Button onClick={() => signin()}>Sign in</Button>
         </>
       )}
       <Button onClick={() => setRegister(!isRegister)}>

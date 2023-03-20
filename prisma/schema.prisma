@@ -49,7 +49,7 @@ model Course {
 // X-API
 
 model Document {
-    registration String    @id @default(uuid()) @map("_id") @db.ObjectId
+    registration String    @id @default(uuid()) @map("_id")
     stateId      String?   @unique
     profileId    String?   @unique
     timestamp    DateTime? @updatedAt
@@ -57,11 +57,11 @@ model Document {
     agent        Actor?    @relation(fields: [agentId], references: [id])
     activityId   String?
     activity     Object?   @relation(fields: [activityId], references: [id])
-    agentId      String?   @db.ObjectId
+    agentId      String?
 }
 
 model Statement {
-    id          String       @id @default(uuid()) @map("_id") @db.ObjectId
+    id          String       @id @default(uuid()) @map("_id")
     actor       Actor        @relation(fields: [actorId], references: [id])
     verb        Verb         @relation(fields: [verbId], references: [id])
     object      Object       @relation(fields: [objectId], references: [mongoid], name: "statementObject")
@@ -72,11 +72,11 @@ model Statement {
     authority   Actor        @relation(fields: [authorityId], references: [id], name: "authority")
     version     String?      @default("1.0.0")
     attachments Attachment[]
-    actorId     String       @db.ObjectId
-    authorityId String       @db.ObjectId
-    verbId      String       @db.ObjectId
-    objectId    String       @unique @db.ObjectId
-    contextId   String       @unique @db.ObjectId
+    actorId     String
+    authorityId String
+    verbId      String
+    objectId    String       @unique
+    contextId   String       @unique
     contextref  Context[]    @relation(name: "statementcontextref")
     objectref   Object[]     @relation(name: "statementobjectref")
 }
@@ -98,23 +98,23 @@ type Result {
 }
 
 model ContextActivity {
-    id                  String                  @id @default(uuid()) @map("_id") @db.ObjectId
+    id                  String                  @id @default(uuid()) @map("_id")
     key                 String
     value               ContextActivityObject[]
     context             Context                 @relation(fields: [contextRegistration], references: [registration])
-    contextRegistration String                  @db.ObjectId
+    contextRegistration String
 }
 
 model ContextActivityObject {
-    id                String           @id @default(uuid()) @map("_id") @db.ObjectId
+    id                String           @id @default(uuid()) @map("_id")
     ContextActivity   ContextActivity? @relation(fields: [contextActivityId], references: [id])
-    contextActivityId String?          @db.ObjectId
+    contextActivityId String?
     Object            Object?          @relation(fields: [objectId], references: [mongoid])
-    objectId          String?          @db.ObjectId
+    objectId          String?
 }
 
 model Context {
-    registration      String            @id @default(uuid()) @map("_id") @db.ObjectId
+    registration      String            @id @default(uuid()) @map("_id")
     instructor        Actor?            @relation(fields: [instructorId], references: [id], name: "instructor")
     statement         Statement?        @relation(fields: [statementId], references: [id], onUpdate: NoAction, onDelete: NoAction, name: "statementcontextref")
     team              Actor?            @relation(fields: [teamId], references: [id], name: "team")
@@ -123,9 +123,9 @@ model Context {
     platform          String?
     language          String?
     extensions        Extension[]
-    instructorId      String?           @db.ObjectId
-    teamId            String?           @db.ObjectId
-    statementId       String            @db.ObjectId
+    instructorId      String?
+    teamId            String?
+    statementId       String
     Statement         Statement?        @relation(name: "statementContext")
 }
 
@@ -181,7 +181,7 @@ type definition {
 }
 
 model Object {
-    mongoid               String                  @id @default(uuid()) @map("_id") @db.ObjectId
+    mongoid               String                  @id @default(uuid()) @map("_id")
     statement             Statement?              @relation(fields: [statementId], references: [id], onUpdate: NoAction, onDelete: NoAction, name: "statementobjectref")
     objectType            objectType
     actor                 Actor?                  @relation(fields: [actorId], references: [id], name: "substatementActor")
@@ -190,11 +190,11 @@ model Object {
     object                Object?                 @relation(fields: [objectId], references: [mongoid], onUpdate: NoAction, onDelete: NoAction, name: "substatementObject")
     id                    String?                 @unique
     definition            definition?
-    actorId               String?                 @db.ObjectId
-    objectActorId         String?                 @db.ObjectId
-    statementId           String?                 @db.ObjectId
-    verbId                String?                 @db.ObjectId
-    objectId              String?                 @db.ObjectId
+    actorId               String?
+    objectActorId         String?
+    statementId           String?
+    verbId                String?
+    objectId              String?
     ContextActivityObject ContextActivityObject[]
     Statement             Statement?              @relation(name: "statementObject")
     Objects               Object[]                @relation(name: "substatementObject")
@@ -202,7 +202,7 @@ model Object {
 }
 
 model Verb {
-    id        String        @id @default(uuid()) @map("_id") @db.ObjectId
+    id        String        @id @default(uuid()) @map("_id")
     iri       String        @unique @map("id")
     display   LanguageTag[]
     Statement Statement[]
@@ -220,7 +220,7 @@ type Extension {
 }
 
 model XapiAccount {
-    id       String  @id @default(uuid()) @map("_id") @db.ObjectId
+    id       String  @id @default(uuid()) @map("_id")
     name     String
     homePage String
     Actor    Actor[]
@@ -234,7 +234,7 @@ enum actorObjectType {
 }
 
 model Actor {
-    id                String           @id @default(uuid()) @map("_id") @db.ObjectId
+    id                String           @id @default(uuid()) @map("_id")
     name              String?
     objectType        actorObjectType? @default(Agent)
     member            Actor[]          @relation(name: "member", references: [id], fields: [memberIDs])
@@ -243,9 +243,9 @@ model Actor {
     openid            String?          @unique
     account           XapiAccount?     @relation(fields: [accountId], references: [id])
     profile           User?            @relation(fields: [profileId], references: [id])
-    memberIDs         String[]         @db.ObjectId
-    profileId         String?          @unique @db.ObjectId
-    accountId         String?          @unique @db.ObjectId
+    memberIDs         String[]
+    profileId         String?          @unique
+    accountId         String?          @unique
     Statement         Statement[]
     teamContext       Context[]        @relation(name: "team")
     InsturctorContext Context[]        @relation(name: "instructor")
@@ -253,14 +253,14 @@ model Actor {
     Objects           Object[]         @relation(name: "objectActor")
     Authorities       Statement[]      @relation(name: "authority")
     groups            Actor[]          @relation(name: "member", references: [id], fields: [groupIDs])
-    groupIDs          String[]         @db.ObjectId
+    groupIDs          String[]
     documents         Document[]
 }
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(uuid()) @map("_id") @db.ObjectId
-    userId            String  @db.ObjectId
+    id                String  @id @default(uuid()) @map("_id")
+    userId            String
     type              String
     provider          String
     providerAccountId String
@@ -277,15 +277,15 @@ model Account {
 }
 
 model Session {
-    id           String   @id @default(uuid()) @map("_id") @db.ObjectId
+    id           String   @id @default(uuid()) @map("_id")
     sessionToken String   @unique
-    userId       String   @db.ObjectId
+    userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-    id            String    @id @default(uuid()) @map("_id") @db.ObjectId
+    id            String    @id @default(uuid()) @map("_id")
     email         String?   @unique
     emailVerified DateTime?
     image         String?
@@ -296,7 +296,7 @@ model User {
 }
 
 model VerificationToken {
-    id         String   @id @default(uuid()) @map("_id") @db.ObjectId
+    id         String   @id @default(uuid()) @map("_id")
     identifier String
     token      String   @unique
     expires    DateTime

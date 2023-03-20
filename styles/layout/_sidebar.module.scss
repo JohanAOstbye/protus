@@ -1,91 +1,66 @@
 @use 'styles/utils/_colors.scss' as *;
 @use 'styles/utils/_mixins.scss' as *;
+@use 'styles/utils/_variables.scss' as *;
 
 .sidebar {
-    position: absolute;
-    list-style-type: none;
-    background-color: $surf-bg;
-    width: 100%;
-    opacity: 90%;
-    display: grid;
-    font-size: 25px;
-    gap: 0.5em;
-    padding: 1em;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    @include box-shadow(5px,0,10px,5px, rgb(255, 255, 255,0.6));
-    @include breakpoint-sm {
-        width: 11em;
-    }  
-    @include breakpoint-me {
-        padding-left: 1.5em;
-        gap: 0.3em;
-        position: relative;
-        box-shadow: none;
-    }
-    @include breakpoint-la {
-    }   
-} 
-
-.currentCourse {
-  font-weight: bolder;
-  letter-spacing: 0.02em;
-  font-size: 25px;
+  position: fixed;
+  background-color: $surf-darkgrey;
+  width: 100%;
+  height: calc(100vh - $spacing--l);
+  padding: $spacing--xs;
   @include breakpoint-sm {
-    font-size: 22px;
+    margin-right: 2em;
+    border-bottom-right-radius: $border-radius--m;
+    border-top-right-radius: $border-radius--m;
+    opacity: 90%;
+    width: $spacing--big;
+    @include box-shadow(5px, 0, 10px, 5px, black);
+    position: relative;
   }
-  @include breakpoint-me {
-    font-size: 20px;
+
+  ul {
+    @include list-style-reset;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing--xxxs;
+    margin-top: $spacing--xxs;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  label {
+    font-weight: bolder;
+    @include type($font--sm);
   }
 }
 
 .items {
   color: $surf-text;
   text-decoration: none;
-  font-size: 22px;
-  @include breakpoint-sm {
-    font-size: 18px;
+  @include type($font--s);
+  @include underline-animation(expand, 'span');
+}
+
+.button {
+  @include button-style-reset;
+
+  svg {
+    height: $spacing--sm;
+    aspect-ratio: 1;
   }
-  @include breakpoint-me {
-    font-size: 16px;
-  }
-  &:hover {
-    text-decoration: underline;
-  }
-}
 
-.sidebarOpen {
-    width: 10px;
-}
-
-.btnOpen {
-  position: relative;
-  z-index: 2;
-  float: right;
-}
-
-.btnOpen::after {
-    content: "\00d7"; 
-    opacity: 0.7;
-    @include breakpoint-me {
-        content: '';
-    }
-}
-
-.btnClose {
-    background-color: $surf-bg;
-    width: 3em;
-    position: absolute;
+  &_open {
+    background-color: $surf-darkgrey;
+    border-bottom-right-radius: $border-radius--s;
+    border-top-right-radius: $border-radius--s;
+    padding-block: $spacing--xxs;
+    position: relative;
     z-index: 2;
-    opacity: 80%;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    @include box-shadow(5px,0,10px,5px, rgb(255, 255, 255,0.6));
-    @include breakpoint-sm {
-        width: 2em;
-        height: 3em;
-    }
-    &:hover {
-        background-color: rgb(70, 70, 70);
-    }   
+    float: right;
+    margin: $spacing--tiny;
+    margin-left: 0;
+  }
 }

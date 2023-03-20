@@ -1,13 +1,12 @@
 @use 'styles/utils/_colors.scss' as *;
 @use 'styles/utils/_mixins.scss' as *;
 @use 'styles/utils/_variables.scss' as *;
-@use 'styles/utils/_typography.scss' as *;
 
 .input {
   @include input-style-reset;
   border-radius: $border-radius--s;
-  padding-inline: 12px;
-  padding-block: 6px;
+  padding-inline: $spacing--xxs;
+  padding-block: $spacing--xxxxs;
   @include type($font--s);
   background-color: white;
   color: $surf-bg;
@@ -18,7 +17,7 @@
   }
 
   @include breakpoint-sm {
-    padding-inline: 16px;
-    padding-block: 8px;
+    padding-inline: $spacing--xs;
+    padding-block: $spacing--xxxs;
   }
 }

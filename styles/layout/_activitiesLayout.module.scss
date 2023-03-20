@@ -1,13 +1,12 @@
 @use 'styles/utils/_mixins.scss' as *;
 
 .layout {
-    display: flex;
+  display: flex;
 }
 
 .content {
-    margin: auto;
-    @include breakpoint-me {
-        margin: 0;
-    }
+  margin: auto;
+  @include breakpoint-m {
+    margin: 0;
+  }
 }
-
