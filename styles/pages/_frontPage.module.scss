@@ -1,0 +1,21 @@
+@use 'styles/utils/main' as *;
+.page {
+  display: grid;
+  grid-template:
+    'intro'
+    'svg'
+    'button';
+  gap: $spacing--s;
+
+  padding: $spacing--s;
+  .intro {
+    grid-area: 'intro';
+  }
+  svg {
+    grid-area: 'svg';
+    width: 100%;
+  }
+  .button {
+    grid-area: 'button';
+  }
+}

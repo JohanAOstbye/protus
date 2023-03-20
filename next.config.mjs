@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+import path from 'path'
+
 const config = {
   experimental: {
     appDir: true,
