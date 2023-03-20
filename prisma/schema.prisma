@@ -14,6 +14,38 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+// Activities
+
+enum activityType {
+    Example
+    Challenge
+    Exercise
+}
+
+model Activity {
+    id        String       @id @default(uuid()) @map("_id")
+    name      String
+    url       String
+    kcs       String[]
+    Chapter   Chapter?     @relation(fields: [chapterId], references: [id])
+    chapterId String?
+    type      activityType
+}
+
+model Chapter {
+    id         String     @id @default(uuid()) @map("_id")
+    name       String
+    activities Activity[]
+    Course     Course?    @relation(fields: [courseId], references: [id])
+    courseId   String?
+}
+
+model Course {
+    id       String    @id @default(uuid()) @map("_id")
+    name     String
+    chapters Chapter[]
+}
+
 // X-API
 
 model Document {
