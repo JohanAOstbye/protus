@@ -1,3 +1,4 @@
+'use client'
 import ActivityList from 'components/blocks/ActivityList'
 import Filter from 'components/blocks/Filter'
 import { filterType } from 'lib/types/componentTypes'
