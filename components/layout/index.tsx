@@ -2,6 +2,7 @@
 import Footer from './Footer'
 import Navbar from './Navbar'
 import style from 'styles/layout/_layout.module.scss'
+
 import { ReactNode } from 'react'
 import { useCourse } from 'components/context/courseContext'
 

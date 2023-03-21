@@ -1,11 +1,8 @@
-import { z } from "zod";
-import State from './state'
+import { z } from 'zod'
+import { state } from './state'
 
-
-const group = z.object({
-    name: z.string(),
-    state: State,
-    learnerIds: z.array(z.string()),
+export const group = z.object({
+  name: z.string(),
+  state: state,
+  learnerIds: z.array(z.string()),
 })
-
-export default group

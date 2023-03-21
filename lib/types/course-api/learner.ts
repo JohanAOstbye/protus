@@ -1,14 +1,12 @@
-import { z } from "zod";
-import State from './state'
-
-
+import { z } from 'zod'
+import { state } from './state'
 
 const learner = z.object({
-    id: z.string(),
-    name: z.string(),
-    isHidden: z.boolean(),
-    state: State,
-    preferences: z.array(z.any()),
+  id: z.string(),
+  name: z.string(),
+  isHidden: z.boolean(),
+  state: state,
+  preferences: z.array(z.any()),
 })
 
 export default learner
