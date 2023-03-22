@@ -11,34 +11,34 @@
 }
 
 .title {
-  font-size: 12px;
-  margin-left: 1.2em;
-  @include breakpoint-sm {
-    font-size: 14px;
-    margin-left: 1em;
-  }
+  @include type($font--sm);
 }
 
 .search {
   display: flex;
+  height: 30px;
   width: 100%;
   margin-bottom: 5px;
+  padding-inline: $spacing--xxs;
+
+  @include type($font--xs);
+  position: relative;
 
   &_input {
+    @include input-style-reset;
     background-color: $surf-lightgrey;
-    color: $surf-text;
-    border: 0;
-    border-radius: 20px;
-    padding-left: 1em;
-    font-size: 16px;
-    height: 30px;
+    border-radius: 9999px;
+    position: absolute;
+    inset: 0;
     width: 100%;
-
-    &::placeholder {
-      color: $surf-text;
-    }
+    height: 100%;
+    padding-inline: $spacing--xxs;
+    color: $surf-text;
   }
   svg {
+    position: absolute;
+    right: $spacing--xxs;
+    inset-block: $spacing--tiny;
     height: $spacing--s;
     aspect-ratio: 1;
   }

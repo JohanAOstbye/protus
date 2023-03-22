@@ -2,20 +2,39 @@
 @use 'styles/utils/_mixins.scss' as *;
 @use 'styles/utils/_variables.scss' as *;
 
+.open {
+  display: block;
+}
+.closed {
+  display: none;
+
+  @include breakpoint-sm {
+    display: none;
+  }
+}
+
 .sidebar {
+  z-index: 5;
   position: fixed;
   background-color: $surf-darkgrey;
   width: 100%;
   height: calc(100vh - $spacing--l);
   padding: $spacing--xs;
+  margin: $spacing--tiny;
+  margin-left: 0;
+  margin-top: 0;
   @include breakpoint-sm {
     margin-right: 2em;
+    margin-top: $spacing--tiny;
     border-bottom-right-radius: $border-radius--m;
     border-top-right-radius: $border-radius--m;
     opacity: 90%;
     width: $spacing--big;
-    @include box-shadow(5px, 0, 10px, 5px, black);
     position: relative;
+  }
+
+  @include breakpoint-m {
+    border-radius: $border-radius--m;
   }
 
   ul {
@@ -46,13 +65,7 @@
 
 .button {
   @include button-style-reset;
-
-  svg {
-    height: $spacing--sm;
-    aspect-ratio: 1;
-  }
-
-  &_open {
+  &_test {
     background-color: $surf-darkgrey;
     border-bottom-right-radius: $border-radius--s;
     border-top-right-radius: $border-radius--s;
@@ -62,5 +75,10 @@
     float: right;
     margin: $spacing--tiny;
     margin-left: 0;
+  }
+
+  svg {
+    height: $spacing--sm;
+    aspect-ratio: 1;
   }
 }

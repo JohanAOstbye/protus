@@ -34,6 +34,7 @@ $border-radius--m: convert-to-rem(12px);
 $border-radius--s: convert-to-rem(6px);
 
 //SPACING
+$spacing--xbig: convert-to-rem(256px);
 $spacing--big: convert-to-rem(192px);
 $spacing--xxxl: convert-to-rem(160px);
 $spacing--xxl: convert-to-rem(96px);
@@ -68,5 +69,4 @@ $breakpoint-xsm: 850px;
 $breakpoint-m: 1000px;
 $breakpoint-l: 1312px;
 $breakpoint-xl: 1500px;
-$breakpoint-xxl: 1850px
-
+$breakpoint-xxl: 1850px;
