@@ -6,17 +6,12 @@ export interface ActivityListProps {
 }
 
 export const ActivityList = ({ list }: ActivityListProps) => {
+  console.log(style)
+
   return (
-    <ul className={style.container}>
+    <ul className={style.activityList}>
       {list.map((item, i) => (
-        <li key={i} className={style.item}>
-          <ActivityCard
-            title={item.title}
-            type={item.type}
-            color={item.color}
-            icon={item.icon}
-          />
-        </li>
+        <ActivityCard key={i} title={item.title} type={item.type} />
       ))}
     </ul>
   )

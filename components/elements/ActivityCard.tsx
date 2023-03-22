@@ -1,44 +1,30 @@
 import { Colors } from 'lib/types/style'
 import Link from 'next/link'
 import style from 'styles/components/_activityCard.module.scss'
-import exerciseIcon from 'lib/assets/icons/exercise.svg'
-import challengeIcon from 'lib/assets/icons/challenge.svg'
+import ExerciseIcon from 'lib/assets/icons/exercise.svg'
+import ChallengeIcon from 'lib/assets/icons/challenge.svg'
+import React from 'react'
 
 export interface ActivityCardProps {
   title?: string
   type?: 'Challenge' | 'Exercise'
-  icon?: string
-  color?: Extract<Colors, 'red' | 'purple'>
 }
 
-export const ActivityCard = ({
-  title,
-  type,
-  icon,
-  color,
-}: ActivityCardProps) => {
-  if (type == 'Exercise') {
-    color = 'purple'
-    icon = exerciseIcon
-  }
-  if (type == 'Challenge') {
-    color = 'red'
-    icon = challengeIcon
-  }
-
+export const ActivityCard = ({ title, type }: ActivityCardProps) => {
   return (
-    <Link className={style.container} href={''}>
-      {/* TODO, replace above tag with <Link> */}
-      {/* <Link className={style.link} href={''}> */}
-      <img src={exerciseIcon} alt="icon logo" className={style.icon} />
-      <div className={style.cardTitle}>{title}</div>
-      <div
-        className={`${style.activityLabel} ${style[`activityLabel-${color}`]}`}
-      >
-        {type}
-      </div>
-      {/* </Link> */}
-    </Link>
+    <li className={style.activityCard}>
+      <Link href={''}>
+        {type === 'Challenge' ? <ChallengeIcon /> : <ExerciseIcon />}
+        <div className={style.title}>{title}</div>
+        <div
+          className={`${style.type} ${
+            style[`type-${type === 'Challenge' ? 'red' : 'purple'}`]
+          }`}
+        >
+          {type}
+        </div>
+      </Link>
+    </li>
   )
 }
 export default ActivityCard

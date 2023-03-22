@@ -1,46 +1,54 @@
 @use 'styles/utils/main' as *;
 
-.container {
-  @include link-style-reset;
+.activityCard {
   background-color: $surf-grey;
-  border-radius: 10px;
-  width: 9em;
-  height: 10.5em;
-  padding: 1em;
+  max-width: $spacing--xbig;
+  min-width: 140px;
+  padding: $spacing--xs;
+  border-radius: $border-radius--m;
   cursor: pointer;
-  background-color: $surf-grey;
-  border-radius: 10px;
-  & .cardTitle,
-  .cardTitle,
-  .activity,
-  .icon {
-    background-color: inherit;
+
+  @include breakpoint-sm {
+    max-width: $spacing--xbig;
+    min-width: $spacing--big;
   }
+
   &:hover {
     background-color: $surf-hovergrey;
   }
-  @include breakpoint-sm {
-    width: 11em;
+
+  a {
+    @include link-style-reset;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: max-content;
+    width: 100%;
+  }
+
+  svg {
+    color: $surf-lightgrey;
+    height: $spacing--l;
+    width: max-content;
+    margin-bottom: $spacing--xxs;
+    @include breakpoint-sm {
+      height: $spacing--xl;
+    }
   }
 }
 
-.cardTitle {
-  font-size: 18px;
-  margin-top: 4px;
+.title {
+  @include type($font--s);
 }
 
-.activityLabel {
-  font-size: 14px;
+.type {
+  @include type($font--xxs);
   font-weight: 600;
+  line-height: $font--xxs;
   &-red {
     color: $surf-orange;
   }
   &-purple {
     color: $surf-purple;
   }
-}
-
-.icon {
-  background-color: $surf-lightgrey;
-  height: $spacing--l;
 }
