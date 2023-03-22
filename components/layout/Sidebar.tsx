@@ -16,39 +16,42 @@ export const Sidebar = ({ chapters, courseSlug, course }: SidebarProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <div className={style.container}>
-      {isExpanded ? (
-        <div className={style.sidebar}>
-          <div className={style.title}>
-            <label>{course}</label>
-            <button
-              className={style.button}
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              x
-            </button>
-          </div>
-          <ul>
-            {chapters.map((chapter, i) => (
-              <li key={i}>
-                <Link
-                  className={style.items}
-                  href={`${courseSlug}/${chapter.slug}`}
-                >
-                  <span>{chapter.title}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+    <div>
+      <div
+        className={`${style.sidebar} ${
+          isExpanded || window.innerWidth >= 1312 ? style.open : style.closed
+        }`}
+      >
+        <div className={style.title}>
+          <label>{course}</label>
+          <button
+            className={style.button}
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            x
+          </button>
         </div>
-      ) : (
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className={`${style.button} ${style.button_open}`}
-        >
-          <ArrowRight />
-        </button>
-      )}
+        <ul>
+          {chapters.map((chapter, i) => (
+            <li key={i}>
+              <Link
+                className={style.items}
+                href={`${courseSlug}/${chapter.slug}`}
+              >
+                <span>{chapter.title}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className={`${style.button_test} ${style.button} ${style.button_test} ${
+          isExpanded || window.innerWidth >= 1312 ? style.closed : style.open
+        }`}
+      >
+        <ArrowRight />
+      </button>
     </div>
   )
 }

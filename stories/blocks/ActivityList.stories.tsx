@@ -1,9 +1,9 @@
-// Activities.stories.ts|tsx
+// ActivityList.stories.ts|tsx
 
 import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Activities from 'components/blocks/ActivityList'
+import ActivityList from 'components/blocks/ActivityList'
 import { ActivityCardProps } from 'components/elements/ActivityCard'
 
 const mock: ActivityCardProps[] = [
@@ -28,13 +28,13 @@ const mock: ActivityCardProps[] = [
 const mock2 = {}
 export default {
   /* 👇 The title prop is optional.
-   * See https://storybook.js.org/docs/react/configure/overview#configure-story-Activities
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-ActivityList
    * to learn how to generate automatic titles
    */
-  title: 'Block/Activities',
-  component: Activities,
-} as ComponentMeta<typeof Activities>
+  title: 'Block/ActivityList',
+  component: ActivityList,
+} as ComponentMeta<typeof ActivityList>
 
-export const Primary: ComponentStory<typeof Activities> = () => (
-  <Activities list={mock} />
+export const Primary: ComponentStory<typeof ActivityList> = () => (
+  <ActivityList list={mock} />
 )
