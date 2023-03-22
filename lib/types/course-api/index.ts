@@ -1,9 +1,9 @@
 import { z } from 'zod'
-import Resource from './resource'
-import ReportLevel from './reportLevel'
-import Learner from './learner'
+import { resource } from './resource'
+import { reportLevel } from './reportLevel'
+import { learner } from './learner'
 import { group } from './group'
-import Context from './context'
+import { context } from './context'
 import Vis from './vis'
 import { topic } from './topic'
 
@@ -19,11 +19,11 @@ const rmcCount = z.object({})
 
 export const response = z.object({
   version: z.string(),
-  context: Context,
-  reportLevels: z.array(ReportLevel),
-  resources: z.array(Resource),
+  context: context,
+  reportLevels: z.array(reportLevel),
+  resources: z.array(resource),
   topics: z.array(topic),
-  learners: z.array(Learner),
+  learners: z.array(learner),
   groups: z.array(group),
   vis: Vis,
   configprops: configProps,

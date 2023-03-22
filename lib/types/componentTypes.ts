@@ -1,9 +1,9 @@
+import { activityType } from '@prisma/client'
+
 export type Block = {
   name: string
   data: any
 }
-
-export type activityTypes = 'exercise' | 'example' | 'challenge'
 
 export type courseFilterType = {
   name: string
@@ -11,5 +11,5 @@ export type courseFilterType = {
 }
 export type filterType = {
   course: courseFilterType[]
-  activitytype: activityTypes[]
+  activitytype: Extract<activityType, 'Challenge' | 'Exercise'>[]
 }

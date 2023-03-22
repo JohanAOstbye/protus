@@ -19,30 +19,39 @@ datasource db {
 enum activityType {
     Challenge
     Exercise
+    Example
 }
 
 model Activity {
     id        String       @id @default(uuid()) @map("_id")
+    updatedAt DateTime?    @updatedAt
+    stored    DateTime?    @default(now())
     name      String
-    url       String
+    url       String       @unique
     kcs       String[]
-    Chapter   Chapter?     @relation(fields: [chapterId], references: [id])
-    chapterId String?
+    Chapter   Chapter      @relation(fields: [chapterId], references: [id])
+    chapterId String
     type      activityType
 }
 
 model Chapter {
     id         String     @id @default(uuid()) @map("_id")
+    updatedAt  DateTime?  @updatedAt
+    stored     DateTime?  @default(now())
     name       String
     activities Activity[]
-    Course     Course?    @relation(fields: [courseId], references: [id])
-    courseId   String?
+    Course     Course     @relation(fields: [courseName], references: [name])
+    courseName String
+
+    @@unique([name, courseName])
 }
 
 model Course {
-    id       String    @id @default(uuid()) @map("_id")
-    name     String
-    chapters Chapter[]
+    id        String    @id @default(uuid()) @map("_id")
+    updatedAt DateTime? @updatedAt
+    stored    DateTime? @default(now())
+    name      String    @unique
+    chapters  Chapter[]
 }
 
 // X-API

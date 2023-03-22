@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { state } from './state'
 
-const learner = z.object({
+export const learner = z.object({
   id: z.string(),
   name: z.string(),
   isHidden: z.boolean(),
@@ -9,4 +9,4 @@ const learner = z.object({
   preferences: z.array(z.any()),
 })
 
-export default learner
+export type learnerType = z.infer<typeof learner>

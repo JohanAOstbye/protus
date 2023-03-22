@@ -3,10 +3,11 @@ import Link from 'next/link'
 import style from 'styles/components/_activityCard.module.scss'
 import exerciseIcon from 'lib/assets/icons/exercise.svg'
 import challengeIcon from 'lib/assets/icons/challenge.svg'
+import { activityType } from '@prisma/client'
 
 export interface ActivityCardProps {
   title?: string
-  type?: 'Challenge' | 'Exercise'
+  type?: activityType
   icon?: string
   color?: Extract<Colors, 'red' | 'purple'>
 }

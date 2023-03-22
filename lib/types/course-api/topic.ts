@@ -5,7 +5,7 @@ const timeline = z.object({
   current: z.boolean(),
 })
 
-const activityCategory = z.object({
+const activity = z.object({
   id: z.string(),
   name: z.string(),
   url: z.string(),
@@ -13,9 +13,9 @@ const activityCategory = z.object({
 })
 
 const activities = z.object({
-  examples: z.array(activityCategory).optional(),
-  challenges: z.array(activityCategory).optional(),
-  coding: z.array(activityCategory).optional(),
+  Examples: z.array(activity).optional(),
+  Challenges: z.array(activity).optional(),
+  Coding: z.array(activity).optional(),
 })
 
 export const topic = z.object({
@@ -29,3 +29,5 @@ export const topic = z.object({
   timeline: timeline,
   activities: activities,
 })
+
+export type activityType = z.infer<typeof activity>

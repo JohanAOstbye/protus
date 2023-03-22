@@ -6,3 +6,5 @@ export const group = z.object({
   state: state,
   learnerIds: z.array(z.string()),
 })
+
+export type groupType = z.infer<typeof group>

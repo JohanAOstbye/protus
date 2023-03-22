@@ -7,26 +7,7 @@ import SearchIcon from 'lib/assets/icons/search.svg'
 import style from 'styles/pages/_activitiesPage.module.scss'
 import { trpc } from 'lib/server/trpc/provider'
 import Loading from 'components/elements/Loading'
-import { Loader } from 'components/Loader'
-
-const mockdata: React.ComponentProps<typeof ActivityList>['list'] = [
-  { title: 'Time Operator', type: 'Exercise' },
-  { title: 'Variables', type: 'Challenge' },
-  { title: 'Time Operator', type: 'Exercise' },
-  { title: 'Lists', type: 'Challenge' },
-  { title: 'If and Else', type: 'Exercise' },
-  { title: 'For loops', type: 'Challenge' },
-  { title: 'Observebale and Observer', type: 'Exercise' },
-  { title: 'streams & stuff', type: 'Challenge' },
-  { title: 'Time Operator', type: 'Exercise' },
-  { title: 'Variables', type: 'Challenge' },
-  { title: 'Time Operator', type: 'Exercise' },
-  { title: 'Lists', type: 'Challenge' },
-  { title: 'If and Else', type: 'Exercise' },
-  { title: 'For loops', type: 'Challenge' },
-  { title: 'Observebale and Observer', type: 'Exercise' },
-  { title: 'streams & stuff', type: 'Challenge' },
-]
+import { ActivitiesRouterInput } from 'lib/server/trpc/api/router/activities'
 
 type activitiesPageProps = {
   options: filterType
@@ -34,7 +15,7 @@ type activitiesPageProps = {
 
 const ActivitiesPage = ({
   options = {
-    activitytype: ['example', 'exercise', 'challenge'],
+    activitytype: ['Exercise', 'Challenge'],
     course: [
       {
         name: 'course 1',
@@ -53,16 +34,17 @@ const ActivitiesPage = ({
 }: activitiesPageProps) => {
   const [query, setQuery] = useState('')
   const deferredQuery = useDeferredValue(query) //TODO: fix søk i query
-  const [filter, setFilter] = useState<filterType>({
-    activitytype: [],
-    course: [],
+  const [filter, setFilter] = useState<
+    ActivitiesRouterInput['getAllActivities']
+  >({
+    type: [],
+    courses: [],
   })
 
-  const activities = trpc.activities.getAllActivities.useQuery({})
+  const activities = trpc.activities.getAllActivities.useQuery(filter)
 
   return (
     <div>
-      <Loader />
       <div className={style.title}>Activities</div>
       <div className={style.search}>
         <input

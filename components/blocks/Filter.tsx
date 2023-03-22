@@ -5,10 +5,13 @@ import FilterIcon from 'lib/assets/icons/filterIcon.svg'
 import { filterType } from 'lib/types/componentTypes'
 import FilterItem from 'components/elements/FilterItem'
 import useOutsideClick from 'components/hooks/useOutsideClick.hook'
+import { ActivitiesRouterInput } from 'lib/server/trpc/api/router/activities'
 
 export interface FilterProps {
-  filter: filterType
-  setFilter: React.Dispatch<React.SetStateAction<filterType>>
+  filter: ActivitiesRouterInput['getAllActivities']
+  setFilter: React.Dispatch<
+    React.SetStateAction<ActivitiesRouterInput['getAllActivities']>
+  >
   options: Partial<filterType>
 }
 
@@ -34,18 +37,18 @@ export const Filter = ({ filter, setFilter, options }: FilterProps) => {
                   <li key={i}>
                     <FilterItem
                       title={atype}
-                      checked={filter.activitytype.indexOf(atype) !== -1}
+                      checked={filter.type.indexOf(atype) !== -1}
                       check={(isChecked: boolean) =>
                         isChecked
                           ? setFilter({
                               ...filter,
-                              activitytype: filter.activitytype.filter(
+                              type: filter.type.filter(
                                 (filterAType) => filterAType !== atype
                               ),
                             })
                           : setFilter({
                               ...filter,
-                              activitytype: [atype, ...filter.activitytype],
+                              type: [atype, ...filter.type],
                             })
                       }
                     />
@@ -62,20 +65,20 @@ export const Filter = ({ filter, setFilter, options }: FilterProps) => {
               <FilterSection
                 canSelect={true}
                 title={course.name}
-                checked={filter.course.some((c) => c.name === course.name)}
+                checked={filter.courses.some((c) => c.name === course.name)}
                 check={(isChecked: boolean) =>
                   isChecked
                     ? setFilter({
                         ...filter,
-                        course: filter.course.filter(
+                        courses: filter.courses.filter(
                           (c) => c.name !== course.name
                         ),
                       })
                     : setFilter({
                         ...filter,
-                        course: [
+                        courses: [
                           { name: course.name, chapters: [] },
-                          ...filter.course,
+                          ...filter.courses,
                         ],
                       })
                 }
@@ -84,9 +87,8 @@ export const Filter = ({ filter, setFilter, options }: FilterProps) => {
                   {course.chapters.map((chapter, j) => (
                     <li key={j}>
                       <FilterItem
-                        filter={filter}
                         title={chapter}
-                        checked={filter.course.some(
+                        checked={filter.courses.some(
                           (c) =>
                             c.name === course.name &&
                             c.chapters.indexOf(chapter) !== -1
@@ -95,7 +97,7 @@ export const Filter = ({ filter, setFilter, options }: FilterProps) => {
                           isChecked
                             ? setFilter({
                                 ...filter,
-                                course: filter.course.map((c) =>
+                                courses: filter.courses.map((c) =>
                                   c.name == course.name
                                     ? {
                                         name: c.name,
@@ -108,7 +110,7 @@ export const Filter = ({ filter, setFilter, options }: FilterProps) => {
                               })
                             : setFilter({
                                 ...filter,
-                                course: filter.course.map((c) =>
+                                courses: filter.courses.map((c) =>
                                   c.name == course.name
                                     ? {
                                         ...c,

@@ -1,10 +1,10 @@
 'use client'
-import { Loader } from 'components/Loader'
 import { ClientProvider } from 'lib/server/trpc/provider'
 import { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import React from 'react'
 import { CourseContextProvider } from './courseContext'
+import { StateContextProvider } from './stateContext'
 
 const ContextWrapper = ({
   children,
@@ -14,12 +14,10 @@ const ContextWrapper = ({
   session: Session
 }) => {
   return (
-    //TODO: remove the loader pls
     <SessionProvider session={session}>
       <CourseContextProvider>
         <ClientProvider>
-          <Loader />
-          {children}
+          <StateContextProvider>{children}</StateContextProvider>
         </ClientProvider>
       </CourseContextProvider>
     </SessionProvider>
