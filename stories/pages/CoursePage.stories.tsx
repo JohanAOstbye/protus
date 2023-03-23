@@ -1,25 +1,9 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { CourseContextProvider } from 'components/context/courseContext'
 import { Course } from 'lib/sanity/sanity.queries'
 import Layout from 'components/layout'
 import { SessionProvider } from 'next-auth/react'
 import CoursePage from 'components/pages/CoursePage'
-
-const mock: Course = {
-  _id: 'string1',
-  name: 'Java',
-  page: {
-    _id: 'sad',
-  },
-  slugs: [
-    { title: 'Variables and Operators', slug: 'ole' },
-    { title: 'String', slug: 'dole' },
-    { title: 'Boolean Expressions', slug: 'doffen' },
-    { title: 'If-Else', slug: 'donald' },
-    { title: 'Two-Dimensional Arrays', slug: 'donald' },
-  ],
-}
 
 const mock2: Course[] = [
   {
@@ -59,10 +43,6 @@ export default {
 export const Primary: ComponentStory<typeof CoursePage> = () => (
   <SessionProvider>
     <Layout>
-      {/* <CourseContextProvider
-        course={mock}
-        courses={mock2}
-      ></CourseContextProvider> */}
       <CoursePage data={mock2} />
     </Layout>
   </SessionProvider>

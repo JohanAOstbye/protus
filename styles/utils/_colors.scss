@@ -9,9 +9,8 @@ $surf-grey: #363636;
 $surf-lightgrey: #676767;
 $surf-hovergrey: #4b4b4b;
 
-$surf-purple: #A500C0;
-$surf-orange: #FF3D00;
-
+$surf-purple: #a500c0;
+$surf-orange: #ff3d00;
 
 $surf-grad1: #008bc7;
 $surf-grad2: #76ffff;
@@ -30,9 +29,3 @@ $surf-gradient-dark: $surf-dark-grad1, $surf-dark-grad2;
   background: -o-linear-gradient($direction, $list);
   background: linear-gradient($direction, $list);
 }
-
-/* usage
-.sidebar {
-    @include gradient(left, $surf-gradient);
-}
- */

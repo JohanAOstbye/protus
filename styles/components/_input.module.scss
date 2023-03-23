@@ -4,20 +4,31 @@
 
 .input {
   @include input-style-reset;
-  border-radius: $border-radius--s;
+  min-width: $spacing--big;
   padding-inline: $spacing--xxs;
   padding-block: $spacing--xxxxs;
+  border-radius: $border-radius--s;
   @include type($font--s);
-  background-color: white;
-  color: $surf-bg;
-  min-width: $spacing--big;
-  &::placeholder {
-    opacity: 0.5;
-    color: inherit;
-  }
 
   @include breakpoint-sm {
     padding-inline: $spacing--xs;
     padding-block: $spacing--xxxs;
+  }
+
+  &_dark {
+    background-color: $surf-darkgrey;
+    color: rgba($surf-text, 0.7);
+    &::placeholder {
+      opacity: 0.8;
+      color: inherit;
+    }
+  }
+  &_default {
+    background-color: white;
+    color: rgba($surf-bg, 0.7);
+    &::placeholder {
+      opacity: 0.8;
+      color: inherit;
+    }
   }
 }

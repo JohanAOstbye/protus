@@ -1,9 +1,9 @@
 // SignInPage.stories.ts|tsx
 
-import React, { ReactPropTypes } from 'react'
+import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { SignInPage } from 'components/pages/auth/SignInPage'
+import { SignInPage as Page } from 'components/pages/auth/SignInPage'
 import Layout from 'components/layout'
 import StroyContext from 'stories/assets/StoryContext'
 
@@ -13,13 +13,13 @@ export default {
    * to learn how to generate automatic titles
    */
   title: 'Pages/SignInPage',
-  component: SignInPage,
-} as ComponentMeta<typeof SignInPage>
+  component: Page,
+} as ComponentMeta<typeof Page>
 
-export const Primary: ComponentStory<typeof SignInPage> = () => (
+export const SignInPage: ComponentStory<typeof Page> = () => (
   <StroyContext>
     <Layout>
-      <SignInPage csrfToken={'prank'} />
+      <Page csrfToken={'prank'} />
     </Layout>
   </StroyContext>
 )
