@@ -1,10 +1,7 @@
 'use client'
-import { ActivitiesRouterInput } from 'lib/server/trpc/api/router/activities'
 import { trpc } from 'lib/server/trpc/provider'
 import { groupType } from 'lib/types/course-api/group'
 import { learnerType } from 'lib/types/course-api/learner'
-import { courseType } from 'lib/types/sanity'
-import { useRouter } from 'next/router'
 import React, {
   createContext,
   useState,
@@ -33,9 +30,7 @@ interface StateContextProviderProps {
 export const StateContextProvider = (props: StateContextProviderProps) => {
   const [learners, setLearners] = useState<learnerType[]>(props.learners || [])
   const [groups, setGroups] = useState<groupType[]>(props.groups || [])
-  const prank = trpc.activities.get.useQuery()
-
-  const router = useRouter()
+  const prank = trpc.state.get.useQuery()
 
   useEffect(() => {
     if (prank.isSuccess) {
@@ -46,7 +41,7 @@ export const StateContextProvider = (props: StateContextProviderProps) => {
       setLearners([])
       setGroups([])
     }
-  }, [router.asPath])
+  }, [])
 
   const memoedState = useMemo(() => ({ learners, groups }), [prank])
 

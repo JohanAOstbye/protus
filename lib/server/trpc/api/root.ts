@@ -1,4 +1,5 @@
 import { activitiesRouter } from './router/activities'
+import { stateRouter } from './router/state'
 import { createTRPCRouter } from './trpc'
 // import { exampleRouter } from "./routers/example"; //TODO create a similar one
 
@@ -9,6 +10,7 @@ import { createTRPCRouter } from './trpc'
  */
 export const appRouter = createTRPCRouter({
   activities: activitiesRouter,
+  state: stateRouter,
 })
 
 // export type definition of API
