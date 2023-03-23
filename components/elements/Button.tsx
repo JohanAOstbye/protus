@@ -1,4 +1,5 @@
 import { Colors } from 'lib/types/style'
+import Link from 'next/link'
 import React from 'react'
 import style from 'styles/components/_button.module.scss'
 
@@ -8,7 +9,7 @@ export interface ButtonProps {
   url?: string
   onClick?: React.MouseEventHandler<HTMLButtonElement>
   //   outline?: boolean
-  color?: Extract<Colors, 'blue' | 'blue-dark' | 'blue-grey'>
+  color?: Extract<Colors, 'blue' | 'blue_dark' | 'blue_grey'>
   target?: string
   disabled?: boolean
   className?: string
@@ -25,21 +26,24 @@ export const Button = ({
   className,
 }: ButtonProps) => {
   return url ? (
-    <a
-      className={
-        `${style.button} ${style[`button-${color}`]}` + className
-          ? className
-          : ''
-      }
-      href={url}
-      target={target}
-    >
-      {text ? text : children}
-    </a>
+    <Link href={url} target={target} passHref legacyBehavior>
+      <a
+        className={
+          `${style.button} ${style.button_link} ${style[`button_${color}`]}` +
+          className
+            ? className
+            : ''
+        }
+      >
+        {text ? text : children}
+      </a>
+    </Link>
   ) : (
     <button
       onClick={onClick}
-      className={`${style.button} ${style[`button-${color}`]}`}
+      className={`${style.button} ${style.button_button} ${
+        style[`button_${color}`]
+      }`}
       disabled={disabled}
     >
       {text ? text : children}
