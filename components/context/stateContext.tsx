@@ -4,6 +4,7 @@ import { trpc } from 'lib/server/trpc/provider'
 import { groupType } from 'lib/types/course-api/group'
 import { learnerType } from 'lib/types/course-api/learner'
 import { courseType } from 'lib/types/sanity'
+import { useRouter } from 'next/router'
 import React, {
   createContext,
   useState,
@@ -13,34 +14,28 @@ import React, {
 } from 'react'
 
 type StateContextType = {
-  //   course: courseType | undefined
-  //   courses: courseType[]
-  //   updateCourse: (course: courseType) => void
-  //   updateCourses: (courses: courseType[]) => void
+  learners: learnerType[]
+  groups: groupType[]
 }
 
 const StateContextDefaultvalue: StateContextType = {
-  course: undefined,
-  courses: [],
-  updateCourse: function (course: courseType): void {
-    throw new Error('Function not implemented.')
-  },
-  updateCourses: function (courses: courseType[]): void {
-    throw new Error('Function not implemented.')
-  },
+  learners: [],
+  groups: [],
 }
 
 const StateContext = createContext<StateContextType>(StateContextDefaultvalue)
 
 interface StateContextProviderProps {
   children: React.ReactNode
-  course?: courseType | undefined
-  courses?: courseType[]
+  learners?: learnerType[]
+  groups?: groupType[]
 }
 export const StateContextProvider = (props: StateContextProviderProps) => {
-  const [learners, setLearners] = useState<undefined | learnerType[]>()
-  const [groups, setGroups] = useState<undefined | groupType[]>()
+  const [learners, setLearners] = useState<learnerType[]>(props.learners || [])
+  const [groups, setGroups] = useState<groupType[]>(props.groups || [])
   const prank = trpc.activities.get.useQuery()
+
+  const router = useRouter()
 
   useEffect(() => {
     if (prank.isSuccess) {
@@ -48,10 +43,10 @@ export const StateContextProvider = (props: StateContextProviderProps) => {
       setGroups(prank.data.groups)
     }
     return () => {
-      setLearners(undefined)
-      setGroups(undefined)
+      setLearners([])
+      setGroups([])
     }
-  }, [])
+  }, [router.asPath])
 
   const memoedState = useMemo(() => ({ learners, groups }), [prank])
 
