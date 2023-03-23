@@ -16,6 +16,10 @@ export const ProfilePage = () => {
     return () => setUser(undefined)
   }, [session])
 
+  const update = async () => {
+    //trpc update user
+  }
+
   return (
     <div className={style.page}>
       {session && session.user ? (
@@ -37,7 +41,7 @@ export const ProfilePage = () => {
                 color="dark"
               />
               <div>
-                <Button>Save</Button>
+                <Button onClick={() => update()}>Save</Button>
               </div>
             </div>
           </>
