@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { Input, InputProps } from 'components/elements/Input'
+import { Input as Element, InputProps } from 'components/elements/Input'
 
 const inputMock: InputProps = {
   placeholder: 'Username...',
@@ -13,9 +13,12 @@ export default {
    * to learn how to generate automatic titles
    */
   title: 'Elements/Input',
-  component: Input,
-} as ComponentMeta<typeof Input>
+  component: Element,
+} as ComponentMeta<typeof Element>
 
-export const Primary: ComponentStory<typeof Input> = () => (
-  <Input {...inputMock} />
+export const Primary: ComponentStory<typeof Element> = () => (
+  <div>
+    <Element {...inputMock} />
+    <Element {...inputMock} color="dark" />
+  </div>
 )
