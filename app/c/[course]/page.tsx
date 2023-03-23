@@ -10,6 +10,8 @@ export default async function SlugRoute({
 }) {
   const course = await getCourse(params.course)
 
+  console.log(course.page)
+
   return <ChapterPage data={course.page} />
 }
 
