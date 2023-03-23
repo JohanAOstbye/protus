@@ -2,7 +2,7 @@ import { Button } from 'components/elements/Button'
 import ProtusLabel from 'components/elements/ProtusLabel'
 import FrontPageImage from 'lib/assets/images/frontpageimage.svg'
 import style from 'styles/pages/_frontPage.module.scss'
-const FrontPage = () => {
+export const FrontPage = () => {
   return (
     <div className={style.page}>
       <div className={style.intro}>
@@ -20,5 +20,3 @@ const FrontPage = () => {
     </div>
   )
 }
-
-export default FrontPage
