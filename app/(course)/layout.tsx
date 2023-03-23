@@ -15,17 +15,12 @@ export default function RootLayout({
   const queryClient = new QueryClient()
 
   return (
-    <html lang="en">
-      <head />
-      <body>
-        <QueryClientProvider client={queryClient}>
-          <CourseContextProvider>
-            <Layout>
-              <Suspense fallback={<Loading />}>{children}</Suspense>
-            </Layout>
-          </CourseContextProvider>
-        </QueryClientProvider>
-      </body>
-    </html>
+    <QueryClientProvider client={queryClient}>
+      <CourseContextProvider>
+        <Layout>
+          <Suspense fallback={<Loading />}>{children}</Suspense>
+        </Layout>
+      </CourseContextProvider>
+    </QueryClientProvider>
   )
 }
