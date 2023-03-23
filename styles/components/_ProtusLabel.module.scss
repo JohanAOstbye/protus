@@ -1,10 +1,13 @@
 @use 'styles/utils/_mixins.scss' as *;
 
 .protus {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    letter-spacing: 0.1qmax;
-    font-size: 27px;
-    @include breakpoint-sm {
-      font-size: 35px;
-    }
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  letter-spacing: 0.1qmax;
+  font-size: 27px;
+  @include breakpoint-sm {
+    font-size: 35px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
 }

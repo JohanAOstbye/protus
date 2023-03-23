@@ -14,7 +14,7 @@ const FrontPage = () => {
         </p>
       </div>
       <div className={style.button}>
-        <Button text="Login"></Button>
+        <Button url="/auth/signin" text="Login" />
       </div>
       <FrontPageImage />
     </div>
