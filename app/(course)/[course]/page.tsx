@@ -1,16 +1,7 @@
-import Loading from 'components/elements/Loading'
 import ChapterPage from 'components/pages/chapter/ChapterPage'
 import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage'
 
-import {
-  getCourse,
-  getInitialCourse,
-  getSettings,
-} from 'lib/sanity/sanity.client'
-import { Suspense } from 'react'
-// import { PreviewSuspense } from 'next-sanity/preview'
-// import { previewData } from 'next/headers'
-// import { notFound } from 'next/navigation'
+import { getCourse } from 'lib/sanity/sanity.client'
 
 export default async function SlugRoute({
   params,

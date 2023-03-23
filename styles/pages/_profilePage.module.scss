@@ -1,0 +1,46 @@
+@use 'styles/utils/main' as *;
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: $spacing--xxs;
+  width: 100%;
+  padding: $spacing--xxs;
+
+  @include breakpoint-s {
+    flex-direction: row-reverse;
+  }
+  @include breakpoint-sm {
+    gap: $spacing--sm;
+  }
+  > div {
+    display: flex;
+    flex-direction: column;
+  }
+  .image {
+    align-items: center;
+  }
+
+  .details {
+    gap: $spacing--xxs;
+    > div {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    @include breakpoint-s {
+      margin-top: $spacing--m;
+    }
+  }
+
+  svg,
+  img {
+    width: 50%;
+    aspect-ratio: 1;
+    max-width: 200px;
+    @include breakpoint-s {
+      width: 100%;
+    }
+  }
+}
