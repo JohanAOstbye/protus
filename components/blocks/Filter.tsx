@@ -5,12 +5,12 @@ import FilterIcon from 'lib/assets/icons/filterIcon.svg'
 import { filterType } from 'lib/types/componentTypes'
 import FilterItem from 'components/elements/FilterItem'
 import useOutsideClick from 'components/hooks/useOutsideClick.hook'
-import { ActivitiesRouterInput } from 'lib/server/trpc/api/router/activities'
+import { activitiesRouterInput } from 'lib/server/trpc/api/router/activities'
 
 export interface FilterProps {
-  filter: ActivitiesRouterInput['getAllActivities']
+  filter: activitiesRouterInput['getAll']
   setFilter: React.Dispatch<
-    React.SetStateAction<ActivitiesRouterInput['getAllActivities']>
+    React.SetStateAction<activitiesRouterInput['getAll']>
   >
   options: Partial<filterType>
 }
@@ -58,9 +58,9 @@ export const Filter = ({ filter, setFilter, options }: FilterProps) => {
             </FilterSection>
           </li>
         )}
-        {options.course &&
-          options.course.length !== 0 &&
-          options.course.map((course, i) => (
+        {options.courses &&
+          options.courses.length !== 0 &&
+          options.courses.map((course, i) => (
             <li key={i}>
               <FilterSection
                 canSelect={true}
