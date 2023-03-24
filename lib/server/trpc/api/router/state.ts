@@ -37,105 +37,151 @@ export const stateRouter = createTRPCRouter({
       const parsed = response.safeParse(cleanedJSON)
       if (!parsed.success) throw new Error(parsed.error.message)
       const topics = parsed.data.topics
-      const activities = topics.reduce<activityLocalType[]>((acc, topic) => {
-        if (topic.activities.Challenges)
-          acc.concat(
-            topic.activities.Challenges.map((act) => {
-              return {
-                ...act,
-                type: 'Challenge',
-                chapter: topic.name,
-                course: 'Java',
-              }
-            })
-          )
-        if (topic.activities.Coding)
-          acc.concat(
-            topic.activities.Coding.map((act) => {
-              return {
-                ...act,
-                type: 'Exercise',
-                chapter: topic.name,
-                course: 'Java',
-              }
-            })
-          )
-        if (topic.activities.Examples)
-          acc.concat(
-            topic.activities.Examples.map((act) => {
-              return {
-                ...act,
-                type: 'Example',
-                chapter: topic.name,
-                course: 'Java',
-              }
-            })
-          )
+      let activities: activityLocalType[] = topics.reduce<activityLocalType[]>(
+        (acc, topic) => {
+          if (topic.activities.Challenges) {
+            acc = [
+              ...acc,
+              ...topic.activities.Challenges.map<activityLocalType>((act) => {
+                return {
+                  ...act,
+                  type: 'Challenge',
+                  chapter: topic.name,
+                  course: 'Java',
+                }
+              }),
+            ]
+          }
+          if (topic.activities.Coding) {
+            acc = [
+              ...acc,
+              ...topic.activities.Coding.map<activityLocalType>((act) => {
+                return {
+                  ...act,
+                  type: 'Exercise',
+                  chapter: topic.name,
+                  course: 'Java',
+                }
+              }),
+            ]
+          }
+          if (topic.activities.Examples) {
+            acc = [
+              ...acc,
+              ...topic.activities.Examples.map<activityLocalType>((act) => {
+                return {
+                  ...act,
+                  type: 'Example',
+                  chapter: topic.name,
+                  course: 'Java',
+                }
+              }),
+            ]
+          }
 
-        return acc
-      }, [])
+          return acc
+        },
+        []
+      )
 
       console.log('inserting activivies')
-
-      await ctx.prisma.$transaction(
-        activities.map((activity) =>
-          ctx.prisma.activity.upsert({
-            where: { url: activity.url },
-            create: {
-              url: activity.url,
-              name: activity.name,
-              type: activity.type,
-              Chapter: {
-                connectOrCreate: {
-                  where: {
-                    name_courseName: {
-                      name: activity.name,
-                      courseName: activity.course,
-                    },
-                  },
-                  create: {
-                    name: activity.chapter,
-                    Course: {
-                      connectOrCreate: {
-                        where: {
-                          name: activity.name,
-                        },
-                        create: { name: activity.name },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            update: {
-              url: activity.url,
-              name: activity.name,
-              type: activity.type,
-              Chapter: {
-                connectOrCreate: {
-                  where: {
-                    name_courseName: {
-                      name: activity.name,
-                      courseName: activity.course,
-                    },
-                  },
-                  create: {
-                    name: activity.chapter,
-                    Course: {
-                      connectOrCreate: {
-                        where: {
-                          name: activity.name,
-                        },
-                        create: { name: activity.name },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          })
-        )
+      const existingActivityUrls = (
+        await ctx.prisma.activity.findMany({ select: { url: true } })
+      ).map((url) => url.url)
+      activities = activities.filter(
+        (act) => !existingActivityUrls.includes(act.url)
       )
+      if (activities.length > 0) {
+        const queries = []
+
+        const existingCourses = (
+          await ctx.prisma.course.findMany({ select: { name: true } })
+        ).map((course) => course.name)
+
+        const newCourses = activities
+          .reduce<string[]>((acc, act) => {
+            if (!acc.includes(act.course)) acc.push(act.course)
+            return acc
+          }, [])
+          .filter((course) => !existingCourses.includes(course))
+          .map((course) => {
+            return { name: course }
+          })
+        console.log('newCourses: ', newCourses.length)
+        if (newCourses.length > 0) {
+          const coursesQuery = ctx.prisma.course.createMany({
+            data: newCourses,
+          })
+          queries.push(coursesQuery)
+        }
+
+        const existingChapters: { name: string; courseName: string }[] =
+          await ctx.prisma.chapter.findMany({
+            select: { name: true, courseName: true },
+          })
+
+        const newChapters = activities
+          .reduce<{ name: string; course: string }[]>((acc, act) => {
+            if (
+              !acc.find(
+                (ch) => ch.name === act.chapter && ch.course === act.course
+              )
+            )
+              acc.push({ name: act.chapter, course: act.course })
+            return acc
+          }, [])
+          .filter(
+            (chapter) =>
+              !existingChapters.some(
+                (ch) =>
+                  ch.name === chapter.name && ch.courseName === chapter.course
+              )
+          )
+          .map((chapter) => {
+            return {
+              name: chapter.name,
+              courseName: chapter.course,
+            }
+          })
+
+        console.log('newChapters: ', newChapters.length)
+
+        if (newChapters.length > 0) {
+          const chaptersQuery = ctx.prisma.chapter.createMany({
+            data: newChapters,
+          })
+          queries.push(chaptersQuery)
+        }
+
+        console.log('activities: ', activities.length)
+
+        if (activities.length > 0) {
+          const activitiesQuery = activities.map((activity) =>
+            ctx.prisma.activity.create({
+              data: {
+                url: activity.url,
+                name: activity.name,
+                type: activity.type,
+                Chapter: {
+                  connect: {
+                    name_courseName: {
+                      name: activity.chapter,
+                      courseName: activity.course,
+                    },
+                  },
+                },
+              },
+            })
+          )
+          queries.push(...activitiesQuery)
+        }
+
+        await ctx.prisma.$transaction(queries)
+
+        console.log('done inserting activities')
+      } else {
+        console.log('no new activities')
+      }
 
       return parsed.data
     } catch (error) {
