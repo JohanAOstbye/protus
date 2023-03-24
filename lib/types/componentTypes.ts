@@ -10,6 +10,6 @@ export type courseFilterType = {
   chapters: string[]
 }
 export type filterType = {
-  course: courseFilterType[]
+  courses: courseFilterType[]
   activitytype: Extract<activityType, 'Challenge' | 'Exercise'>[]
 }

@@ -7,7 +7,7 @@ import SearchIcon from 'lib/assets/icons/search.svg'
 import style from 'styles/pages/_activitiesPage.module.scss'
 import { trpc } from 'lib/server/trpc/provider'
 import Loading from 'components/elements/Loading'
-import { ActivitiesRouterInput } from 'lib/server/trpc/api/router/activities'
+import { activitiesRouterInput } from 'lib/server/trpc/api/router/activities'
 
 type activitiesPageProps = {
   options: filterType
@@ -16,7 +16,7 @@ type activitiesPageProps = {
 const ActivitiesPage = ({
   options = {
     activitytype: ['Exercise', 'Challenge'],
-    course: [
+    courses: [
       {
         name: 'course 1',
         chapters: ['chapter 1', 'chapter 2', 'chapter 3'],
@@ -34,14 +34,12 @@ const ActivitiesPage = ({
 }: activitiesPageProps) => {
   const [query, setQuery] = useState('')
   const deferredQuery = useDeferredValue(query) //TODO: fix søk i query
-  const [filter, setFilter] = useState<
-    ActivitiesRouterInput['getAllActivities']
-  >({
+  const [filter, setFilter] = useState<activitiesRouterInput['getAll']>({
     type: [],
     courses: [],
   })
 
-  const activities = trpc.activities.getAllActivities.useQuery(filter)
+  const activities = trpc.activities.getAll.useQuery(filter)
 
   return (
     <div>
