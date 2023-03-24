@@ -6,36 +6,81 @@ export const activitiesRouter = createTRPCRouter({
   getAll: publicProcedure
     .input(
       z.object({
-        type: z.array(z.enum(['Challenge', 'Exercise'])),
-        courses: z.array(
-          z.object({
-            chapters: z.array(z.string()),
-            name: z.string(),
-          })
-        ),
+        limit: z.number().min(1).max(100).optional().default(20),
+        cursor: z.string().optional(),
+        filter: z.object({
+          query: z.string().optional(),
+          type: z.array(z.enum(['Challenge', 'Exercise'])),
+          courses: z.array(
+            z.object({
+              chapters: z.array(z.string()),
+              name: z.string(),
+            })
+          ),
+        }),
       })
     )
     .query(async ({ ctx, input }) => {
-      return await ctx.prisma.activity.findMany({
+      const { limit, cursor, filter } = input
+
+      let where = {}
+
+      console.log('filter: ', {
+        type: filter.type.length > 0 ? { in: filter.type } : undefined,
+        Chapter:
+          filter.courses.length > 0
+            ? {
+                OR: filter.courses.reduce(
+                  (acc: { name?: string; courseName: string }[], course) =>
+                    course.chapters
+                      ? acc.concat(
+                          course.chapters.map((chapter) => {
+                            return { name: chapter, courseName: course.name }
+                          })
+                        )
+                      : acc.concat([{ courseName: course.name }]),
+                  []
+                ),
+              }
+            : undefined,
+      })
+
+      const items = await ctx.prisma.activity.findMany({
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: { updatedAt: 'desc' },
         where: {
-          type: {
-            in: input.type,
-          },
-          Chapter: {
-            OR: input.courses.reduce(
-              (acc: { name?: string; courseName: string }[], course) =>
-                course.chapters
-                  ? acc.concat(
-                      course.chapters.map((chapter) => {
-                        return { name: chapter, courseName: course.name }
-                      })
-                    )
-                  : acc.concat([{ courseName: course.name }]),
-              []
-            ),
-          },
+          type: filter.type.length > 0 ? { in: filter.type } : undefined,
+          Chapter:
+            filter.courses.length > 0
+              ? {
+                  OR: filter.courses.reduce(
+                    (acc: { name?: string; courseName: string }[], course) =>
+                      course.chapters
+                        ? acc.concat(
+                            course.chapters.map((chapter) => {
+                              return { name: chapter, courseName: course.name }
+                            })
+                          )
+                        : acc.concat([{ courseName: course.name }]),
+                    []
+                  ),
+                }
+              : undefined,
         },
       })
+
+      let nextCursor: typeof cursor | undefined = undefined
+      if (items.length > limit) {
+        const nextItem = items.pop()
+        nextCursor = nextItem!.id
+      }
+      console.log('items: ', items)
+
+      return {
+        items,
+        nextCursor,
+      }
     }),
 
   getByID: publicProcedure

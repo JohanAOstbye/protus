@@ -1,17 +1,14 @@
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import FilterSection from 'components/elements/FilterSection'
 import style from 'styles/components/_filter.module.scss'
 import FilterIcon from 'lib/assets/icons/filterIcon.svg'
 import { filterType } from 'lib/types/componentTypes'
 import FilterItem from 'components/elements/FilterItem'
 import useOutsideClick from 'components/hooks/useOutsideClick.hook'
-import { activitiesRouterInput } from 'lib/server/trpc/api/router/activities'
 
 export interface FilterProps {
-  filter: activitiesRouterInput['getAll']
-  setFilter: React.Dispatch<
-    React.SetStateAction<activitiesRouterInput['getAll']>
-  >
+  filter: filterType
+  setFilter: React.Dispatch<React.SetStateAction<filterType>>
   options: Partial<filterType>
 }
 
@@ -29,26 +26,26 @@ export const Filter = ({ filter, setFilter, options }: FilterProps) => {
         className={style.list}
         style={isVisible ? { display: 'flex' } : { display: 'none', height: 0 }}
       >
-        {options.activitytype && (
+        {options.type && (
           <li>
             <FilterSection canSelect={false} title={'Activity types'}>
               <ul>
-                {options.activitytype.map((atype, i) => (
+                {options.type.map((type, i) => (
                   <li key={i}>
                     <FilterItem
-                      title={atype}
-                      checked={filter.type.indexOf(atype) !== -1}
+                      title={type}
+                      checked={filter.type.indexOf(type) !== -1}
                       check={(isChecked: boolean) =>
                         isChecked
                           ? setFilter({
                               ...filter,
                               type: filter.type.filter(
-                                (filterAType) => filterAType !== atype
+                                (filterType) => filterType !== type
                               ),
                             })
                           : setFilter({
                               ...filter,
-                              type: [atype, ...filter.type],
+                              type: [type, ...filter.type],
                             })
                       }
                     />

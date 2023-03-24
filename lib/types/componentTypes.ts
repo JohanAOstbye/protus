@@ -1,15 +1,12 @@
 import { activityType } from '@prisma/client'
+import { activitiesRouterInput } from 'lib/server/trpc/api/router/activities'
 
 export type Block = {
   name: string
   data: any
 }
 
-export type courseFilterType = {
-  name: string
-  chapters: string[]
-}
-export type filterType = {
-  courses: courseFilterType[]
-  activitytype: Extract<activityType, 'Challenge' | 'Exercise'>[]
-}
+export type filterType = Omit<
+  activitiesRouterInput['getAll']['filter'],
+  'query'
+>

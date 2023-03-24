@@ -16,7 +16,7 @@ export default async function IndexRoute() {
 
   return (
     <ActivitiesPage
-      options={{ courses: courses, activitytype: ['Exercise', 'Challenge'] }}
+      options={{ courses: courses, type: ['Exercise', 'Challenge'] }}
     />
   )
 }

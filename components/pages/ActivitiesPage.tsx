@@ -2,20 +2,22 @@
 import ActivityList from 'components/blocks/ActivityList'
 import Filter from 'components/blocks/Filter'
 import { filterType } from 'lib/types/componentTypes'
-import React, { useDeferredValue, useState } from 'react'
+import React, { useDeferredValue, useEffect, useState } from 'react'
 import SearchIcon from 'lib/assets/icons/search.svg'
 import style from 'styles/pages/_activitiesPage.module.scss'
 import { trpc } from 'lib/server/trpc/provider'
 import Loading from 'components/elements/Loading'
 import { activitiesRouterInput } from 'lib/server/trpc/api/router/activities'
+import { ActivityCardProps } from 'components/elements/ActivityCard'
+import { Button } from 'components/elements/Button'
 
 type activitiesPageProps = {
-  options: filterType
+  options?: filterType
 }
 
 const ActivitiesPage = ({
   options = {
-    activitytype: ['Exercise', 'Challenge'],
+    type: ['Exercise', 'Challenge'],
     courses: [
       {
         name: 'course 1',
@@ -33,13 +35,23 @@ const ActivitiesPage = ({
   },
 }: activitiesPageProps) => {
   const [query, setQuery] = useState('')
-  const deferredQuery = useDeferredValue(query) //TODO: fix søk i query
-  const [filter, setFilter] = useState<activitiesRouterInput['getAll']>({
+  const [filter, setFilter] = useState<filterType>({
     type: [],
     courses: [],
   })
+  const deferredFilter = useDeferredValue({ query: query, ...filter }) //TODO: fix søk i query
 
-  const activities = trpc.activities.getAll.useQuery(filter)
+  const activities = trpc.activities.getAll.useInfiniteQuery(
+    { limit: 20, filter: filter },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      trpc: { abortOnUnmount: true },
+    }
+  )
+
+  useEffect(() => {
+    activities.refetch()
+  }, [deferredFilter])
 
   return (
     <div>
@@ -58,7 +70,21 @@ const ActivitiesPage = ({
       {activities.isLoading ? (
         <Loading />
       ) : (
-        activities.data && <ActivityList list={activities.data} />
+        activities.data && (
+          <ActivityList
+            list={activities.data.pages.reduce<ActivityCardProps[]>(
+              (acc, page) => {
+                return [...acc, ...page.items]
+              },
+              []
+            )}
+          />
+        )
+      )}
+      {activities.hasNextPage && (
+        <div>
+          <Button onClick={() => activities.fetchNextPage()}>Load more</Button>
+        </div>
       )}
     </div>
   )
