@@ -1,0 +1,14 @@
+@use 'styles/utils/_colors.scss' as *;
+
+.barChart {
+  // can remove height and width if the parent element has a defined height and width
+  width: 500px;
+  height: 500px;
+  background-color: white;
+  max-width: 100%;
+}
+
+:export {
+  colorText: $surf-text;
+  colorBackground: $surf-bg;
+}

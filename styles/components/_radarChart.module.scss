@@ -1,0 +1,12 @@
+@use 'styles/utils/_colors.scss' as *;
+
+.radarChart {
+  // can remove height and width if the parent element has a defined height and width
+  width: 500px;
+  height: 500px;
+}
+
+:export {
+  colorText: $surf-text;
+  colorBackground: $surf-bg;
+}
