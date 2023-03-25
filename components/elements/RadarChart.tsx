@@ -1,6 +1,5 @@
 import { ResponsiveRadar } from '@nivo/radar'
 import style from 'styles/components/_radarChart.module.scss'
-import styles from '/styles/utils/_colors.scss'
 
 export interface RadarData {
   data: any
