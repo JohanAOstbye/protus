@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import FilterSection from 'components/elements/FilterSection'
 import style from 'styles/components/_filter.module.scss'
 import FilterIcon from 'lib/assets/icons/filterIcon.svg'
@@ -26,26 +26,26 @@ export const Filter = ({ filter, setFilter, options }: FilterProps) => {
         className={style.list}
         style={isVisible ? { display: 'flex' } : { display: 'none', height: 0 }}
       >
-        {options.activitytype && (
+        {options.type && (
           <li>
             <FilterSection canSelect={false} title={'Activity types'}>
               <ul>
-                {options.activitytype.map((atype, i) => (
+                {options.type.map((type, i) => (
                   <li key={i}>
                     <FilterItem
-                      title={atype}
-                      checked={filter.activitytype.indexOf(atype) !== -1}
+                      title={type}
+                      checked={filter.type.indexOf(type) !== -1}
                       check={(isChecked: boolean) =>
                         isChecked
                           ? setFilter({
                               ...filter,
-                              activitytype: filter.activitytype.filter(
-                                (filterAType) => filterAType !== atype
+                              type: filter.type.filter(
+                                (filterType) => filterType !== type
                               ),
                             })
                           : setFilter({
                               ...filter,
-                              activitytype: [atype, ...filter.activitytype],
+                              type: [type, ...filter.type],
                             })
                       }
                     />
@@ -55,27 +55,27 @@ export const Filter = ({ filter, setFilter, options }: FilterProps) => {
             </FilterSection>
           </li>
         )}
-        {options.course &&
-          options.course.length !== 0 &&
-          options.course.map((course, i) => (
+        {options.courses &&
+          options.courses.length !== 0 &&
+          options.courses.map((course, i) => (
             <li key={i}>
               <FilterSection
                 canSelect={true}
                 title={course.name}
-                checked={filter.course.some((c) => c.name === course.name)}
+                checked={filter.courses.some((c) => c.name === course.name)}
                 check={(isChecked: boolean) =>
                   isChecked
                     ? setFilter({
                         ...filter,
-                        course: filter.course.filter(
+                        courses: filter.courses.filter(
                           (c) => c.name !== course.name
                         ),
                       })
                     : setFilter({
                         ...filter,
-                        course: [
+                        courses: [
                           { name: course.name, chapters: [] },
-                          ...filter.course,
+                          ...filter.courses,
                         ],
                       })
                 }
@@ -84,9 +84,8 @@ export const Filter = ({ filter, setFilter, options }: FilterProps) => {
                   {course.chapters.map((chapter, j) => (
                     <li key={j}>
                       <FilterItem
-                        filter={filter}
                         title={chapter}
-                        checked={filter.course.some(
+                        checked={filter.courses.some(
                           (c) =>
                             c.name === course.name &&
                             c.chapters.indexOf(chapter) !== -1
@@ -95,7 +94,7 @@ export const Filter = ({ filter, setFilter, options }: FilterProps) => {
                           isChecked
                             ? setFilter({
                                 ...filter,
-                                course: filter.course.map((c) =>
+                                courses: filter.courses.map((c) =>
                                   c.name == course.name
                                     ? {
                                         name: c.name,
@@ -108,7 +107,7 @@ export const Filter = ({ filter, setFilter, options }: FilterProps) => {
                               })
                             : setFilter({
                                 ...filter,
-                                course: filter.course.map((c) =>
+                                courses: filter.courses.map((c) =>
                                   c.name == course.name
                                     ? {
                                         ...c,

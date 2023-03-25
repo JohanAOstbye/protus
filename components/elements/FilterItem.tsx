@@ -5,14 +5,12 @@ import style from 'styles/components/_filterItem.module.scss'
 import { filterType } from 'lib/types/componentTypes'
 
 export interface FilterItemProps {
-  filter?: filterType
   title: string
   checked: boolean
   check?: (isChecked: boolean) => void
 }
 
 export const FilterItem = ({
-  filter,
   title,
   checked,
   check = () => console.log('function not implemented'),

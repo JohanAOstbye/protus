@@ -3,7 +3,7 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import ActivityCard from 'components/elements/ActivityCard'
 
-const title = 'Time Operator'
+const title = 'Time Operator with an extremely long title hehe'
 const type = 'Exercise'
 
 export default {
@@ -16,5 +16,5 @@ export default {
 } as ComponentMeta<typeof ActivityCard>
 
 export const Primary: ComponentStory<typeof ActivityCard> = () => (
-  <ActivityCard title={title} type={type} />
+  <ActivityCard name={title} type={type} url={'/'} />
 )

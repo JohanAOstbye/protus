@@ -2,37 +2,60 @@
 import ActivityList from 'components/blocks/ActivityList'
 import Filter from 'components/blocks/Filter'
 import { filterType } from 'lib/types/componentTypes'
-import React, { useState } from 'react'
+import React, { useDeferredValue, useEffect, useState } from 'react'
 import SearchIcon from 'lib/assets/icons/search.svg'
 import style from 'styles/pages/_activitiesPage.module.scss'
+import { trpc } from 'lib/server/trpc/provider'
+import Loading from 'components/elements/Loading'
+import { activitiesRouterInput } from 'lib/server/trpc/api/router/activities'
+import { ActivityCardProps } from 'components/elements/ActivityCard'
+import { Button } from 'components/elements/Button'
 
-const mockdata: React.ComponentProps<typeof ActivityList>['list'] = [
-  { title: 'Time Operator', type: 'Exercise' },
-  { title: 'Variables', type: 'Challenge' },
-  { title: 'Time Operator', type: 'Exercise' },
-  { title: 'Lists', type: 'Challenge' },
-  { title: 'If and Else', type: 'Exercise' },
-  { title: 'For loops', type: 'Challenge' },
-  { title: 'Observebale and Observer', type: 'Exercise' },
-  { title: 'streams & stuff', type: 'Challenge' },
-  { title: 'Time Operator', type: 'Exercise' },
-  { title: 'Variables', type: 'Challenge' },
-  { title: 'Time Operator', type: 'Exercise' },
-  { title: 'Lists', type: 'Challenge' },
-  { title: 'If and Else', type: 'Exercise' },
-  { title: 'For loops', type: 'Challenge' },
-  { title: 'Observebale and Observer', type: 'Exercise' },
-  { title: 'streams & stuff', type: 'Challenge' },
-]
+type activitiesPageProps = {
+  options?: filterType
+}
 
-const ActivitiesPage = () => {
+const ActivitiesPage = ({
+  options = {
+    type: ['Exercise', 'Challenge'],
+    courses: [
+      {
+        name: 'course 1',
+        chapters: ['chapter 1', 'chapter 2', 'chapter 3'],
+      },
+      {
+        name: 'course 2',
+        chapters: ['chapter 1', 'chapter 2', 'chapter 3'],
+      },
+      {
+        name: 'course 3',
+        chapters: ['chapter 1', 'chapter 2', 'chapter 3'],
+      },
+    ],
+  },
+}: activitiesPageProps) => {
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<filterType>({
-    activitytype: [],
-    course: [],
+    type: [],
+    courses: [],
   })
+  const deferredFilter = useDeferredValue({ query: query, ...filter }) //TODO: fix søk i query
+
+  const activities = trpc.activities.getAll.useInfiniteQuery(
+    { limit: 20, filter: filter },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      trpc: { abortOnUnmount: true },
+    }
+  )
+
+  useEffect(() => {
+    // activities.refetch()
+    console.log('lol')
+  }, [deferredFilter])
+
   return (
-    <div>
+    <div className={style.page}>
       <div className={style.title}>Activities</div>
       <div className={style.search}>
         <input
@@ -44,28 +67,31 @@ const ActivitiesPage = () => {
         />
         <SearchIcon />
       </div>
-      <Filter
-        filter={filter}
-        setFilter={setFilter}
-        options={{
-          activitytype: ['example', 'exercise', 'challenge'],
-          course: [
-            {
-              name: 'course 1',
-              chapters: ['chapter 1', 'chapter 2', 'chapter 3'],
-            },
-            {
-              name: 'course 2',
-              chapters: ['chapter 1', 'chapter 2', 'chapter 3'],
-            },
-            {
-              name: 'course 3',
-              chapters: ['chapter 1', 'chapter 2', 'chapter 3'],
-            },
-          ],
-        }}
-      />
-      <ActivityList list={mockdata} />
+      <Filter filter={filter} setFilter={setFilter} options={options} />
+      {activities.isLoading ? (
+        <Loading />
+      ) : (
+        activities.data && (
+          <ActivityList
+            list={activities.data.pages.reduce<ActivityCardProps[]>(
+              (acc, page) => {
+                return [
+                  ...acc,
+                  ...page.items.map((item) => {
+                    return { name: item.name, type: item.type, url: item.url }
+                  }),
+                ]
+              },
+              []
+            )}
+          />
+        )
+      )}
+      {activities.hasNextPage && (
+        <div>
+          <Button onClick={() => activities.fetchNextPage()}>Load more</Button>
+        </div>
+      )}
     </div>
   )
 }

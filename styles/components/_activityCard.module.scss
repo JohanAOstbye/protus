@@ -21,7 +21,8 @@
     @include link-style-reset;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
+    height: 100%;
     min-height: max-content;
     width: 100%;
   }
@@ -34,11 +35,19 @@
     @include breakpoint-sm {
       height: $spacing--xl;
     }
+    margin-bottom: auto;
   }
 }
 
 .title {
   @include type($font--s);
+  line-height: 105%;
+  max-height: $spacing--l;
+  margin-top: $spacing--xxxs;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .type {

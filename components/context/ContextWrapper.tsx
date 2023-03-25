@@ -1,9 +1,10 @@
 'use client'
+import { ClientProvider } from 'lib/server/trpc/provider'
 import { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import React from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 import { CourseContextProvider } from './courseContext'
+import { StateContextProvider } from './stateContext'
 
 const ContextWrapper = ({
   children,
@@ -12,12 +13,13 @@ const ContextWrapper = ({
   children: React.ReactNode
   session: Session
 }) => {
-  const queryClient = new QueryClient()
   return (
     <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        <CourseContextProvider>{children}</CourseContextProvider>
-      </QueryClientProvider>
+      <CourseContextProvider>
+        <ClientProvider>
+          <StateContextProvider>{children}</StateContextProvider>
+        </ClientProvider>
+      </CourseContextProvider>
     </SessionProvider>
   )
 }

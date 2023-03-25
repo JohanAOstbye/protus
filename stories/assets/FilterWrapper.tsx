@@ -1,4 +1,5 @@
 import Filter from 'components/blocks/Filter'
+import { activitiesRouterInput } from 'lib/server/trpc/api/router/activities'
 import { filterType } from 'lib/types/componentTypes'
 import React, { useState } from 'react'
 
@@ -8,8 +9,8 @@ type filterWrapperProps = {
 
 const FilterWrapper = ({ options }: filterWrapperProps) => {
   const [filter, setFilter] = useState<filterType>({
-    activitytype: [],
-    course: [],
+    type: [],
+    courses: [],
   })
   return (
     <div>

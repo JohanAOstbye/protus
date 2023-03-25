@@ -12,8 +12,6 @@ const FrontPage = ({
   loading?: boolean
   data: courseType[]
 }) => {
-  console.log(data)
-
   return (
     <div className={style.container}>
       <div className={style.title}>Courses</div>
