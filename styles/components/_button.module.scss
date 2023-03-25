@@ -1,6 +1,7 @@
 @use 'styles/utils/main' as *;
 
 .button {
+<<<<<<< HEAD
   border-radius: $border-radius--s;
   padding-inline: $spacing--sm;
   padding-block: $spacing--xs;
@@ -15,6 +16,14 @@
     @include button-style-reset;
   }
 
+=======
+  border-radius: 6px;
+  padding-left: 30px;
+  padding-right: 30px;
+  height: 30px;
+  font-size: 14px;
+  letter-spacing: 0.01cm;
+>>>>>>> main
   &_blue {
     @include gradient(90deg, $surf-gradient);
     color: black;
@@ -24,6 +33,15 @@
     color: $surf-text;
   }
 
+<<<<<<< HEAD
+=======
+  &_link {
+    @include link-style-reset;
+  }
+  &_button {
+    @include button-style-reset;
+  }
+>>>>>>> main
   &:hover {
     opacity: 0.8;
   }
