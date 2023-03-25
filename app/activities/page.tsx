@@ -1,5 +1,4 @@
 import ActivitiesPage from 'components/pages/ActivitiesPage'
-<<<<<<< HEAD
 import { prisma } from 'lib/server/db'
 
 export default async function IndexRoute() {
@@ -17,9 +16,4 @@ export default async function IndexRoute() {
       options={{ courses: courses, type: ['Exercise', 'Challenge'] }}
     />
   )
-=======
-
-export default async function IndexRoute() {
-  return <ActivitiesPage />
->>>>>>> main
 }

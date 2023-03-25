@@ -21,7 +21,7 @@
     @include link-style-reset;
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: flex-end;
     height: 100%;
     min-height: max-content;
     width: 100%;

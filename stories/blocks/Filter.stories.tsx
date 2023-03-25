@@ -16,8 +16,8 @@ export default {
 export const Primary: ComponentStory<typeof Filter> = () => (
   <FilterWrapper
     options={{
-      activitytype: ['example', 'exercise'],
-      course: [
+      type: ['Challenge', 'Exercise'],
+      courses: [
         { name: 'course 1', chapters: ['chapter 1', 'chapter 2', 'chapter 3'] },
         { name: 'course 2', chapters: ['chapter 1', 'chapter 2', 'chapter 3'] },
         { name: 'course 3', chapters: ['chapter 1', 'chapter 2', 'chapter 3'] },
