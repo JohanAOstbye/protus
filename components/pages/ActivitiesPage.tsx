@@ -50,11 +50,12 @@ const ActivitiesPage = ({
   )
 
   useEffect(() => {
-    activities.refetch()
+    // activities.refetch()
+    console.log('lol')
   }, [deferredFilter])
 
   return (
-    <div>
+    <div className={style.page}>
       <div className={style.title}>Activities</div>
       <div className={style.search}>
         <input
@@ -74,7 +75,12 @@ const ActivitiesPage = ({
           <ActivityList
             list={activities.data.pages.reduce<ActivityCardProps[]>(
               (acc, page) => {
-                return [...acc, ...page.items]
+                return [
+                  ...acc,
+                  ...page.items.map((item) => {
+                    return { name: item.name, type: item.type, url: item.url }
+                  }),
+                ]
               },
               []
             )}

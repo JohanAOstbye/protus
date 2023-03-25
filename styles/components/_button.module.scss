@@ -1,14 +1,20 @@
-@use 'styles/utils/_colors.scss' as *;
-@use 'styles/utils/_mixins.scss' as *;
-@use 'styles/utils/_variables.scss' as *;
+@use 'styles/utils/main' as *;
 
 .button {
-  border-radius: 6px;
-  padding-left: 30px;
-  padding-right: 30px;
-  height: 30px;
-  font-size: 14px;
-  letter-spacing: 0.01cm;
+  border-radius: $border-radius--s;
+  padding-inline: $spacing--sm;
+  padding-block: $spacing--xs;
+
+  @include type($font--xxs);
+  letter-spacing: 0;
+
+  &_link {
+    @include link-style-reset;
+  }
+  &_button {
+    @include button-style-reset;
+  }
+
   &_blue {
     @include gradient(90deg, $surf-gradient);
     color: black;
@@ -18,17 +24,10 @@
     color: $surf-text;
   }
 
-  &_link {
-    @include link-style-reset;
-  }
-  &_button {
-    @include button-style-reset;
-  }
   &:hover {
     opacity: 0.8;
   }
   @include breakpoint-sm {
     font-size: 18px;
-    height: 40px;
   }
 }

@@ -7,22 +7,26 @@ import ActivityList from 'components/blocks/ActivityList'
 import { ActivityCardProps } from 'components/elements/ActivityCard'
 
 const mock: ActivityCardProps[] = [
-  { title: 'Time Operator', type: 'Exercise' },
-  { title: 'Variables', type: 'Challenge' },
-  { title: 'Time Operator', type: 'Exercise' },
-  { title: 'Lists', type: 'Challenge' },
-  { title: 'If and Else', type: 'Exercise' },
-  { title: 'For loops', type: 'Challenge' },
-  { title: 'Observebale and Observer', type: 'Exercise' },
-  { title: 'streams & stuff', type: 'Challenge' },
-  { title: 'Time Operator', type: 'Exercise' },
-  { title: 'Variables', type: 'Challenge' },
-  { title: 'Time Operator', type: 'Exercise' },
-  { title: 'Lists', type: 'Challenge' },
-  { title: 'If and Else', type: 'Exercise' },
-  { title: 'For loops', type: 'Challenge' },
-  { title: 'Observebale and Observer', type: 'Exercise' },
-  { title: 'streams & stuff', type: 'Challenge' },
+  {
+    url: '/',
+    name: 'Time Time Operator with an extremely long title hehe',
+    type: 'Exercise',
+  },
+  { url: '/', name: 'Variables', type: 'Challenge' },
+  { url: '/', name: 'Time Operator', type: 'Exercise' },
+  { url: '/', name: 'Lists', type: 'Challenge' },
+  { url: '/', name: 'If and Else', type: 'Exercise' },
+  { url: '/', name: 'For loops', type: 'Challenge' },
+  { url: '/', name: 'Observebale and Observer', type: 'Exercise' },
+  { url: '/', name: 'streams & stuff', type: 'Challenge' },
+  { url: '/', name: 'Time Operator', type: 'Exercise' },
+  { url: '/', name: 'Variables', type: 'Challenge' },
+  { url: '/', name: 'Time Operator', type: 'Exercise' },
+  { url: '/', name: 'Lists', type: 'Challenge' },
+  { url: '/', name: 'If and Else', type: 'Exercise' },
+  { url: '/', name: 'For loops', type: 'Challenge' },
+  { url: '/', name: 'Observebale and Observer', type: 'Exercise' },
+  { url: '/', name: 'streams & stuff', type: 'Challenge' },
 ]
 
 const mock2 = {}

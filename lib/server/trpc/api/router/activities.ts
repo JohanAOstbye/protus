@@ -23,27 +23,7 @@ export const activitiesRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { limit, cursor, filter } = input
 
-      let where = {}
-
-      console.log('filter: ', {
-        type: filter.type.length > 0 ? { in: filter.type } : undefined,
-        Chapter:
-          filter.courses.length > 0
-            ? {
-                OR: filter.courses.reduce(
-                  (acc: { name?: string; courseName: string }[], course) =>
-                    course.chapters
-                      ? acc.concat(
-                          course.chapters.map((chapter) => {
-                            return { name: chapter, courseName: course.name }
-                          })
-                        )
-                      : acc.concat([{ courseName: course.name }]),
-                  []
-                ),
-              }
-            : undefined,
-      })
+      console.log('quering activities')
 
       const items = await ctx.prisma.activity.findMany({
         take: limit + 1,
@@ -75,7 +55,7 @@ export const activitiesRouter = createTRPCRouter({
         const nextItem = items.pop()
         nextCursor = nextItem!.id
       }
-      console.log('items: ', items)
+      console.log(items)
 
       return {
         items,
