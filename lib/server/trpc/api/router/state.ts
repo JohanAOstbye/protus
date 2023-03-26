@@ -85,14 +85,19 @@ export const stateRouter = createTRPCRouter({
       )
 
       console.log('inserting activivies')
-      const existingActivityUrls = (
-        await ctx.prisma.activity.findMany({ select: { url: true } })
-      ).map((url) => url.url)
-      activities = activities.filter(
-        (act) => !existingActivityUrls.includes(act.url)
-      )
+      let existingActivityUrls: string[] = []
+      try {
+        existingActivityUrls = (
+          await ctx.prisma.activity.findMany({ select: { url: true } })
+        ).map((url) => url.url)
+        activities = activities.filter(
+          (act) => !existingActivityUrls.includes(act.url)
+        )
+      } catch (error) {
+        console.log("prisma error, couldn't get existing activity urls")
+      }
       if (activities.length > 0) {
-        const queries = []
+        const queries: any[] = []
 
         const existingCourses = (
           await ctx.prisma.course.findMany({ select: { name: true } })
@@ -176,7 +181,10 @@ export const stateRouter = createTRPCRouter({
           queries.push(...activitiesQuery)
         }
 
-        await ctx.prisma.$transaction(queries)
+        // await ctx.prisma.$transaction(queries)
+        queries[0].then(() =>
+          queries[1].then(async () => await Promise.all(queries.slice(2)))
+        )
 
         console.log('done inserting activities')
       } else {

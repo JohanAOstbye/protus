@@ -6,19 +6,10 @@ import { Sidebar } from './Sidebar'
 import style from 'styles/layout/_chapterLayout.module.scss'
 
 export const ChapterLayout = ({ children }: { children?: React.ReactNode }) => {
-  const { course } = useCourse()
-
   return (
     <div className={style.content}>
-      {course && course.name && course.slugs && (
-        <Sidebar
-          course={course.name}
-          closed={false}
-          chapters={course.slugs}
-          courseSlug={course.name}
-        />
-      )}
-      <article>{children}</article>
+      <Sidebar />
+      <>{children}</>
     </div>
   )
 }

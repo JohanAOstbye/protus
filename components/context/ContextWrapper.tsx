@@ -11,7 +11,7 @@ const ContextWrapper = ({
   session,
 }: {
   children: React.ReactNode
-  session: Session
+  session?: Session
 }) => {
   return (
     <SessionProvider session={session}>
