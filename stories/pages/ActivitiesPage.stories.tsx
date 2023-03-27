@@ -5,8 +5,8 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import ActivitiesPage from '../../components/pages/ActivitiesPage'
 import Layout from 'components/layout'
-import ChapterLayout from 'components/layout/ChapterLayout'
-import StoryContext from 'stories/assets/StoryContext'
+import CourseLayout from 'components/layout/CourseLayout'
+import { StoryContext } from 'stories/assets/StoryContext'
 
 export default {
   /* 👇 The title prop is optional.
@@ -20,9 +20,9 @@ export default {
 export const Primary: ComponentStory<typeof ActivitiesPage> = () => (
   <StoryContext>
     <Layout>
-      <ChapterLayout>
+      <CourseLayout>
         <ActivitiesPage />
-      </ChapterLayout>
+      </CourseLayout>
     </Layout>
   </StoryContext>
 )

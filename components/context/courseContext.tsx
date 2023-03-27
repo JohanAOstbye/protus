@@ -11,14 +11,14 @@ import React, {
 type courseContextType = {
   course: courseType | undefined
   courses: courseType[]
-  updateCourse: (course: courseType) => void
+  updateCourse: (course: courseType | undefined) => void
   updateCourses: (courses: courseType[]) => void
 }
 
 const courseContextDefaultvalue: courseContextType = {
   course: undefined,
   courses: [],
-  updateCourse: function (course: courseType): void {
+  updateCourse: function (course: courseType | undefined): void {
     throw new Error('Function not implemented.')
   },
   updateCourses: function (courses: courseType[]): void {
@@ -39,7 +39,7 @@ export const CourseContextProvider = (props: courseContextProviderProps) => {
   const [course, setCourse] = useState<courseType | undefined>(undefined)
   const [courses, setCourses] = useState<courseType[]>([])
 
-  const updateCourse = (course: courseType) => setCourse(course)
+  const updateCourse = (course: courseType | undefined) => setCourse(course)
   const updateCourses = (courses: courseType[]) => setCourses(courses)
 
   useEffect(() => {
@@ -63,6 +63,7 @@ export const CourseContextProvider = (props: courseContextProviderProps) => {
   return (
     // the Provider gives access to the context to its children
     <CourseContext.Provider value={memoedCourse}>
+      {/* <div>course: {course ? course.name : 'no course'}</div> */}
       {props.children}
     </CourseContext.Provider>
   )

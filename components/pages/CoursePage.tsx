@@ -1,26 +1,44 @@
-import AlertBanner from 'components/elements/AlertBanner'
-import CourseChip from 'components/elements/CourseChip'
+'use client'
+import { useCourse } from 'components/context/courseContext'
 import { courseType } from 'lib/types/sanity'
+import { useEffect } from 'react'
 import style from 'styles/pages/_coursePage.module.scss'
 
-const FrontPage = ({
+const CoursePage = ({
   preview = false,
   loading,
   data,
 }: {
   preview?: boolean
   loading?: boolean
-  data: courseType[]
+  data: courseType
 }) => {
+  const { course, updateCourse } = useCourse()
+
+  useEffect(() => {
+    console.log('changed', data, course, data._id == course?._id)
+    updateCourse(data)
+    if (!course || (data && !(data._id == course._id))) {
+      console.log('update course')
+    }
+    return () => {
+      updateCourse(undefined)
+    }
+  }, [data])
+
   return (
-    <div className={style.container}>
-      <div className={style.title}>Courses</div>
-      {preview && <AlertBanner loading={loading} />}
-      <main className={style.courses}>
-        {data && data.map((course) => <CourseChip name={course.name} />)}
-      </main>
+    <div className={style.page}>
+      {course ? (
+        <>
+          <h1>{course.name}</h1>
+        </>
+      ) : (
+        <h1>Course not found</h1>
+      )}
+
+      {JSON.stringify(course)}
     </div>
   )
 }
 
-export default FrontPage
+export default CoursePage

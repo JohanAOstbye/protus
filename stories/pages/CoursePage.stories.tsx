@@ -4,32 +4,7 @@ import { Course } from 'lib/sanity/sanity.queries'
 import Layout from 'components/layout'
 import { SessionProvider } from 'next-auth/react'
 import CoursePage from 'components/pages/CoursePage'
-
-const mock2: Course[] = [
-  {
-    _id: 'string2',
-    name: 'Java',
-    page: {
-      _id: 'sad',
-    },
-    slugs: [
-      { title: 'Chapter 1', slug: 'lol' },
-      { title: 'Chapter 2', slug: 'lol' },
-    ],
-  },
-
-  {
-    _id: 'string2',
-    name: 'Python',
-    page: {
-      _id: 'sad',
-    },
-    slugs: [
-      { title: 'Chapter 1', slug: 'lol' },
-      { title: 'Chapter 2', slug: 'lol' },
-    ],
-  },
-]
+import { courseMock } from 'stories/assets/mockdata/course'
 
 export default {
   /* 👇 The title prop is optional.
@@ -43,7 +18,7 @@ export default {
 export const Primary: ComponentStory<typeof CoursePage> = () => (
   <SessionProvider>
     <Layout>
-      <CoursePage data={mock2} />
+      <CoursePage data={courseMock} />
     </Layout>
   </SessionProvider>
 )

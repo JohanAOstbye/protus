@@ -1,18 +1,18 @@
-'use client'
 import Footer from './Footer'
 import Navbar from './Navbar'
 import style from 'styles/layout/_layout.module.scss'
 
 import { ReactNode } from 'react'
-import { useCourse } from 'components/context/courseContext'
 
-export const Layout = ({ children }: { children: ReactNode }) => {
-  const { course, courses } = useCourse()
+type LayoutProps = {
+  children: ReactNode
+}
 
+export const Layout = (props: LayoutProps) => {
   return (
     <div className={style.layout}>
-      <Navbar courses={courses} selectedCourse={course} />
-      <div className={style.content}>{children}</div>
+      <Navbar />
+      <div className={style.content}>{props.children}</div>
       <Footer />
     </div>
   )
