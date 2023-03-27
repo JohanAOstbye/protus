@@ -5,7 +5,7 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { SignInPage as Page } from 'components/pages/auth/SignInPage'
 import Layout from 'components/layout'
-import StroyContext from 'stories/assets/StoryContext'
+import { StoryContext } from 'stories/assets/StoryContext'
 
 export default {
   /* 👇 The title prop is optional.
@@ -17,9 +17,9 @@ export default {
 } as ComponentMeta<typeof Page>
 
 export const SignInPage: ComponentStory<typeof Page> = () => (
-  <StroyContext>
+  <StoryContext>
     <Layout>
       <Page csrfToken={'prank'} />
     </Layout>
-  </StroyContext>
+  </StoryContext>
 )

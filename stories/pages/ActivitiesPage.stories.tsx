@@ -6,7 +6,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 import ActivitiesPage from '../../components/pages/ActivitiesPage'
 import Layout from 'components/layout'
 import CourseLayout from 'components/layout/CourseLayout'
-import StoryContext from 'stories/assets/StoryContext'
+import { StoryContext } from 'stories/assets/StoryContext'
 
 export default {
   /* 👇 The title prop is optional.

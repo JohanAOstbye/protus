@@ -7,7 +7,7 @@ import ChapterPage from '../../components/pages/chapter/ChapterPage'
 import { chapterPageMock } from 'stories/assets/mockdata/course'
 import Layout from 'components/layout'
 import CourseLayout from 'components/layout/CourseLayout'
-import StroyContext from 'stories/assets/StoryContext'
+import { StoryContext } from 'stories/assets/StoryContext'
 
 export default {
   /* 👇 The title prop is optional.
@@ -19,11 +19,11 @@ export default {
 } as ComponentMeta<typeof ChapterPage>
 
 export const Primary: ComponentStory<typeof ChapterPage> = () => (
-  <StroyContext>
+  <StoryContext>
     <Layout>
       <CourseLayout>
         <ChapterPage data={chapterPageMock} />
       </CourseLayout>
     </Layout>
-  </StroyContext>
+  </StoryContext>
 )
