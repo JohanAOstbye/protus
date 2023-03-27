@@ -1,4 +1,4 @@
-import 'server-only'
+// import 'server-only'
 
 import {
   apiVersion,
@@ -88,9 +88,7 @@ export async function getInitialChapter(
   return {} as any
 }
 
-export async function getCourses(
-  token?: string | null
-): Promise<Course[]> {
+export async function getCourses(token?: string | null): Promise<Course[]> {
   if (projectId) {
     const client = createClient({
       projectId,
