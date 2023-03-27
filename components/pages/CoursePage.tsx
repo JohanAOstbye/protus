@@ -1,10 +1,8 @@
 'use client'
 import { useCourse } from 'components/context/courseContext'
-import { isDeepEqual } from 'lib/deepCompare'
 import { courseType } from 'lib/types/sanity'
 import { useEffect } from 'react'
 import style from 'styles/pages/_coursePage.module.scss'
-import ChapterPage from './chapter/ChapterPage'
 
 const CoursePage = ({
   preview = false,
@@ -18,19 +16,27 @@ const CoursePage = ({
   const { course, updateCourse } = useCourse()
 
   useEffect(() => {
-    if (data && !isDeepEqual(data, course)) {
-      updateCourse(data)
+    console.log('changed', data, course, data._id == course?._id)
+    updateCourse(data)
+    if (!course || (data && !(data._id == course._id))) {
+      console.log('update course')
+    }
+    return () => {
+      updateCourse(undefined)
     }
   }, [data])
 
   return (
     <div className={style.page}>
-      {course && (
+      {course ? (
         <>
           <h1>{course.name}</h1>
-          <ChapterPage data={course.page} />
         </>
+      ) : (
+        <h1>Course not found</h1>
       )}
+
+      {JSON.stringify(course)}
     </div>
   )
 }

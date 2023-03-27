@@ -5,7 +5,7 @@ import { Navbar } from './Navbar'
 import { Sidebar } from './Sidebar'
 import style from 'styles/layout/_chapterLayout.module.scss'
 
-export const ChapterLayout = ({ children }: { children?: React.ReactNode }) => {
+export const CourseLayout = ({ children }: { children?: React.ReactNode }) => {
   return (
     <div className={style.content}>
       <Sidebar />
@@ -14,4 +14,4 @@ export const ChapterLayout = ({ children }: { children?: React.ReactNode }) => {
   )
 }
 
-export default ChapterLayout
+export default CourseLayout

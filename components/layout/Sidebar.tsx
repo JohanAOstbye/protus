@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import style from 'styles/layout/_sidebar.module.scss'
 import { useState } from 'react'

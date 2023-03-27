@@ -3,7 +3,7 @@ import Link from 'next/link'
 import style from 'styles/layout/_navbar.module.scss'
 import { courseType } from 'lib/types/sanity'
 import ProtusLabel from 'components/elements/ProtusLabel'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import useOutsideClick from 'components/hooks/useOutsideClick.hook'
 import DownArrow from 'lib/assets/icons/arrow-down.svg'
 import SignInIcon from 'lib/assets/icons/signin.svg'
@@ -11,7 +11,7 @@ import PersonIcon from 'lib/assets/icons/person.svg'
 import { useSession } from 'next-auth/react'
 import { useCourse } from 'components/context/courseContext'
 
-export const Navbar = ({}: {}) => {
+export const Navbar = () => {
   const { courses, course } = useCourse()
   const { data: session, status } = useSession()
   const courseRef = useRef(null)
@@ -21,6 +21,10 @@ export const Navbar = ({}: {}) => {
   const { isVisible: authIsVisible, setIsVisible: setAuthIsVisible } =
     useOutsideClick(false, authRef)
 
+  useEffect(() => {
+    console.log('course changed', course)
+  }, [course])
+
   return (
     <div className={style.container}>
       <div className={style.navbar}>
@@ -28,7 +32,7 @@ export const Navbar = ({}: {}) => {
           <Link href={'/'}>
             <ProtusLabel />
           </Link>
-          {courses && (
+          {courses.length > 0 && (
             <>
               <hr className={style.lineSeperator} />
               <div className={style.courseContainer} ref={courseRef}>
@@ -52,9 +56,7 @@ export const Navbar = ({}: {}) => {
                   }}
                 >
                   {courses
-                    .filter((course) =>
-                      course ? course._id != course._id : true
-                    )
+                    .filter((c) => (course ? c.name !== course.name : true))
                     .map((course, i) => (
                       <li className={style.courseItem} key={i}>
                         <Link href={`/c/${course.name}`}>
@@ -64,9 +66,9 @@ export const Navbar = ({}: {}) => {
                     ))}
                   {course && (
                     <li className={style.courseItem}>
-                      <Link href="/c">
+                      <a href="/c">
                         <span>None</span>
-                      </Link>
+                      </a>
                     </li>
                   )}
                 </ul>
