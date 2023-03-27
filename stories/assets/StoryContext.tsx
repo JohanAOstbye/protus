@@ -12,6 +12,7 @@ const StroyContext = ({
   children: React.ReactNode
   authenticated?: boolean
 }) => {
+
   const queryClient = new QueryClient()
   return (
     <SessionProvider
@@ -32,5 +33,3 @@ const StroyContext = ({
     </SessionProvider>
   )
 }
-
-export default StroyContext

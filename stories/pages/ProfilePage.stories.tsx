@@ -4,7 +4,7 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import Layout from 'components/layout'
-import StoryContext from 'stories/assets/StoryContext'
+import { StoryContext } from 'stories/assets/StoryContext'
 import { ProfilePage as Page } from 'components/pages/ProfilePage'
 
 export default {

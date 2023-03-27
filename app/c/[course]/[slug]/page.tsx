@@ -1,6 +1,6 @@
 import Loading from 'components/elements/Loading'
 import ChapterPage from 'components/pages/chapter/ChapterPage'
-import ChapterLayout from 'components/pages/chapter/ChapterPage'
+import CourseLayout from 'components/pages/chapter/ChapterPage'
 import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage'
 import {
   getChapter,
@@ -25,10 +25,10 @@ export default async function SlugRoute({
   //   return (
   //     <PreviewSuspense
   //       fallback={
-  //         <ChapterLayout
+  //         <CourseLayout
   //           loading
   //           preview
-  //         ><div></div></ChapterLayout>
+  //         ><div></div></CourseLayout>
   //       }
   //     >
   //       <PreviewChapterPage token={token} chapter={params} />

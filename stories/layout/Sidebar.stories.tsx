@@ -5,6 +5,7 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import Sidebar from 'components/layout/Sidebar'
 import { Chapter } from 'lib/sanity/sanity.queries'
+import ContextWrapper from 'components/context/ContextWrapper'
 
 const currentCourse = 'Java'
 const mockdata: Chapter[] = [
@@ -25,10 +26,7 @@ export default {
 } as ComponentMeta<typeof Sidebar>
 
 export const Primary: ComponentStory<typeof Sidebar> = () => (
-  <Sidebar
-    course={currentCourse}
-    courseSlug="livet"
-    chapters={mockdata}
-    closed={false}
-  />
+  <ContextWrapper>
+    <Sidebar />
+  </ContextWrapper>
 )
