@@ -181,10 +181,7 @@ export const stateRouter = createTRPCRouter({
           queries.push(...activitiesQuery)
         }
 
-        // await ctx.prisma.$transaction(queries)
-        queries[0].then(() =>
-          queries[1].then(async () => await Promise.all(queries.slice(2)))
-        )
+        await ctx.prisma.$transaction(queries)
 
         console.log('done inserting activities')
       } else {

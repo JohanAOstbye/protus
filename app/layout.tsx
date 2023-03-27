@@ -31,8 +31,8 @@ export default async function RootLayout({
     <html lang="en">
       <head />
       <body>
-        <ContextWrapper session={session}>
-          <Layout courses={courses}>
+        <ContextWrapper session={session} courses={courses}>
+          <Layout>
             <Suspense fallback={<Loading />}>{children}</Suspense>
           </Layout>
         </ContextWrapper>

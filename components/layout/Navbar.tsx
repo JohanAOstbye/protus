@@ -9,14 +9,10 @@ import DownArrow from 'lib/assets/icons/arrow-down.svg'
 import SignInIcon from 'lib/assets/icons/signin.svg'
 import PersonIcon from 'lib/assets/icons/person.svg'
 import { useSession } from 'next-auth/react'
+import { useCourse } from 'components/context/courseContext'
 
-export const Navbar = ({
-  courses,
-  selectedCourse,
-}: {
-  courses?: courseType[]
-  selectedCourse?: courseType
-}) => {
+export const Navbar = ({}: {}) => {
+  const { courses, course } = useCourse()
   const { data: session, status } = useSession()
   const courseRef = useRef(null)
   const authRef = useRef(null)
@@ -32,7 +28,7 @@ export const Navbar = ({
           <Link href={'/'}>
             <ProtusLabel />
           </Link>
-          {courses && selectedCourse && (
+          {courses && (
             <>
               <hr className={style.lineSeperator} />
               <div className={style.courseContainer} ref={courseRef}>
@@ -42,7 +38,7 @@ export const Navbar = ({
                 >
                   <div>
                     <span>Course</span>
-                    <p>{selectedCourse.name}</p>
+                    <p>{course ? course.name : 'None'}</p>
                   </div>
                   <DownArrow />
                 </button>
@@ -56,14 +52,23 @@ export const Navbar = ({
                   }}
                 >
                   {courses
-                    .filter((course) => course._id != selectedCourse._id)
+                    .filter((course) =>
+                      course ? course._id != course._id : true
+                    )
                     .map((course, i) => (
                       <li className={style.courseItem} key={i}>
-                        <Link href={`/${course.name}`}>
+                        <Link href={`/c/${course.name}`}>
                           <span>{course.name}</span>
                         </Link>
                       </li>
                     ))}
+                  {course && (
+                    <li className={style.courseItem}>
+                      <Link href="/c">
+                        <span>None</span>
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
             </>

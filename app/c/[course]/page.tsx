@@ -1,5 +1,6 @@
 import ChapterPage from 'components/pages/chapter/ChapterPage'
 import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage'
+import CoursePage from 'components/pages/CoursePage'
 
 import { getCourse } from 'lib/sanity/sanity.client'
 
@@ -10,9 +11,7 @@ export default async function SlugRoute({
 }) {
   const course = await getCourse(params.course)
 
-  console.log(course.page)
-
-  return <ChapterPage data={course.page} />
+  return <CoursePage data={course} />
 }
 
 // FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`

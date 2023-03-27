@@ -25,7 +25,11 @@ export const Sidebar = () => {
             <div className={style.title}>
               <label>{course.name}</label>
               <button
-                className={style.button}
+                className={`${style.button} ${
+                  isExpanded || window.innerWidth >= 1312
+                    ? style.closed
+                    : style.open
+                }`}
                 onClick={() => setIsExpanded(!isExpanded)}
               >
                 x
