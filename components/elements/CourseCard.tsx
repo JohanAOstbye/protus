@@ -13,7 +13,6 @@ export const CourseCard = ({ name }: CourseCardProps) => {
     <Link className={style.courseCard} href={''}>
       {name === 'Java' ? <JavaIcon /> : <CodeIcon />}
       <div className={style.title}>{name + ' course'}</div>
-      {/* <div className={style.typeText}>Course</div> */}
     </Link>
   )
 }

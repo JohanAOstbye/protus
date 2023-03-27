@@ -5,6 +5,10 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { FrontPage as Page } from 'components/pages/FrontPage'
 import Layout from 'components/layout'
 import StoryContext from 'stories/assets/StoryContext'
+import { SessionProvider } from 'next-auth/react'
+import { Session } from '@prisma/client'
+
+const mock = 'Java'
 
 export default {
   /* 👇 The title prop is optional.
@@ -17,6 +21,13 @@ export default {
 
 export const FrontPage: ComponentStory<typeof Page> = () => (
   <StoryContext>
+    <Layout>
+      <Page />
+    </Layout>
+  </StoryContext>
+)
+export const FrontPageAuthenticated: ComponentStory<typeof Page> = () => (
+  <StoryContext authenticated>
     <Layout>
       <Page />
     </Layout>

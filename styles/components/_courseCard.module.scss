@@ -22,9 +22,10 @@
   }
 
   svg {
+    flex-grow: 0;
     color: $surf-lightgrey;
     height: $spacing--l;
-    width: max-content;
+    aspect-ratio: 1;
     margin-bottom: $spacing--xxs;
     @include breakpoint-sm {
       height: $spacing--xl;
@@ -43,31 +44,3 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
-// .courseCard {
-//   @include gradient(left, $surf-gradient);
-//   @include link-style-reset;
-//   cursor: pointer;
-//   padding-top: 0.2rem;
-//   padding-bottom: 0.2rem;
-//   text-align: center;
-//   align-content: center;
-//   margin: auto;
-//   width: 70%;
-//   border-radius: 8px;
-//   &:hover {
-//     opacity: 0.7;
-//   }
-//   @include breakpoint-sm {
-//     width: max-content;
-//     padding-top: 0.3rem;
-//     padding-bottom: 0.3rem;
-//     padding-left: 1.5em;
-//     padding-right: 1.5em;
-//   }
-// }
-
-// .chipText {
-//   color: black;
-//   @include type($font--sm);
-// }

@@ -1,4 +1,18 @@
 @use 'styles/utils/main' as *;
+@use 'styles/utils/_colors.scss' as *;
+@use 'styles/utils/_mixins.scss' as *;
+@use 'styles/utils/_variables.scss' as *;
+
+.courses {
+  display: grid;
+  gap: $spacing--xxs;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+
+  @include breakpoint-sm {
+    grid-template-columns: repeat(auto-fit, minmax($spacing--big, 1fr));
+  }
+}
+
 .page {
   display: grid;
   grid-template:
@@ -11,7 +25,7 @@
   .intro {
     grid-area: 'intro';
   }
-  svg {
+  > svg {
     grid-area: 'svg';
     width: 100%;
   }
