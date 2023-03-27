@@ -1,0 +1,73 @@
+@use 'styles/utils/_colors.scss' as *;
+@use 'styles/utils/_mixins.scss' as *;
+@use 'styles/utils/_variables.scss' as *;
+
+.courseCard {
+  @include link-style-reset;
+  background-color: $surf-grey;
+  max-width: $spacing--xbig;
+  min-width: 100%;
+  padding: $spacing--xxs $spacing--s;
+  border-radius: $border-radius--m;
+  gap: $spacing--xxxs;
+  cursor: pointer;
+  display: flex;
+  @include breakpoint-sm {
+    max-width: $spacing--xbig;
+    min-width: $spacing--big;
+    padding: $spacing--xs;
+  }
+  &:hover {
+    background-color: $surf-hovergrey;
+  }
+
+  svg {
+    color: $surf-lightgrey;
+    height: $spacing--l;
+    width: max-content;
+    margin-bottom: $spacing--xxs;
+    @include breakpoint-sm {
+      height: $spacing--xl;
+    }
+    margin-bottom: auto;
+  }
+}
+
+.title {
+  @include type($font--s);
+  line-height: 105%;
+  max-height: $spacing--l;
+  margin: auto 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// .courseCard {
+//   @include gradient(left, $surf-gradient);
+//   @include link-style-reset;
+//   cursor: pointer;
+//   padding-top: 0.2rem;
+//   padding-bottom: 0.2rem;
+//   text-align: center;
+//   align-content: center;
+//   margin: auto;
+//   width: 70%;
+//   border-radius: 8px;
+//   &:hover {
+//     opacity: 0.7;
+//   }
+//   @include breakpoint-sm {
+//     width: max-content;
+//     padding-top: 0.3rem;
+//     padding-bottom: 0.3rem;
+//     padding-left: 1.5em;
+//     padding-right: 1.5em;
+//   }
+// }
+
+// .chipText {
+//   color: black;
+//   @include type($font--sm);
+// }
