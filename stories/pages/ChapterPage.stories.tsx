@@ -4,7 +4,7 @@ import React, { ReactPropTypes } from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import ChapterPage from '../../components/pages/chapter/ChapterPage'
-import { chapterPageMock } from 'stories/assets/mockdata/course'
+import { chapterMock } from 'stories/assets/mockdata/chapter'
 import Layout from 'components/layout'
 import CourseLayout from 'components/layout/CourseLayout'
 import { StoryContext } from 'stories/assets/StoryContext'
@@ -22,7 +22,7 @@ export const Primary: ComponentStory<typeof ChapterPage> = () => (
   <StoryContext>
     <Layout>
       <CourseLayout>
-        <ChapterPage data={chapterPageMock} />
+        <ChapterPage chapter={chapterMock} course={'java'} />
       </CourseLayout>
     </Layout>
   </StoryContext>

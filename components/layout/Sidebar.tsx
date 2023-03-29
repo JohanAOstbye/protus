@@ -14,7 +14,7 @@ export const Sidebar = () => {
 
   return (
     <nav>
-      {course && course.name && course.slugs && (
+      {course && course.slug && course.slugs && (
         <>
           <div
             className={`${style.sidebar} ${
@@ -24,7 +24,7 @@ export const Sidebar = () => {
             }`}
           >
             <div className={style.title}>
-              <label>{course.name}</label>
+              <label>{course.title ? course.title : course.slug}</label>
               <button
                 className={`${style.button} ${
                   isExpanded || window.innerWidth >= 1312
@@ -41,7 +41,7 @@ export const Sidebar = () => {
                 <li key={i}>
                   <Link
                     className={style.items}
-                    href={`${course.name}/${chapter.slug}`}
+                    href={`${course.slug}/${chapter.slug}`}
                   >
                     <span>{chapter.title}</span>
                   </Link>

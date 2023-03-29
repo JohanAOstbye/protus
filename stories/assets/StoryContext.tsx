@@ -4,13 +4,16 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { CourseContextProvider } from 'components/context/courseContext'
 import { courseMock, coursesMock } from './mockdata/course'
+import { UserRole } from '@prisma/client'
 
 export const StoryContext = ({
   children,
   authenticated = false,
+  roles = ['STUDENT'],
 }: {
   children: React.ReactNode
   authenticated?: boolean
+  roles?: UserRole[]
 }) => {
   const queryClient = new QueryClient()
   return (
@@ -18,7 +21,12 @@ export const StoryContext = ({
       session={
         authenticated
           ? {
-              user: { id: '123', email: 'test@email.com', name: 'Robert' },
+              user: {
+                id: '123',
+                email: 'test@email.com',
+                name: 'Robert',
+                roles: roles,
+              },
               expires: 'never',
             }
           : undefined

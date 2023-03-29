@@ -25,15 +25,17 @@ const chapterFieldsWithCourse = groq`
 
 const courseFields = groq`
   _id,
-  name,
-  page->{${chapterFields}},
+  title,
+  icon,
+  content,
+  "slug": slug.current,
   "slugs": chapters[]->{"slug": slug.current,title}
 `
 
 export const settingsQuery = groq`*[_type == "settings"][0]`
 
 export const courseQuery = groq`
-*[_type == "course" && name == $course][0]
+*[_type == "course" && slug == $course][0]
 {${courseFields}}
 `
 
@@ -43,7 +45,7 @@ export const coursesQuery = groq`
 `
 
 export const chapterBySlugAndCourseQuery = groq`
-*[_type == "course" && name == $course  && $slug in chapters[]->slug.current][0]
+*[_type == "course" && slug == $course  && $slug in chapters[]->slug.current][0]
 {
   chapters[]->
 }
@@ -65,11 +67,6 @@ export type Author = {
   picture?: any
 }
 
-type descriptionBlock = {
-  title: string
-  content: string[]
-}
-
 type contentBlock = TypedObject
 
 type content = contentBlock[]
@@ -88,8 +85,9 @@ export type Chapter = {
 
 export type Course = {
   _id: string
-  name?: string
-  page: Chapter
+  title?: string
+  slug?: string
+  content?: content
   slugs?: { title: string; slug: string }[]
 }
 

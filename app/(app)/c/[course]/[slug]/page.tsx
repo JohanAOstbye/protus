@@ -36,9 +36,9 @@ export default async function SlugRoute({
   //   )
   // }
 
-  const data = getChapter(params.slug, params.course)
+  const chapter = getChapter(params.slug, params.course)
 
-  return <ChapterPage data={await data} />
+  return <ChapterPage chapter={await chapter} course={params.course} />
 }
 
 // FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`

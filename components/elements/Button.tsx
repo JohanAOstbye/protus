@@ -26,17 +26,14 @@ export const Button = ({
   className,
 }: ButtonProps) => {
   return url ? (
-    <Link href={url} target={target} passHref legacyBehavior>
-      <a
-        className={
-          `${style.button} ${style.button_link} ${style[`button_${color}`]}` +
-          className
-            ? className
-            : ''
-        }
-      >
-        {text ? text : children}
-      </a>
+    <Link
+      href={url}
+      target={target}
+      className={`${style.button} ${style.button_link} ${
+        style[`button_${color}`]
+      } ${className || ''}`}
+    >
+      {text ? text : children}
     </Link>
   ) : (
     <button

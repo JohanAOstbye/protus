@@ -18,7 +18,7 @@ export default {
 export const Primary: ComponentStory<typeof CoursePage> = () => (
   <SessionProvider>
     <Layout>
-      <CoursePage data={courseMock} />
+      <CoursePage course={courseMock} />
     </Layout>
   </SessionProvider>
 )
