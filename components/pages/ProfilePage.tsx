@@ -6,10 +6,33 @@ import { useDeferredValue, useEffect, useState } from 'react'
 import { Session } from 'next-auth'
 import Loading from 'components/elements/Loading'
 import { Button } from 'components/elements/Button'
+import { trpc } from 'lib/server/trpc/provider'
+
 export const ProfilePage = () => {
   const { data: session, status } = useSession({ required: true })
   const [user, setUser] = useState<Session['user'] | undefined>(undefined)
   const deferredUser = useDeferredValue(user)
+
+  const mutation = trpc.user.update.useMutation()
+  const update = async () => {
+    if (deferredUser && user && deferredUser != user) {
+      const res = await mutation.mutateAsync({
+        name:
+          deferredUser.name == user.name || deferredUser.name == null
+            ? undefined
+            : deferredUser.name,
+        email:
+          deferredUser.email == user.email || deferredUser.email == null
+            ? undefined
+            : deferredUser.email,
+        image:
+          deferredUser.image == user.image || deferredUser.image == null
+            ? undefined
+            : deferredUser.image,
+      })
+      console.log(res)
+    }
+  }
 
   useEffect(() => {
     if (session) setUser(session.user)

@@ -3,6 +3,7 @@ import { UserRole } from '@prisma/client'
 
 // common interface for JWT and Session
 interface IUser extends DefaultUser {
+  name?: string
   roles?: UserRole[]
 }
 declare module 'next-auth' {

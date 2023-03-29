@@ -1,4 +1,4 @@
-import { isDeepEqual } from 'lib/deepCompare'
+import { isDeepEqual } from 'lib/objectUtils'
 import { prisma } from 'lib/server/db'
 import { defineEndpoints } from 'lib/server/rest'
 import { getServerAuthSession } from 'lib/server/auth'
