@@ -8,7 +8,7 @@ import useOutsideClick from 'components/hooks/useOutsideClick.hook'
 import DownArrow from 'lib/assets/icons/arrow-down.svg'
 import SignInIcon from 'lib/assets/icons/signin.svg'
 import PersonIcon from 'lib/assets/icons/person.svg'
-import { useSession } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import { useCourse } from 'components/context/courseContext'
 
 export const Navbar = () => {
@@ -42,7 +42,7 @@ export const Navbar = () => {
                 >
                   <div>
                     <span>Course</span>
-                    <p>{course ? course.name : 'None'}</p>
+                    <p>{course ? course.title : 'None'}</p>
                   </div>
                   <DownArrow />
                 </button>
@@ -56,11 +56,11 @@ export const Navbar = () => {
                   }}
                 >
                   {courses
-                    .filter((c) => (course ? c.name !== course.name : true))
+                    .filter((c) => (course ? c.slug !== course.slug : true))
                     .map((course, i) => (
                       <li className={style.courseItem} key={i}>
-                        <Link href={`/c/${course.name}`}>
-                          <span>{course.name}</span>
+                        <Link href={`/c/${course.slug}`}>
+                          <span>{course.title}</span>
                         </Link>
                       </li>
                     ))}
@@ -79,46 +79,43 @@ export const Navbar = () => {
 
         <div ref={authRef} className={style.auth}>
           <button
-            onClick={() => setAuthIsVisible(!authIsVisible)}
+            onClick={() =>
+              status != 'authenticated'
+                ? signIn()
+                : setAuthIsVisible(!authIsVisible)
+            }
             className={style.auth_Button}
           >
             {status === 'authenticated' ? (
               session.user && session.user.image ? (
-                // <img src={session.user.image} />
-                <PersonIcon />
+                <img src={session.user.image} />
               ) : (
+                // <PersonIcon />
                 <PersonIcon />
               )
             ) : (
               <SignInIcon />
             )}
           </button>
-          <ul
-            className={style.auth_Dropdown}
-            style={{ display: authIsVisible ? 'block' : 'none' }}
-            onClick={() => setAuthIsVisible(!authIsVisible)}
-          >
-            {status === 'authenticated' ? (
-              <>
-                <li>
-                  <Link href="/profile">
-                    <span>Profile</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/api/auth/signout">
-                    <span>Sign out</span>
-                  </Link>
-                </li>
-              </>
-            ) : (
+
+          {status === 'authenticated' && (
+            <ul
+              className={style.auth_Dropdown}
+              style={{ display: authIsVisible ? 'block' : 'none' }}
+              onClick={() => setAuthIsVisible(!authIsVisible)}
+            >
               <li>
-                <Link href="/api/auth/signin">
-                  <span>Sign in</span>
+                <Link href="/profile">
+                  <span>Profile</span>
                 </Link>
               </li>
-            )}
-          </ul>
+              <li>
+                <button onClick={() => signOut({ callbackUrl: '/' })}>
+                  sign out
+                </button>
+              </li>
+            </ul>
+          )}
         </div>
       </div>
     </div>

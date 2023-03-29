@@ -1,4 +1,3 @@
-
 import * as demo from 'lib/sanity/demo.data'
 import { getCourse, getSettings } from 'lib/sanity/sanity.client'
 import { urlForImage } from 'lib/sanity/sanity.image'
@@ -8,20 +7,20 @@ export default async function SlugHead({
 }: {
   params: { course: string }
 }) {
-  const [{ title = demo.title }, course] = await Promise.all([
+  const [{ title: t = demo.title }, course] = await Promise.all([
     getSettings(),
     getCourse(params.course),
   ])
 
   if (!course) return <>loading</>
 
-  const { name, page } = course
+  const { title } = course
 
   return (
     <>
-      <title>{name ? `${name} | ${title}` : title}</title>
+      <title>{title ? `${title} | ${t}` : t}</title>
 
-      {page && page.coverImage?.asset?._ref && (
+      {/* {page && page.coverImage?.asset?._ref && (
         <meta
           property="og:image"
           content={urlForImage(page.coverImage)
@@ -30,7 +29,7 @@ export default async function SlugHead({
             .fit('crop')
             .url()}
         />
-      )}
+      )} */}
     </>
   )
 }

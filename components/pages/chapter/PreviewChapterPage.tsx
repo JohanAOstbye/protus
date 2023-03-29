@@ -18,5 +18,5 @@ export default function PreviewChapterPage({
   const data: Chapter = usePreview(token, courseQuery, chapter) || null
   const settings: Settings = usePreview(token, settingsQuery) || {}
 
-  return <ChapterPage preview data={data} />
+  return <ChapterPage preview chapter={data} course={chapter.course} />
 }

@@ -30,20 +30,20 @@ interface StateContextProviderProps {
 export const StateContextProvider = (props: StateContextProviderProps) => {
   const [learners, setLearners] = useState<learnerType[]>(props.learners || [])
   const [groups, setGroups] = useState<groupType[]>(props.groups || [])
-  const prank = trpc.state.get.useQuery()
+  // const prank = trpc.state.get.useQuery()
 
-  useEffect(() => {
-    if (prank.isSuccess) {
-      setLearners(prank.data.learners)
-      setGroups(prank.data.groups)
-    }
-    return () => {
-      setLearners([])
-      setGroups([])
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (prank.isSuccess) {
+  //     setLearners(prank.data.learners)
+  //     setGroups(prank.data.groups)
+  //   }
+  //   return () => {
+  //     setLearners([])
+  //     setGroups([])
+  //   }
+  // }, [])
 
-  const memoedState = useMemo(() => ({ learners, groups }), [prank])
+  const memoedState = useMemo(() => ({ learners, groups }), [learners, groups])
 
   return (
     // the Provider gives access to the context to its children

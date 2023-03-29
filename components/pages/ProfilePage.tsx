@@ -2,14 +2,14 @@
 import { useSession } from 'next-auth/react'
 import Profile from 'lib/assets/images/profile.svg'
 import style from 'styles/pages/_profilePage.module.scss'
-import { useEffect, useState } from 'react'
-import { Input } from 'components/elements/Input'
+import { useDeferredValue, useEffect, useState } from 'react'
 import { Session } from 'next-auth'
 import Loading from 'components/elements/Loading'
 import { Button } from 'components/elements/Button'
 export const ProfilePage = () => {
   const { data: session, status } = useSession({ required: true })
   const [user, setUser] = useState<Session['user'] | undefined>(undefined)
+  const deferredUser = useDeferredValue(user)
 
   useEffect(() => {
     if (session) setUser(session.user)
@@ -19,26 +19,81 @@ export const ProfilePage = () => {
   return (
     <div className={style.page}>
       {session && session.user ? (
-        user ? (
+        deferredUser ? (
           <>
             <div className={style.image}>
-              {user.image ? <img src={user.image} /> : <Profile />}
+              {deferredUser.image ? (
+                <img src={deferredUser.image} />
+              ) : (
+                <Profile />
+              )}
+
+              <span
+                className={style.editable}
+                contentEditable
+                onFocus={(e) => {
+                  if (e.currentTarget.innerText != deferredUser.image)
+                    e.currentTarget.innerText = ''
+                }}
+                onBlur={(e) => {
+                  setUser({
+                    ...deferredUser,
+                    image: e.currentTarget.textContent,
+                  })
+                  e.currentTarget.innerText =
+                    deferredUser.image || 'imageUrl...'
+                }}
+              >
+                {deferredUser.image || 'imageUrl...'}
+              </span>
             </div>
             <div className={style.details}>
-              <h1>Profile</h1>
-              <Input
-                value={user.name || ''}
-                onChange={(e) => setUser({ ...user, name: e.target.value })}
-                color="dark"
-              />
-              <Input
-                value={user.email || ''}
-                onChange={(e) => setUser({ ...user, email: e.target.value })}
-                color="dark"
-              />
+              <div className={style.name}>
+                <h1>
+                  <span
+                    className={style.editable}
+                    contentEditable
+                    onFocus={(e) => {
+                      if (e.currentTarget.innerText != deferredUser.name)
+                        e.currentTarget.innerText = ''
+                    }}
+                    onBlur={(e) => {
+                      setUser({
+                        ...deferredUser,
+                        name: e.currentTarget.textContent,
+                      })
+                      e.currentTarget.innerText = deferredUser.name || 'Name...'
+                    }}
+                  >
+                    {deferredUser.name || 'Name...'}
+                  </span>
+                </h1>
+                {deferredUser.roles?.map((role) => (
+                  <span>{role.toLocaleLowerCase()}</span>
+                ))}
+              </div>
+
+              <span
+                className={style.editable}
+                contentEditable
+                onFocus={(e) => {
+                  if (e.currentTarget.innerText != deferredUser.email)
+                    e.currentTarget.innerText = ''
+                }}
+                onBlur={(e) => {
+                  setUser({
+                    ...deferredUser,
+                    email: e.currentTarget.textContent,
+                  })
+                  e.currentTarget.innerText = deferredUser.email || 'Email...'
+                }}
+              >
+                {deferredUser.email || 'Email...'}
+              </span>
               <div>
                 <Button>Save</Button>
               </div>
+              {/* {JSON.stringify(deferredUser)} */}
             </div>
           </>
         ) : (

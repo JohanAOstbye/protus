@@ -13,11 +13,20 @@ export const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
   const [passwordVerify, setPasswordVerify] = useState('')
 
   const signin = async () => {
-    await signIn('credentials', { email, password })
+    await signIn('credentials', {
+      email,
+      password,
+      callbackUrl: '/',
+    })
   }
 
   const register = async () => {
-    await signIn('credentials', { email, password, passwordVerify })
+    await signIn('credentials', {
+      email,
+      password,
+      passwordVerify,
+      callbackUrl: '/',
+    })
   }
 
   return (

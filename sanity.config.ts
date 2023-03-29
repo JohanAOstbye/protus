@@ -3,13 +3,19 @@
  */
 
 import { visionTool } from '@sanity/vision'
-import { apiVersion, dataset, previewSecretId, projectId } from 'lib/sanity/sanity.api'
+import {
+  apiVersion,
+  dataset,
+  previewSecretId,
+  projectId,
+} from 'lib/sanity/sanity.api'
 import { previewDocumentNode } from 'plugins/previewPane'
 import { productionUrl } from 'plugins/productionUrl'
 import { settingsPlugin, settingsStructure } from 'plugins/settings'
 import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
+import { iconPicker } from 'sanity-plugin-icon-picker'
 import authorType from 'schemas/author'
 import chapterType from 'schemas/chapter'
 import settingsType from 'schemas/settings'
@@ -53,5 +59,6 @@ export default defineConfig({
     // Vision lets you query your content with GROQ in the studio
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion }),
+    iconPicker(),
   ],
 })

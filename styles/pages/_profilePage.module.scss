@@ -24,6 +24,18 @@
 
   .details {
     gap: $spacing--xxs;
+
+    .name {
+      justify-content: start;
+      gap: $spacing--xxxs;
+      > span {
+        padding: $spacing--tiny $spacing--xxxs;
+        border-radius: $border-radius--s;
+        background-color: $surf-darkgrey;
+        @include type($font--s);
+        text-transform: capitalize;
+      }
+    }
     > div {
       width: 100%;
       display: flex;
@@ -41,6 +53,18 @@
     max-width: 200px;
     @include breakpoint-s {
       width: 100%;
+    }
+  }
+
+  .editable {
+    max-width: $spacing--xbig;
+    width: max-content;
+    padding: $spacing--tiny $spacing--xxxs;
+    border-radius: $border-radius--s;
+    background-color: rgba(#000, 0.2);
+
+    &:focus-visible {
+      outline: none;
     }
   }
 }

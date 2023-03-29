@@ -11,7 +11,7 @@ export default async function SlugRoute({
 }) {
   const course = await getCourse(params.course)
 
-  return <CoursePage data={course} />
+  return <CoursePage course={course} />
 }
 
 // FIXME: remove the `revalidate` export below once you've followed the instructions in `/pages/api/revalidate.ts`
