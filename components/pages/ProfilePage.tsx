@@ -114,7 +114,7 @@ export const ProfilePage = () => {
                 {deferredUser.email || 'Email...'}
               </span>
               <div>
-                <Button>Save</Button>
+                <Button onClick={() => update()}>Save</Button>
               </div>
               {/* {JSON.stringify(deferredUser)} */}
             </div>

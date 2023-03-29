@@ -9,7 +9,13 @@ export const Icon = ({
   provider: string
   name: string
 }) => {
-  return dynamic(() => {const icons = await import(`react-icons/${provider}`); return icons[name]}, {
-    loading: () => <Loading />,
-  })
+  return dynamic(
+    async () => {
+      const icons = await import(`react-icons/${provider}`)
+      return icons[name]
+    },
+    {
+      loading: () => <Loading />,
+    }
+  )
 }
