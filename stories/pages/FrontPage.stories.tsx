@@ -4,12 +4,7 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { FrontPage as Page } from 'components/pages/FrontPage'
 import Layout from 'components/layout'
-import StoryContext from 'stories/assets/StoryContext'
-import { SessionProvider } from 'next-auth/react'
-import { Session } from '@prisma/client'
-
-const mock = 'Java'
-
+import { StoryContext } from 'stories/assets/StoryContext'
 
 export default {
   /* 👇 The title prop is optional.
