@@ -1,36 +1,24 @@
-'use client'
-import { useCourse } from 'components/context/courseContext'
+import { Content } from 'components/blocks/Content'
+import { UpdateCourse } from 'components/context/Update'
 import { courseType } from 'lib/types/sanity'
-import { useEffect } from 'react'
 import style from 'styles/pages/_coursePage.module.scss'
 
 const CoursePage = ({
   preview = false,
   loading,
-  data,
+  course,
 }: {
   preview?: boolean
   loading?: boolean
-  data: courseType
+  course: courseType
 }) => {
-  const { course, updateCourse } = useCourse()
-
-  useEffect(() => {
-    console.log('changed', data, course, data._id == course?._id)
-    updateCourse(data)
-    if (!course || (data && !(data._id == course._id))) {
-      console.log('update course')
-    }
-    return () => {
-      updateCourse(undefined)
-    }
-  }, [data])
-
   return (
     <div className={style.page}>
+      <UpdateCourse course={course} />
       {course ? (
         <>
-          <h1>{course.name}</h1>
+          <h1>{course.title}</h1>
+          <Content value={course.content || []} />
         </>
       ) : (
         <h1>Course not found</h1>

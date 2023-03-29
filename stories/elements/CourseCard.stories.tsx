@@ -3,8 +3,6 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import CourseCard from 'components/elements/CourseCard'
 
-const mock = 'Java'
-
 export default {
   /* 👇 The title prop is optional.
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-CourseCard
@@ -15,5 +13,5 @@ export default {
 } as ComponentMeta<typeof CourseCard>
 
 export const Primary: ComponentStory<typeof CourseCard> = () => (
-  <CourseCard name={mock} />
+  <CourseCard title="Java" />
 )

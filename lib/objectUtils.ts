@@ -24,3 +24,15 @@ export const isDeepEqual = (object1: any, object2: any) => {
 const isObject = (object: any) => {
   return object != null && typeof object === 'object'
 }
+
+export function removeNullUndefined<T>(obj: T): NonNullable<T> {
+  return Object.fromEntries(
+    Object.entries(obj as any)
+      .filter(([_, v]) => v != null)
+      .map(([k, v]) =>
+        typeof v === 'object'
+          ? [k, removeNullUndefined(v)]
+          : ([k, v] as [string, any])
+      )
+  ) as NonNullable<T>
+}

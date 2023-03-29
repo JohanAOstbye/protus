@@ -39,7 +39,7 @@ const ActivitiesPage = ({
     type: [],
     courses: [],
   })
-  const deferredFilter = useDeferredValue({ query: query, ...filter }) //TODO: fix søk i query
+  const deferredFilter = useDeferredValue({ query: query, ...filter })
 
   const activities = trpc.activities.getAll.useInfiniteQuery(
     { limit: 20, filter: filter },
