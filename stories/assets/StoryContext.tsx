@@ -5,14 +5,13 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { CourseContextProvider } from 'components/context/courseContext'
 import { courseMock, coursesMock } from './mockdata/course'
 
-const StroyContext = ({
+export const StoryContext = ({
   children,
   authenticated = false,
 }: {
   children: React.ReactNode
   authenticated?: boolean
 }) => {
-
   const queryClient = new QueryClient()
   return (
     <SessionProvider

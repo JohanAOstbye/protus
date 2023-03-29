@@ -1,0 +1,12 @@
+@use 'styles/utils/main' as *;
+@use 'styles/utils/_variables.scss' as *;
+@use 'styles/utils/_mixins.scss' as *;
+
+.newUserPage {
+  @include list-style-reset;
+  @include content-wrapper;
+
+  .textQuestions {
+    margin: $spacing--s 0 $spacing--xxxxs 0;
+  }
+}
