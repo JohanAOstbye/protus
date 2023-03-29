@@ -6,6 +6,7 @@ import style from 'styles/pages/_newUserPage.module.scss'
 import { SelectionButton } from 'components/elements/SelectionButton'
 import RangeSlider from 'components/elements/RangeSlider'
 import React from 'react'
+import { ProjectInformation } from 'lib/assets/ProjectInformation'
 
 export const NewUserPage = () => {
   const [code, setCode] = useState('')
@@ -17,6 +18,7 @@ export const NewUserPage = () => {
   const [isComputerCheckbox, setComputerCheckbox] = React.useState(false)
   const [isTabletCheckbox, setTabletCheckbox] = React.useState(false)
   const [isMobileCheckbox, setMobileCheckbox] = React.useState(false)
+  const [readInformation, setReadInformation] = React.useState(true)
 
   const handleNtnuStudentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNtnuStudent(e.target.value)
@@ -43,9 +45,25 @@ export const NewUserPage = () => {
     console.log('interested in crossplatform:', crossplatformInterest)
   }
 
-  return (
+  return readInformation ? (
+    <div>
+      <ProjectInformation />
+      <Button
+        onClick={() => {
+          console.log(readInformation)
+          setReadInformation(!readInformation)
+          console.log(readInformation)
+        }}
+        text="Accept"
+      />
+    </div>
+  ) : (
     <div className={style.newUserPage}>
       <h1>Survey (1min)</h1>
+      <Button
+        onClick={() => setReadInformation(!readInformation)}
+        text="Back"
+      />
       <div className={style.textQuestions}>Code recieved:</div>
       <Input
         value={code}
