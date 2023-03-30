@@ -3,6 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 import Layout from 'components/layout'
 import { SessionProvider } from 'next-auth/react'
 import { NewUserPage } from 'components/pages/auth/new-user'
+import { StoryContext } from 'stories/assets/StoryContext'
 
 export default {
   /* 👇 The title prop is optional.
@@ -14,9 +15,9 @@ export default {
 } as ComponentMeta<typeof NewUserPage>
 
 export const Primary: ComponentStory<typeof NewUserPage> = () => (
-  <SessionProvider>
+  <StoryContext>
     <Layout>
       <NewUserPage />
     </Layout>
-  </SessionProvider>
+  </StoryContext>
 )

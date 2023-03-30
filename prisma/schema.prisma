@@ -313,9 +313,16 @@ model User {
 }
 
 model UserDetails {
-    id     String @id @default(uuid()) @map("_id")
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId String @unique
+    id                String   @id @default(uuid()) @map("_id")
+    user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId            String   @unique
+    code              String   @unique
+    ntnuStudent       String
+    studyProgram      String
+    experience        Int
+    mainDevice        String
+    additionalDevices String[]
+    interest          Int
 }
 
 model VerificationToken {

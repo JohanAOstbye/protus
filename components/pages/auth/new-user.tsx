@@ -1,3 +1,4 @@
+'use client'
 import { Button } from 'components/elements/Button'
 import { Input } from 'components/elements/Input'
 import { trpc } from 'lib/server/trpc/provider'
@@ -8,42 +9,73 @@ import RangeSlider from 'components/elements/RangeSlider'
 import React from 'react'
 import { ProjectInformation } from 'lib/assets/ProjectInformation'
 
+import { UserDetails as UD } from '@prisma/client'
+import { redirect } from 'next/navigation'
+
+type UserDetails = Omit<UD, 'id' | 'userId'>
+
+const vaildateUserDetails = (
+  userDetails: Partial<UserDetails> & { additionalDevices: string[] }
+):
+  | { data: UserDetails; success: true }
+  | { success: false; error: { message: string } } => {
+  if (
+    typeof userDetails.code !== 'undefined' &&
+    typeof userDetails.ntnuStudent !== 'undefined' &&
+    typeof userDetails.studyProgram !== 'undefined' &&
+    typeof userDetails.mainDevice !== 'undefined' &&
+    typeof userDetails.experience !== 'undefined' &&
+    typeof userDetails.interest !== 'undefined'
+  ) {
+    return {
+      success: true,
+      data: {
+        code: userDetails.code,
+        ntnuStudent: userDetails.ntnuStudent,
+        studyProgram: userDetails.studyProgram,
+        mainDevice: userDetails.mainDevice,
+        additionalDevices: userDetails.additionalDevices,
+        experience: userDetails.experience,
+        interest: userDetails.interest,
+      },
+    }
+  }
+  return { success: false, error: { message: 'moren din er feit, lol' } }
+}
+
 export const NewUserPage = () => {
-  const [code, setCode] = useState('')
-  const [ntnuStudent, setNtnuStudent] = useState('')
-  const [studyProgram, setStudyProgram] = useState('')
-  const [yearsExperience, setYearsExperience] = useState(0)
-  const [crossplatformInterest, setcrossplatformInterest] = useState(0)
-  const [studyDevice, setStudyDevice] = React.useState('')
-  const [isComputerCheckbox, setComputerCheckbox] = React.useState(false)
-  const [isTabletCheckbox, setTabletCheckbox] = React.useState(false)
-  const [isMobileCheckbox, setMobileCheckbox] = React.useState(false)
   const [readInformation, setReadInformation] = React.useState(true)
+  const [userDetails, setUserDetails] = useState<
+    Partial<UserDetails> & { additionalDevices: string[] }
+  >({ additionalDevices: [] })
 
-  const handleNtnuStudentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNtnuStudent(e.target.value)
-  }
-  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStudyDevice(e.target.value)
+  const mutation = trpc.user.new.useMutation()
+  const update = async () => {
+    const validator = vaildateUserDetails(userDetails)
+    if (validator.success) {
+      mutation.mutateAsync(validator.data).then(() => redirect('/'))
+    } else {
+      console.log('mission failed bois')
+    }
   }
 
-  //TODO send update to TRPC
-  const updateInfo = () => {
-    console.log('code:', code)
-    console.log('ntnustudent:', ntnuStudent)
-    console.log('studyprogram:', studyProgram)
-    console.log('years experience:', yearsExperience)
-    console.log('main study device:', studyDevice)
-    console.log(
-      'additional study devices:\ncomputer:',
-      isComputerCheckbox,
-      '\nmobile:',
-      isMobileCheckbox,
-      '\ntablet:',
-      isTabletCheckbox
-    )
-    console.log('interested in crossplatform:', crossplatformInterest)
-  }
+  // //TODO send update to TRPC
+  // const updateInfo = () => {
+  //   console.log('code:', code)
+  //   console.log('ntnustudent:', ntnuStudent)
+  //   console.log('studyprogram:', studyProgram)
+  //   console.log('years experience:', experience)
+  //   console.log('main study device:', studyDevice)
+  //   console.log(
+  //     'additional study devices:\ncomputer:',
+  //     isComputerCheckbox,
+  //     '\nmobile:',
+  //     isMobileCheckbox,
+  //     '\ntablet:',
+  //     isTabletCheckbox
+  //   )
+  //   console.log('interested in crossplatform:', crossplatformInterest)
+  // }
 
   return readInformation ? (
     <div>
@@ -66,10 +98,12 @@ export const NewUserPage = () => {
       />
       <div className={style.textQuestions}>Code recieved:</div>
       <Input
-        value={code}
+        value={userDetails.code}
         type="text"
         placeholder="Code:"
-        onChange={(e) => setCode(e.target.value)}
+        onChange={(e) =>
+          setUserDetails({ ...userDetails, code: e.target.value })
+        }
       />
 
       <div className={style.questionnaire}>
@@ -77,17 +111,26 @@ export const NewUserPage = () => {
         <div className={style.radioGroups}>
           <SelectionButton
             type={'radio'}
-            // changed={handleRadioChange}
-            changed={handleNtnuStudentChange}
-            isSelected={ntnuStudent === 'Yes'}
+            changed={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUserDetails({
+                ...userDetails,
+                ntnuStudent: e.target.value,
+              })
+            }
+            isSelected={userDetails.ntnuStudent === 'Yes'}
             group={'study'}
             label={'Yes'}
             value={'Yes'}
           />
           <SelectionButton
             type={'radio'}
-            changed={handleNtnuStudentChange}
-            isSelected={ntnuStudent === 'No'}
+            changed={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUserDetails({
+                ...userDetails,
+                ntnuStudent: e.target.value,
+              })
+            }
+            isSelected={userDetails.ntnuStudent === 'No'}
             group={'study'}
             label={'No'}
             value={'No'}
@@ -97,9 +140,9 @@ export const NewUserPage = () => {
         <div className={style.textQuestions}>What is your field of study?</div>
         <Input
           placeholder="Ex: mathematics:"
-          value={studyProgram}
+          value={userDetails.studyProgram}
           onChange={(e) => {
-            setStudyProgram(e.target.value)
+            setUserDetails({ ...userDetails, studyProgram: e.target.value })
           }}
         />
         <div className={style.textQuestions}>
@@ -108,10 +151,13 @@ export const NewUserPage = () => {
         <RangeSlider
           min={0}
           max={10}
+          value={userDetails.experience!}
           changed={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setYearsExperience(parseInt(e.target.value))
+            setUserDetails({
+              ...userDetails,
+              experience: parseInt(e.target.value),
+            })
           }}
-          value={yearsExperience}
         />
         <div className={style.textQuestions}>
           What is your main device for study?
@@ -119,25 +165,49 @@ export const NewUserPage = () => {
         <div className={style.selectionGroups}>
           <SelectionButton
             type={'radio'}
-            changed={handleRadioChange}
-            isSelected={studyDevice === 'Computer'}
-            group={'studyDevice'}
+            changed={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUserDetails({
+                ...userDetails,
+                mainDevice: e.target.value,
+                additionalDevices: userDetails.additionalDevices.filter(
+                  (device) => device !== 'Computer'
+                ),
+              })
+            }
+            isSelected={userDetails.mainDevice === 'Computer'}
+            group={'mainDevice'}
             label={'Computer'}
             value={'Computer'}
           />
           <SelectionButton
             type={'radio'}
-            changed={handleRadioChange}
-            isSelected={studyDevice === 'Mobile'}
-            group={'studyDevice'}
+            changed={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUserDetails({
+                ...userDetails,
+                mainDevice: e.target.value,
+                additionalDevices: userDetails.additionalDevices.filter(
+                  (device) => device !== 'Mobile'
+                ),
+              })
+            }
+            isSelected={userDetails.mainDevice === 'Mobile'}
+            group={'mainDevice'}
             label={'Mobile'}
             value={'Mobile'}
           />
           <SelectionButton
             type={'radio'}
-            changed={handleRadioChange}
-            isSelected={studyDevice === 'Tablet'}
-            group={'studyDevice'}
+            changed={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUserDetails({
+                ...userDetails,
+                mainDevice: e.target.value,
+                additionalDevices: userDetails.additionalDevices.filter(
+                  (device) => device !== 'Tablet'
+                ),
+              })
+            }
+            isSelected={userDetails.mainDevice === 'Tablet'}
+            group={'mainDevice'}
             label={'Tablet'}
             value={'Tablet'}
           />
@@ -146,24 +216,57 @@ export const NewUserPage = () => {
           Do you use other devices to study?
         </div>
         <div className={style.selectionGroups}>
-          <SelectionButton
-            type={'checkbox'}
-            changed={() => setComputerCheckbox(!isComputerCheckbox)}
-            label={'Computer'}
-            value={isComputerCheckbox}
-          />
-          <SelectionButton
-            type={'checkbox'}
-            changed={() => setMobileCheckbox(!isMobileCheckbox)}
-            label={'Mobile'}
-            value={isMobileCheckbox}
-          />
-          <SelectionButton
-            type={'checkbox'}
-            changed={() => setTabletCheckbox(!isTabletCheckbox)}
-            label={'Tablet'}
-            value={isTabletCheckbox}
-          />
+          {userDetails.mainDevice !== 'Computer' && (
+            <SelectionButton
+              type={'checkbox'}
+              changed={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setUserDetails({
+                  ...userDetails,
+                  additionalDevices: e.target.checked
+                    ? [...userDetails.additionalDevices, 'Computer']
+                    : userDetails.additionalDevices.filter(
+                        (device) => device !== 'Computer'
+                      ),
+                })
+              }
+              label={'Computer'}
+              value={userDetails.additionalDevices.includes('Computer')}
+            />
+          )}
+          {userDetails.mainDevice !== 'Mobile' && (
+            <SelectionButton
+              type={'checkbox'}
+              changed={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setUserDetails({
+                  ...userDetails,
+                  additionalDevices: e.target.checked
+                    ? [...userDetails.additionalDevices, 'Mobile']
+                    : userDetails.additionalDevices.filter(
+                        (device) => device !== 'Mobile'
+                      ),
+                })
+              }
+              label={'Mobile'}
+              value={userDetails.additionalDevices.includes('Mobile')}
+            />
+          )}
+          {userDetails.mainDevice !== 'Tablet' && (
+            <SelectionButton
+              type={'checkbox'}
+              changed={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setUserDetails({
+                  ...userDetails,
+                  additionalDevices: e.target.checked
+                    ? [...userDetails.additionalDevices, 'Tablet']
+                    : userDetails.additionalDevices.filter(
+                        (device) => device !== 'Tablet'
+                      ),
+                })
+              }
+              label={'Tablet'}
+              value={userDetails.additionalDevices.includes('Tablet')}
+            />
+          )}
         </div>
         <div className={style.textQuestions}>
           Would you be interested to use mobile/tablet for study (if the study
@@ -175,13 +278,19 @@ export const NewUserPage = () => {
         <RangeSlider
           min={1}
           max={5}
+          value={userDetails.interest!}
           changed={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setcrossplatformInterest(parseInt(e.target.value))
+            setUserDetails({
+              ...userDetails,
+              interest: parseInt(e.target.value),
+            })
           }}
-          value={crossplatformInterest}
         />
       </div>
-      <Button onClick={updateInfo} text="Send in" />
+      <div>
+        <span title=""></span>
+      </div>
+      <Button onClick={update} text="Send in" />
     </div>
   )
 }
