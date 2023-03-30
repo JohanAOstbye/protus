@@ -1,10 +1,10 @@
 import { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import React from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 import { CourseContextProvider } from 'components/context/courseContext'
 import { courseMock, coursesMock } from './mockdata/course'
 import { UserRole } from '@prisma/client'
+import { ClientProvider } from 'lib/server/trpc/provider'
 
 export const StoryContext = ({
   children,
@@ -15,7 +15,6 @@ export const StoryContext = ({
   authenticated?: boolean
   roles?: UserRole[]
 }) => {
-  const queryClient = new QueryClient()
   return (
     <SessionProvider
       session={
@@ -32,11 +31,9 @@ export const StoryContext = ({
           : undefined
       }
     >
-      <QueryClientProvider client={queryClient}>
-        <CourseContextProvider course={courseMock} courses={coursesMock}>
-          {children}
-        </CourseContextProvider>
-      </QueryClientProvider>
+      <CourseContextProvider course={courseMock} courses={coursesMock}>
+        <ClientProvider>{children}</ClientProvider>
+      </CourseContextProvider>
     </SessionProvider>
   )
 }

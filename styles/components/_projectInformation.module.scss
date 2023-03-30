@@ -1,0 +1,11 @@
+@use 'styles/utils/_variables.scss' as *;
+
+.question {
+  font-weight: bold;
+  margin: $spacing--s 0 $spacing--xxxxs 0;
+}
+
+.agreeText {
+  font-style: italic;
+  margin: $spacing--s 0 $spacing--xxxxs 0;
+}

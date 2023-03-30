@@ -19,7 +19,17 @@ export const userRouter = createTRPCRouter({
       })
     }),
   new: protectedProcedure
-    .input(z.object({}))
+    .input(
+      z.object({
+        code: z.string(),
+        ntnuStudent: z.string(),
+        studyProgram: z.string(),
+        experience: z.number(),
+        mainDevice: z.string(),
+        additionalDevices: z.array(z.string()),
+        interest: z.number(),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
       return await ctx.prisma.userDetails.upsert({
         where: { userId: ctx.session.user.id },
