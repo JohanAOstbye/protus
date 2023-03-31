@@ -13,5 +13,5 @@ export default {
 } as ComponentMeta<typeof ChapterCard>
 
 export const Primary: ComponentStory<typeof ChapterCard> = () => (
-  <ChapterCard name={'Strings'} url={'/'} />
+  <ChapterCard title={'Strings'} url={'/'} />
 )
