@@ -2,6 +2,7 @@
 import { trpc } from 'lib/server/trpc/provider'
 import { groupType } from 'lib/types/course-api/group'
 import { learnerType } from 'lib/types/course-api/learner'
+import { useSession } from 'next-auth/react'
 import React, {
   createContext,
   useState,
@@ -28,20 +29,24 @@ interface StateContextProviderProps {
   groups?: groupType[]
 }
 export const StateContextProvider = (props: StateContextProviderProps) => {
+  const { status } = useSession()
   const [learners, setLearners] = useState<learnerType[]>(props.learners || [])
   const [groups, setGroups] = useState<groupType[]>(props.groups || [])
-  // const prank = trpc.state.get.useQuery()
 
-  // useEffect(() => {
-  //   if (prank.isSuccess) {
-  //     setLearners(prank.data.learners)
-  //     setGroups(prank.data.groups)
-  //   }
-  //   return () => {
-  //     setLearners([])
-  //     setGroups([])
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (status == 'authenticated') {
+      const prank = trpc.state.get.useQuery()
+      if (prank.isSuccess) {
+        setLearners(prank.data.learners)
+        setGroups(prank.data.groups)
+      }
+    }
+
+    return () => {
+      setLearners([])
+      setGroups([])
+    }
+  }, [])
 
   const memoedState = useMemo(() => ({ learners, groups }), [learners, groups])
 

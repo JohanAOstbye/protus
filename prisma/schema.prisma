@@ -167,9 +167,9 @@ model ContextActivity {
 
 model ContextActivityObject {
     id                String           @id @default(uuid()) @map("_id")
-    ContextActivity   ContextActivity? @relation(fields: [contextActivityId], references: [id])
+    contextActivity   ContextActivity? @relation(fields: [contextActivityId], references: [id])
     contextActivityId String?
-    Object            Object?          @relation(fields: [objectId], references: [mongoid])
+    object            Object?          @relation(fields: [objectId], references: [mongoid])
     objectId          String?
 }
 

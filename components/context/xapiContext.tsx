@@ -58,6 +58,18 @@ export const SessionContextProvider = ({
   }, [session, status])
 
   useEffect(() => {
+    if (status === 'authenticated') {
+      const statementsResponse = fetch('/api/xapi/statements', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    }
+    return () => {}
+  }, [session, status])
+
+  useEffect(() => {
     if (agent) {
       setAuthority({
         objectType: 'Group',
