@@ -14,7 +14,7 @@ export const Sidebar = () => {
 
   return (
     <nav>
-      {course && course.slug && course.slugs && (
+      {course && course.slug && course.chapters && (
         <>
           <div
             className={`${style.sidebar} ${
@@ -37,7 +37,7 @@ export const Sidebar = () => {
               </button>
             </div>
             <ul>
-              {course.slugs.map((chapter, i) => (
+              {course.chapters.map((chapter, i) => (
                 <li key={i}>
                   <Link
                     className={style.items}

@@ -4,7 +4,8 @@ import { Course } from 'lib/sanity/sanity.queries'
 import Layout from 'components/layout'
 import { SessionProvider } from 'next-auth/react'
 import CoursePage from 'components/pages/CoursePage'
-import { courseMock } from 'stories/assets/mockdata/course'
+import { courseMock, coursesMock } from 'stories/assets/mockdata/course'
+import { CourseContextProvider } from 'components/context/courseContext'
 
 export default {
   /* 👇 The title prop is optional.
@@ -17,8 +18,10 @@ export default {
 
 export const Primary: ComponentStory<typeof CoursePage> = () => (
   <SessionProvider>
-    <Layout>
-      <CoursePage course={courseMock} />
-    </Layout>
+    <CourseContextProvider course={courseMock} courses={coursesMock}>
+      <Layout>
+        <CoursePage course={courseMock} />
+      </Layout>
+    </CourseContextProvider>
   </SessionProvider>
 )

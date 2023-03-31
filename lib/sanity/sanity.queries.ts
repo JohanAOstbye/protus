@@ -29,7 +29,7 @@ const courseFields = groq`
   icon,
   content,
   "slug": slug.current,
-  "slugs": chapters[]->{"slug": slug.current,title}
+  "chapters": chapters[]->{"slug": slug.current,title}
 `
 
 export const settingsQuery = groq`*[_type == "settings"][0]`
@@ -88,7 +88,7 @@ export type Course = {
   title?: string
   slug?: string
   content?: content
-  slugs?: { title: string; slug: string }[]
+  chapters?: { title: string; slug: string }[]
 }
 
 export type Settings = {

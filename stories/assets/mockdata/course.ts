@@ -6,13 +6,26 @@ export const courseMock: Course = {
   title: 'Java',
   slug: 'Java',
   content: chapterMock.content,
-  slugs: [
-    { title: 'Chapter 1', slug: 'lol1' },
-    { title: 'Chapter 2', slug: 'lol2' },
-    { title: 'Chapter 3', slug: 'lol3' },
-    { title: 'Chapter 4', slug: 'lol4' },
-    { title: 'Chapter 5', slug: 'lol5' },
-    { title: 'Chapter 6', slug: 'lol6' },
+  chapters: [
+    {
+      slug: '/',
+      title: 'Time Time Operator with an extremely long title hehe',
+    },
+    { slug: '/', title: 'Variables' },
+    { slug: '/', title: 'Time Operator' },
+    { slug: '/', title: 'Lists' },
+    { slug: '/', title: 'If and Else' },
+    { slug: '/', title: 'For loops' },
+    { slug: '/', title: 'Observebale and Observer' },
+    { slug: '/', title: 'streams & stuff' },
+    { slug: '/', title: 'Time Operator' },
+    { slug: '/', title: 'Variables' },
+    { slug: '/', title: 'Time Operator' },
+    { slug: '/', title: 'Lists' },
+    { slug: '/', title: 'If and Else' },
+    { slug: '/', title: 'For loops' },
+    { slug: '/', title: 'Observebale and Observer' },
+    { slug: '/', title: 'streams & stuff' },
   ],
 }
 

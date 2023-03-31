@@ -11,12 +11,7 @@ export const ActivityList = ({ list }: ActivityListProps) => {
   return (
     <ul className={style.activityList}>
       {list.map((item, i) => (
-        <ActivityCard
-          key={i}
-          name={item.name}
-          type={item.type}
-          url={item.url}
-        />
+        <ActivityCard key={i} {...item} />
       ))}
     </ul>
   )
