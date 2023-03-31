@@ -4,7 +4,10 @@ const headers = z.record(z.string(), z.array(z.string()).nonempty())
 
 type headersType = z.infer<typeof headers>
 
-export function apiValidation<T extends z.ZodRawShape, Y extends z.ZodRawShape>(
+export function apiValidation<
+  T extends z.AnyZodObject,
+  Y extends z.AnyZodObject
+>(
   request: Request,
   input: undefined,
   headers?: headersType
@@ -19,15 +22,18 @@ export function apiValidation<T extends z.ZodRawShape, Y extends z.ZodRawShape>(
         options: { status: number }
       }
     }
-export function apiValidation<T extends z.ZodRawShape, Y extends z.ZodRawShape>(
+export function apiValidation<
+  T extends z.AnyZodObject,
+  Y extends z.AnyZodObject
+>(
   request: Request,
-  input: { body: z.ZodObject<Y> },
+  input: { body: Y },
   headers?: headersType
 ):
   | {
       success: true
       data: {
-        body: z.infer<z.ZodObject<Y>>
+        body: z.infer<Y>
       }
     }
   | {
@@ -38,15 +44,18 @@ export function apiValidation<T extends z.ZodRawShape, Y extends z.ZodRawShape>(
       }
     }
 
-export function apiValidation<T extends z.ZodRawShape, Y extends z.ZodRawShape>(
+export function apiValidation<
+  T extends z.AnyZodObject,
+  Y extends z.AnyZodObject
+>(
   request: Request,
-  input: { query: z.ZodObject<T> },
+  input: { query: T },
   headers?: headersType
 ):
   | {
       success: true
       data: {
-        query: z.infer<z.ZodObject<T>>
+        query: z.infer<T>
       }
     }
   | {
@@ -56,16 +65,19 @@ export function apiValidation<T extends z.ZodRawShape, Y extends z.ZodRawShape>(
         options: { status: number }
       }
     }
-export function apiValidation<T extends z.ZodRawShape, Y extends z.ZodRawShape>(
+export function apiValidation<
+  T extends z.AnyZodObject,
+  Y extends z.AnyZodObject
+>(
   request: Request,
-  input: { query: z.ZodObject<T>; body: z.ZodObject<Y> },
+  input: { query: T; body: Y },
   headers?: headersType
 ):
   | {
       success: true
       data: {
-        query: z.infer<z.ZodObject<T>>
-        body: z.infer<z.ZodObject<Y>>
+        query: z.infer<T>
+        body: z.infer<Y>
       }
     }
   | {
@@ -76,16 +88,19 @@ export function apiValidation<T extends z.ZodRawShape, Y extends z.ZodRawShape>(
       }
     }
 
-export function apiValidation<T extends z.ZodRawShape, Y extends z.ZodRawShape>(
+export function apiValidation<
+  T extends z.AnyZodObject,
+  Y extends z.AnyZodObject
+>(
   request: Request,
-  input?: { query?: z.ZodObject<T>; body?: z.ZodObject<Y> },
+  input?: { query?: T; body?: Y },
   headers?: headersType
 ):
   | {
       success: true
       data: {
-        query?: z.infer<z.ZodObject<T>>
-        body?: z.infer<z.ZodObject<Y>>
+        query?: z.infer<T>
+        body?: z.infer<Y>
       }
     }
   | {
@@ -96,8 +111,8 @@ export function apiValidation<T extends z.ZodRawShape, Y extends z.ZodRawShape>(
       }
     } {
   const data: {
-    query?: z.infer<z.ZodObject<T>>
-    body?: z.infer<z.ZodObject<Y>>
+    query?: z.infer<T>
+    body?: z.infer<Y>
   } = {}
   if (headers) {
     request.headers.forEach((value, key) => {
