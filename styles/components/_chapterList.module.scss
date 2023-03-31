@@ -1,0 +1,12 @@
+@use 'styles/utils/main' as *;
+
+.chapterList {
+  @include list-style-reset;
+  display: grid;
+  gap: $spacing--xxs;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+
+  @include breakpoint-sm {
+    grid-template-columns: repeat(auto-fit, minmax($spacing--big, 1fr));
+  }
+}

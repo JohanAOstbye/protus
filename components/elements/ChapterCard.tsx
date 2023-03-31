@@ -5,16 +5,16 @@ import React from 'react'
 import { FaAngleRight } from 'react-icons/fa'
 
 export interface ChapterCardProps {
-  name: string
+  title: string
   url: string
 }
 
-export const ChapterCard = ({ name, url }: ChapterCardProps) => {
+export const ChapterCard = ({ title, url }: ChapterCardProps) => {
   return (
     <li className={style.chapterCard}>
       <Link href={url}>
         <FaAngleRight />
-        <div className={style.title}>{name}</div>
+        <div className={style.title}>{title}</div>
       </Link>
     </li>
   )
