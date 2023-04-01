@@ -9,13 +9,13 @@ import { activityType } from '@prisma/client'
 export interface ActivityCardProps {
   name?: string
   type?: activityType
-  url: string
+  id: string
 }
 
-export const ActivityCard = ({ name, type, url }: ActivityCardProps) => {
+export const ActivityCard = ({ name, type, id }: ActivityCardProps) => {
   return (
     <li className={style.activityCard}>
-      <Link href={url}>
+      <Link href={`/activity/${id}`}>
         {type === 'Challenge' ? <ChallengeIcon /> : <ExerciseIcon />}
         <div className={style.title}>{name}</div>
         <div

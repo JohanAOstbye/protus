@@ -1,4 +1,5 @@
 import { apiValidation } from 'lib/server/rest'
+import { IRI } from 'lib/types/x-api'
 import {
   actorToPrisma,
   agent as zAgent,
@@ -14,8 +15,29 @@ export async function GET(request: Request) {
     request.clone(),
     {
       query: z.object({
-        agent: zAgent,
-        profileId: z.string().optional(),
+        activityId: IRI,
+        agent: z.string().transform((value, ctx) => {
+          try {
+            let json = JSON.parse(value)
+            const agent = zAgent.safeParse(json)
+            if (!agent.success) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'agent is not a valid agent or group',
+              })
+              return z.NEVER
+            }
+            return agent.data
+          } catch (error) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'agent is not a valid json object',
+            })
+            return z.NEVER
+          }
+        }),
+        registration: z.string().uuid().optional(),
+        stateId: z.string().optional(),
         since: z.string().datetime().optional(),
       }),
     },
@@ -25,22 +47,24 @@ export async function GET(request: Request) {
     return NextResponse.json(validator.error.json, validator.error.options)
   }
   const {
-    query: { profileId, agent, since },
+    query: { activityId, agent, registration, stateId, since },
   } = validator.data
 
   const headers = new Headers()
   try {
-    if (profileId) {
+    if (stateId) {
       const prismaDocument = await prisma.document.findFirst({
         where: {
-          profileId,
+          stateId,
+          registration,
+          activityId,
           agent: inverseFunctionalIdentifier.parse(agent),
         },
       })
       if (prismaDocument) {
         let parsedDocument = document.parse(prismaDocument)
         headers.set('Content-Type', 'application/json')
-        return NextResponse.json(parsedDocument)
+        return NextResponse.json(parsedDocument, { headers })
       } else {
         return NextResponse.json(
           { message: 'Document not found' },
@@ -50,21 +74,23 @@ export async function GET(request: Request) {
     } else {
       const prismaDocuments = await prisma.document.findMany({
         where: {
+          registration,
+          activityId,
           agent: inverseFunctionalIdentifier.parse(agent),
           timestamp: { gte: since },
         },
         select: {
-          profileId: true,
+          stateId: true,
         },
       })
       if (prismaDocuments) {
         let parsedDocuments = prismaDocuments
-          .map((prismaDocument) => prismaDocument.profileId)
+          .map((prismaDocument) => prismaDocument.stateId)
           .filter((id): id is string => {
             return !!id
           })
         headers.set('Content-Type', 'application/json')
-        return NextResponse.json(parsedDocuments)
+        return NextResponse.json(parsedDocuments, { headers })
       }
     }
   } catch (error) {
@@ -79,8 +105,29 @@ export async function POST(request: Request) {
     {
       body: document,
       query: z.object({
-        agent: zAgent,
-        profileId: z.string(),
+        activityId: IRI,
+        agent: z.string().transform((value, ctx) => {
+          try {
+            let json = JSON.parse(value)
+            const agent = zAgent.safeParse(json)
+            if (!agent.success) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'agent is not a valid agent or group',
+              })
+              return z.NEVER
+            }
+            return agent.data
+          } catch (error) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'agent is not a valid json object',
+            })
+            return z.NEVER
+          }
+        }),
+        registration: z.string().uuid().optional(),
+        stateId: z.string(),
       }),
     },
     { 'content-type': ['application/json'] }
@@ -89,17 +136,29 @@ export async function POST(request: Request) {
     return NextResponse.json(validator.error.json, validator.error.options)
   }
   const {
-    query: { profileId, agent },
+    query: { activityId, agent, registration, stateId },
     body,
   } = validator.data
 
   const headers = new Headers()
   try {
-    const old = await prisma.document.findUnique({ where: { profileId } })
+    const old = await prisma.document.findUnique({ where: { stateId } })
     await prisma.document
       .create({
         data: {
-          profileId,
+          stateId,
+          registration,
+          activity: {
+            connectOrCreate: {
+              create: {
+                id: activityId,
+                objectType: 'Activity',
+              },
+              where: {
+                id: activityId,
+              },
+            },
+          },
           agent: {
             connectOrCreate: {
               create: actorToPrisma(agent),
@@ -132,8 +191,29 @@ export async function PUT(request: Request) {
     {
       body: document,
       query: z.object({
-        agent: zAgent,
-        profileId: z.string(),
+        activityId: IRI,
+        agent: z.string().transform((value, ctx) => {
+          try {
+            let json = JSON.parse(value)
+            const agent = zAgent.safeParse(json)
+            if (!agent.success) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'agent is not a valid agent or group',
+              })
+              return z.NEVER
+            }
+            return agent.data
+          } catch (error) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'agent is not a valid json object',
+            })
+            return z.NEVER
+          }
+        }),
+        registration: z.string().uuid().optional(),
+        stateId: z.string(),
       }),
     },
     { 'content-type': ['application/json'] }
@@ -142,17 +222,29 @@ export async function PUT(request: Request) {
     return NextResponse.json(validator.error.json, validator.error.options)
   }
   const {
-    query: { profileId, agent },
+    query: { activityId, agent, registration, stateId },
     body,
   } = validator.data
 
   const headers = new Headers()
   try {
-    const old = await prisma.document.findUnique({ where: { profileId } })
+    const old = await prisma.document.findUnique({ where: { stateId } })
     await prisma.document
       .create({
         data: {
-          profileId,
+          stateId,
+          registration,
+          activity: {
+            connectOrCreate: {
+              create: {
+                id: activityId,
+                objectType: 'Activity',
+              },
+              where: {
+                id: activityId,
+              },
+            },
+          },
           agent: {
             connectOrCreate: {
               create: actorToPrisma(agent),
@@ -184,8 +276,29 @@ export async function DELETE(request: Request) {
     request.clone(),
     {
       query: z.object({
-        agent: zAgent,
-        profileId: z.string(),
+        activityId: IRI,
+        agent: z.string().transform((value, ctx) => {
+          try {
+            let json = JSON.parse(value)
+            const agent = zAgent.safeParse(json)
+            if (!agent.success) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'agent is not a valid agent or group',
+              })
+              return z.NEVER
+            }
+            return agent.data
+          } catch (error) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'agent is not a valid json object',
+            })
+            return z.NEVER
+          }
+        }),
+        registration: z.string().uuid().optional(),
+        stateId: z.string(),
       }),
     },
     { 'content-type': ['application/json'] }
@@ -194,7 +307,7 @@ export async function DELETE(request: Request) {
     return NextResponse.json(validator.error.json, validator.error.options)
   }
   const {
-    query: { profileId, agent },
+    query: { activityId, agent, registration, stateId },
   } = validator.data
 
   const headers = new Headers()
@@ -202,7 +315,9 @@ export async function DELETE(request: Request) {
     prisma.document
       .deleteMany({
         where: {
-          profileId,
+          stateId,
+          registration,
+          activityId,
           agent: inverseFunctionalIdentifier.parse(agent),
         },
       })

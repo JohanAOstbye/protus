@@ -26,7 +26,30 @@ export async function GET(request: Request) {
       query: z.object({
         statementId: z.string().uuid().optional(),
         voidedStatementId: z.string().uuid().optional(),
-        agent: zAgent.or(identifiedgroup).optional(),
+        agent: z
+          .string()
+          .optional()
+          .transform((value, ctx) => {
+            if (!value) return value
+            try {
+              let json = JSON.parse(value)
+              const agent = zAgent.or(identifiedgroup).safeParse(json)
+              if (!agent.success) {
+                ctx.addIssue({
+                  code: z.ZodIssueCode.custom,
+                  message: 'agent is not a valid agent or group',
+                })
+                return z.NEVER
+              }
+              return agent.data
+            } catch (error) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'agent is not a valid json object',
+              })
+              return z.NEVER
+            }
+          }),
         verb: IRI.optional(),
         activity: IRI.optional(),
         registration: z.string().uuid().optional(),

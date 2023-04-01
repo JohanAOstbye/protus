@@ -78,7 +78,7 @@ export type Chapter = {
   date?: string
   excerpt?: string
   author?: Author
-  slug?: string
+  slug: string
   content?: content
   course?: string
 }
@@ -86,7 +86,7 @@ export type Chapter = {
 export type Course = {
   _id: string
   title?: string
-  slug?: string
+  slug: string
   content?: content
   chapters?: { title: string; slug: string }[]
 }

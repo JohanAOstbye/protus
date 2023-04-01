@@ -15,7 +15,7 @@ type activitiesPageProps = {
   options?: filterType
 }
 
-const ActivitiesPage = ({
+export const ActivitiesPage = ({
   options = {
     type: ['Exercise', 'Challenge'],
     courses: [
@@ -78,7 +78,7 @@ const ActivitiesPage = ({
                 return [
                   ...acc,
                   ...page.items.map((item) => {
-                    return { name: item.name, type: item.type, url: item.url }
+                    return { name: item.name, type: item.type, id: item.id }
                   }),
                 ]
               },
@@ -95,5 +95,3 @@ const ActivitiesPage = ({
     </div>
   )
 }
-
-export default ActivitiesPage

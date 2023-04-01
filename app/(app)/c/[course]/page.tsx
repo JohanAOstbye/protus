@@ -3,6 +3,9 @@ import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage'
 import CoursePage from 'components/pages/CoursePage'
 
 import { getCourse } from 'lib/sanity/sanity.client'
+import { sendStatement } from 'lib/types/x-api/functions'
+import { getSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 
 export default async function SlugRoute({
   params,

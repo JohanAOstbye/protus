@@ -1,4 +1,4 @@
-import ActivitiesPage from 'components/pages/ActivitiesPage'
+import { ActivitiesPage } from 'components/pages/activity/ActivitiesPage'
 import { prisma } from 'lib/server/db'
 
 export default async function IndexRoute() {

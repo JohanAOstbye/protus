@@ -1,8 +1,14 @@
+'use client'
+
 import ChapterList from 'components/blocks/ChapterList'
 import { Content } from 'components/blocks/Content'
 import { UpdateCourse } from 'components/context/Update'
 import ChapterCard from 'components/elements/ChapterCard'
+import { useXapi } from 'components/context/XapiContext'
 import { courseType } from 'lib/types/sanity'
+import { getDeviceCategory } from 'lib/types/x-api/functions'
+import { useSession } from 'next-auth/react'
+import { useEffect } from 'react'
 import style from 'styles/pages/_coursePage.module.scss'
 
 const CoursePage = ({
@@ -14,6 +20,41 @@ const CoursePage = ({
   loading?: boolean
   course: courseType
 }) => {
+  const { data: session, status } = useSession({ required: true })
+  const { recordStatment } = useXapi()
+
+  useEffect(() => {
+    if (status === 'authenticated' && session && session.user) {
+      recordStatment({
+        object: {
+          objectType: 'Activity',
+          id: `https://protus.no/c/${course.slug}`,
+          definition: {
+            name: {
+              en: course.title || 'Untitled course: ' + course._id,
+            },
+          },
+        },
+        actor: {
+          objectType: 'Agent',
+          name: session.user.name === null ? undefined : session.user.name,
+          mbox: `mailto:${session.user.email}`,
+        },
+        verb: {
+          id: 'http://adlnet.gov/expapi/verbs/viewed',
+          display: {
+            en: 'viewed',
+          },
+        },
+        context: {
+          platform: `${getDeviceCategory(
+            window.innerWidth,
+            window.innerHeight
+          )} ${window.navigator.userAgent}`,
+        },
+      })
+    }
+  }, [status, course])
   return (
     <div className={style.page}>
       <UpdateCourse course={course} />

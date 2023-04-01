@@ -2,9 +2,7 @@ import React from 'react'
 
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import ActivityCard from 'components/elements/ActivityCard'
-
-const title = 'Time Operator with an extremely long title hehe'
-const type = 'Exercise'
+import { activityMock } from 'stories/assets/mockdata/activity'
 
 export default {
   /* 👇 The title prop is optional.
@@ -16,5 +14,5 @@ export default {
 } as ComponentMeta<typeof ActivityCard>
 
 export const Primary: ComponentStory<typeof ActivityCard> = () => (
-  <ActivityCard name={title} type={type} url={'/'} />
+  <ActivityCard {...activityMock} />
 )

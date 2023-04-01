@@ -23,7 +23,11 @@ const score = z
     return true
   })
 
-const duration = z.string()
+const duration = z
+  .string()
+  .regex(
+    /^P(([0-9]+Y)?([0-9]+M)?([0-9]+W)?([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+(\.?[0-9]+)?S)?))?$/
+  )
 
 export const result = z.object({
   score: score.optional(),

@@ -1,6 +1,6 @@
 import { agentType } from 'lib/types/x-api/actor'
 import { authorityType } from 'lib/types/x-api/authority'
-import { statementType } from 'lib/types/x-api/statement'
+import { statement, statementType } from 'lib/types/x-api/statement'
 import React, {
   createContext,
   useContext,
@@ -9,6 +9,7 @@ import React, {
   useState,
 } from 'react'
 import { useSession } from 'next-auth/react'
+import { sendStatement, sendStatements } from 'lib/types/x-api/functions'
 
 type XapiContextType = {
   recordStatment: (statement: statementType) => void
@@ -18,28 +19,34 @@ const XapiContext = createContext<XapiContextType>({
   recordStatment: (statement: statementType) => console.log('function missing'),
 })
 
-interface SessionContextProviderProps {
+interface XapiContextProviderProps {
   children: React.ReactNode
 }
-export const SessionContextProvider = ({
-  children,
-}: SessionContextProviderProps) => {
+export const XapiContextProvider = ({ children }: XapiContextProviderProps) => {
   const { data: session, status } = useSession()
   const [agent, setAgent] = useState<agentType | undefined>(undefined)
   const [authority, setAuthority] = useState<authorityType | undefined>(
     undefined
   )
   const [relatedStatements, setRelatedStatements] = useState([])
-  const recordStatment = (statement: statementType) => {
-    statement.authority = authority
+  const recordStatment = async (statement: statementType) => {
+    if (!authority) return console.log('authority is missing')
+    return sendStatement(statement, authority)
+  }
+  const recordStatments = async (statements: statementType[]) => {
+    statements.map((statement) => {
+      return { ...statement, authority: authority }
+    })
 
-    const response = fetch('/api/xapi/statements', {
+    const response = await fetch('/xAPI/statements', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(statement),
+      body: JSON.stringify({ statements: statements }),
     })
+
+    return response.json()
   }
 
   useEffect(() => {
@@ -55,18 +62,6 @@ export const SessionContextProvider = ({
       setAgent(undefined)
       setAuthority(undefined)
     }
-  }, [session, status])
-
-  useEffect(() => {
-    if (status === 'authenticated') {
-      const statementsResponse = fetch('/api/xapi/statements', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-    }
-    return () => {}
   }, [session, status])
 
   useEffect(() => {
@@ -87,9 +82,28 @@ export const SessionContextProvider = ({
           },
         ],
       })
-      //add related statements
+      fetch(
+        '/xAPI/statements' +
+          new URLSearchParams({
+            agent: JSON.stringify(agent),
+            related_agents: 'true',
+          }),
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      ).then((response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            setRelatedStatements(data.statements)
+          })
+        }
+      })
     }
     return () => {
+      setRelatedStatements([])
       setAuthority(undefined)
     }
   }, [agent])
@@ -97,12 +111,13 @@ export const SessionContextProvider = ({
   const memoedXapi = useMemo(
     () => ({
       recordStatment,
+      recordStatments,
+      relatedStatements,
     }),
-    [recordStatment]
+    [recordStatment, recordStatments, relatedStatements]
   )
 
   return (
-    // the Provider gives access to the context to its children
     <XapiContext.Provider value={memoedXapi}>{children}</XapiContext.Provider>
   )
 }
