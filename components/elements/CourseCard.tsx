@@ -2,8 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import style from 'styles/components/_courseCard.module.scss'
 import JavaIcon from 'lib/assets/icons/java.svg'
-import CodeIcon from 'lib/assets/icons/codeicon.svg'
-import { Icon } from './Icon'
+import { trpc } from 'lib/server/trpc/provider'
 
 export interface CourseCardProps {
   title?: string
@@ -11,11 +10,17 @@ export interface CourseCardProps {
   icon?: { name: string; provider: string }
 }
 
-export const CourseCard = ({ title, slug, icon }: CourseCardProps) => {
+export const CourseCard = ({ title, slug }: CourseCardProps) => {
+  const mutation = trpc.state.update.useMutation()
   return (
-    <Link className={style.courseCard} href={`/c/${slug}`}>
+    <Link
+      className={style.courseCard}
+      href={`/c/${slug}`}
+      onClick={() => {
+        mutation.mutateAsync()
+      }}
+    >
       <>
-        {/* {icon ? Icon(icon) : Icon({ name: 'FaBook', provider: 'fa' })} */}
         <JavaIcon />
         <div className={style.title}>{title + ' course'}</div>
       </>
