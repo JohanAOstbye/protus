@@ -3,6 +3,7 @@ import { ActivityCardProps } from 'components/elements/ActivityCard'
 
 export const activityMock: Activity = {
   id: 'id',
+  apiId: 'apiId',
   updatedAt: null,
   stored: null,
   name: 'Activity name',

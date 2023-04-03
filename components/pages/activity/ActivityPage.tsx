@@ -1,3 +1,5 @@
+'use client'
+
 import { Activity } from '@prisma/client'
 import { useXapi } from 'components/context/XapiContext'
 import { getDeviceCategory } from 'lib/types/x-api/functions'
