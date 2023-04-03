@@ -20,26 +20,26 @@ export const chapterActivitiesState = z
       .record(z.string(), z.object({ values: values }))
       .transform((value) =>
         Object.keys(value).map((key) => {
-          return { name: key, ...value[key] }
+          return { name: key, state: value[key].values }
         })
       ),
     Challenges: z
       .record(z.string(), z.object({ values: values }))
       .transform((value) =>
         Object.keys(value).map((key) => {
-          return { name: key, ...value[key] }
+          return { name: key, state: value[key].values }
         })
       ),
     Coding: z
       .record(z.string(), z.object({ values: values }))
       .transform((value) =>
         Object.keys(value).map((key) => {
-          return { name: key, ...value[key] }
+          return { name: key, state: value[key].values }
         })
       ),
   })
   .transform((cas) => {
-    return { ...cas.Challenges, ...cas.Coding, ...cas.Examples }
+    return [...cas.Challenges, ...cas.Coding, ...cas.Examples]
   })
 
 export const topic = z.object({
@@ -48,7 +48,7 @@ export const topic = z.object({
     Challenges: values,
     Coding: values,
   }),
-  overall: overall,
+  overall: overall.optional(),
 })
 
 export const state = z
@@ -62,12 +62,14 @@ export const state = z
       .record(z.string(), chapterActivitiesState)
       .transform((value) =>
         Object.keys(value).map((key) => {
-          return { name: key, ...value[key] }
+          return { name: key, activities: value[key] }
         })
       ),
   })
   .transform((state) => {
     return state.topics.map((topic) => {
+      console.log(state.activities)
+
       return {
         name: topic.name,
         state: topic.overall,
@@ -76,7 +78,7 @@ export const state = z
         exercise: topic.values.Coding,
         activities: state.activities.find(
           (activities) => activities.name === topic.name
-        ),
+        )?.activities,
       }
     })
   })

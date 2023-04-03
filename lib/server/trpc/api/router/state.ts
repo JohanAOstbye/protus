@@ -299,9 +299,17 @@ export const stateRouter = createTRPCRouter({
       }
 
       const state = parsed.data.learners[0].state
-      const deleteState = prisma.userState.update({
+
+      const deleteState = prisma.userState.upsert({
         where: { userId: session.user.id },
-        data: {
+        create: {
+          user: {
+            connect: {
+              id: session.user.id,
+            },
+          },
+        },
+        update: {
           courseState: {
             deleteMany: {
               courseName: 'Java',
@@ -310,9 +318,21 @@ export const stateRouter = createTRPCRouter({
         },
       })
       queries.push(deleteState)
-      const createState = await prisma.courseState.create({
+
+      const createState = prisma.courseState.create({
         data: {
-          userState: { connect: { userId: session.user.id } },
+          userState: {
+            connectOrCreate: {
+              where: { userId: session.user.id },
+              create: {
+                user: {
+                  connect: {
+                    id: session.user.id,
+                  },
+                },
+              },
+            },
+          },
           course: {
             connect: {
               name: 'Java',
@@ -337,7 +357,7 @@ export const stateRouter = createTRPCRouter({
                   ? {
                       create: chapter.activities.map((activity) => {
                         return {
-                          state: activity.values,
+                          state: activity.state,
                           activity: {
                             connect: {
                               apiId: 'Java' + activity.name,
