@@ -9,7 +9,7 @@ import {
 } from './actor'
 import { languageTag, extensions, recordToPrismaArray } from '.'
 import { Actor, Context, Prisma, XapiAccount } from '@prisma/client'
-import { isArray } from 'sanity'
+
 import { objectInclude, objectSelect } from './object'
 
 const contextActivitiesObject = z.map(
@@ -50,7 +50,7 @@ export const contextToPrisma = (context: contextType) => {
                   return {
                     key: 'skip',
                   }
-                if (!isArray(value)) {
+                if (!Array.isArray(value)) {
                   value = [value]
                 }
                 return {
@@ -116,7 +116,7 @@ export const contextInclude: Prisma.ContextInclude = {
     include: {
       value: {
         include: {
-          Object: { include: objectInclude },
+          object: { include: objectInclude },
         },
       },
     },
@@ -136,7 +136,7 @@ export const contextSelect: Prisma.ContextSelect = {
     select: {
       value: {
         select: {
-          Object: { select: objectSelect },
+          object: { select: objectSelect },
         },
       },
     },

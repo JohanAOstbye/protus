@@ -11,6 +11,7 @@
   @include content-wrapper(l);
   width: 100%;
   padding-inline: 0;
+  height: 100%;
 
   @include breakpoint-s {
     padding-inline: 0;

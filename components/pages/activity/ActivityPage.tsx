@@ -1,25 +1,16 @@
 'use client'
 
-import AlertBanner from 'components/elements/AlertBanner'
-import { chapterType } from 'lib/types/sanity'
-import { Content } from 'components/blocks/Content'
-import { UpdateChapter } from 'components/context/Update'
+import { Activity } from '@prisma/client'
 import { useXapi } from 'components/context/XapiContext'
-import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
 import { getDeviceCategory } from 'lib/types/x-api/functions'
+import { useSession } from 'next-auth/react'
+import React, { useEffect, useRef, useState } from 'react'
+import style from 'styles/pages/_activityPage.module.scss'
 
-const ChapterPage = ({
-  preview = false,
-  loading,
-  chapter,
-  course,
-}: {
-  preview?: boolean
-  loading?: boolean
-  chapter: chapterType
-  course: string
-}) => {
+export const ActivityPage = ({ activity }: { activity: Activity | null }) => {
+  if (!activity) return <div>Activity not found</div>
+  const ref = useRef<HTMLDivElement>(null)
+  const [height, setHeight] = useState(0)
   const { data: session, status } = useSession({ required: true })
   const { recordStatment } = useXapi()
 
@@ -28,11 +19,16 @@ const ChapterPage = ({
       recordStatment({
         object: {
           objectType: 'Activity',
-          id: `https://protus.no/c/${course}/${chapter.slug}`,
+          id: activity.id,
           definition: {
             name: {
-              en: chapter.title || 'Untitled chapter: ' + chapter._id,
+              en: activity.name,
             },
+            description: {
+              en: activity.name,
+            },
+            type: 'http://adlnet.gov/expapi/activities/' + activity.type,
+            moreInfo: activity.url,
           },
         },
         actor: {
@@ -54,21 +50,20 @@ const ChapterPage = ({
         },
       })
     }
-  }, [status, course])
-  return (
-    <article>
-      {preview && <AlertBanner loading={loading} />}
+  }, [status, activity])
 
-      {chapter && chapter.content ? (
-        <>
-          <UpdateChapter chapter={chapter} course={course} />
-          <Content value={chapter.content} />
-        </>
-      ) : (
-        <div>content missing</div>
-      )}
-    </article>
+  useEffect(() => {
+    if (ref.current) {
+      setHeight(ref.current.clientHeight)
+    }
+    return () => {
+      setHeight(0)
+    }
+  }, [ref.current?.clientHeight])
+
+  return (
+    <div className={style.page} ref={ref}>
+      <iframe src={activity.url} height={height} width="100%" />
+    </div>
   )
 }
-
-export default ChapterPage
