@@ -35,11 +35,11 @@ export const StateContextProvider = (props: StateContextProviderProps) => {
 
   useEffect(() => {
     if (status == 'authenticated') {
-      const prank = trpc.state.get.useQuery()
-      if (prank.isSuccess) {
-        setLearners(prank.data.learners)
-        setGroups(prank.data.groups)
-      }
+      // const prank = trpc.state.get.useQuery()
+      // if (prank.isSuccess) {
+      //   setLearners(prank.data.learners)
+      //   setGroups(prank.data.groups)
+      // }
     }
 
     return () => {

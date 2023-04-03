@@ -13,7 +13,7 @@ export const Layout = (props: LayoutProps) => {
     <div className={style.layout}>
       <Navbar />
       <div className={style.content}>{props.children}</div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

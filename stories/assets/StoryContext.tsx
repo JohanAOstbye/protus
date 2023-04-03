@@ -4,6 +4,8 @@ import React from 'react'
 import { CourseContextProvider } from 'components/context/courseContext'
 import { courseMock, coursesMock } from './mockdata/course'
 import { UserRole } from '@prisma/client'
+import { XapiContextProvider } from 'components/context/XapiContext'
+import { StateContextProvider } from 'components/context/stateContext'
 import { ClientProvider } from 'lib/server/trpc/provider'
 
 export const StoryContext = ({
@@ -32,7 +34,11 @@ export const StoryContext = ({
       }
     >
       <CourseContextProvider course={courseMock} courses={coursesMock}>
-        <ClientProvider>{children}</ClientProvider>
+        <ClientProvider>
+          <XapiContextProvider>
+            <StateContextProvider>{children}</StateContextProvider>
+          </XapiContextProvider>
+        </ClientProvider>
       </CourseContextProvider>
     </SessionProvider>
   )

@@ -12,7 +12,7 @@ export default {
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
    * to learn how to generate automatic titles
    */
-  title: 'Pages/Page',
+  title: 'Pages/ActivitiesPage',
   component: Page,
 } as ComponentMeta<typeof Page>
 

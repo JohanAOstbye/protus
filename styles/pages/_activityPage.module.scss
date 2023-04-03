@@ -3,4 +3,9 @@
 @use 'styles/utils/_variables.scss' as *;
 
 .page {
+  height: 100%;
+  iframe {
+    width: 100%;
+    border: none;
+  }
 }
