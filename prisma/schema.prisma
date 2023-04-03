@@ -23,35 +23,87 @@ enum activityType {
 }
 
 model Activity {
-    id        String       @id @default(uuid()) @map("_id")
-    updatedAt DateTime?    @updatedAt
-    stored    DateTime?    @default(now())
-    name      String
-    url       String       @unique
-    kcs       String[]
-    Chapter   Chapter      @relation(fields: [chapterId], references: [id])
-    chapterId String
-    type      activityType
+    id            String          @id @default(uuid()) @map("_id")
+    apiId         String          @unique
+    updatedAt     DateTime?       @updatedAt
+    stored        DateTime?       @default(now())
+    name          String
+    url           String          @unique
+    kcs           String[]
+    Chapter       Chapter         @relation(fields: [chapterId], references: [id])
+    chapterId     String
+    type          activityType
+    ActivityState ActivityState[]
 }
 
 model Chapter {
-    id         String     @id @default(uuid()) @map("_id")
-    updatedAt  DateTime?  @updatedAt
-    stored     DateTime?  @default(now())
-    name       String
-    activities Activity[]
-    Course     Course     @relation(fields: [courseName], references: [name])
-    courseName String
+    id           String         @id @default(uuid()) @map("_id")
+    updatedAt    DateTime?      @updatedAt
+    stored       DateTime?      @default(now())
+    name         String
+    activities   Activity[]
+    Course       Course         @relation(fields: [courseName], references: [name])
+    courseName   String
+    ChapterState ChapterState[]
 
     @@unique([name, courseName])
 }
 
 model Course {
-    id        String    @id @default(uuid()) @map("_id")
-    updatedAt DateTime? @updatedAt
-    stored    DateTime? @default(now())
-    name      String    @unique
-    chapters  Chapter[]
+    id          String        @id @default(uuid()) @map("_id")
+    updatedAt   DateTime?     @updatedAt
+    stored      DateTime?     @default(now())
+    name        String        @unique
+    chapters    Chapter[]
+    CourseState CourseState[]
+}
+
+// State
+
+type normalState {
+    k Int
+    p Int
+}
+
+model UserState {
+    mongoID     String        @id @default(uuid()) @map("_id")
+    user        User          @relation(fields: [userId], references: [id])
+    userId      String        @unique
+    name        String
+    courseState CourseState[]
+}
+
+model CourseState {
+    id               String         @id @default(uuid()) @map("_id")
+    course           Course         @relation(fields: [courseName], references: [name])
+    userState        UserState?     @relation(fields: [userStateMongoID], references: [mongoID], onDelete: Cascade)
+    userStateMongoID String?
+    chapterState     ChapterState[]
+    courseName       String
+    Class            Class?         @relation(fields: [classId], references: [id])
+    classId          String?        @unique
+}
+
+model ChapterState {
+    id             String          @id @default(uuid()) @map("_id")
+    chapter        Chapter         @relation(fields: [chapterId], references: [id])
+    courseState    CourseState     @relation(fields: [courseStateId], references: [id], onDelete: Cascade)
+    courseStateId  String
+    activityStates ActivityState[]
+    chapterId      String
+    examples       normalState
+    challenges     normalState
+    exercises      normalState
+    state          normalState?
+}
+
+model ActivityState {
+    id             String       @id @default(uuid()) @map("_id")
+    activity       Activity     @relation(fields: [activityId], references: [id])
+    chapterState   ChapterState @relation(fields: [chapterStateId], references: [id], onDelete: Cascade)
+    chapterStateId String
+    activityId     String
+    state          normalState
 }
 
 // X-API
@@ -310,13 +362,25 @@ model User {
     password      String?
     roles         UserRole[]   @default([STUDENT])
     userDetails   UserDetails?
+    code          String?      @unique
+    state         UserState?
+    teaching      Class[]      @relation(name: "teacher")
+    Class         Class?       @relation(fields: [classId], references: [id], name: "student")
+    classId       String?
+}
+
+model Class {
+    id        String        @id @default(uuid()) @map("_id")
+    teacher   User          @relation(name: "teacher", fields: [teacherId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+    teacherId String
+    students  User[]        @relation(name: "student")
+    state     CourseState[]
 }
 
 model UserDetails {
     id                String   @id @default(uuid()) @map("_id")
     user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId            String   @unique
-    code              String   @unique
     ntnuStudent       String
     studyProgram      String
     experience        Int

@@ -8,19 +8,132 @@ import { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 const apiUrl = `http://adapt2.sis.pitt.edu/aggregate2/GetContentLevels?`
 
 type activityLocalType = activityType & {
+  apiId: string
   type: 'Exercise' | 'Challenge' | 'Example'
   chapter: string
   course: string
 }
 
 export const stateRouter = createTRPCRouter({
-  //TODO: fix auth og sett alle til protected
-  get: publicProcedure.query(async ({ ctx }) => {
+  getUser: protectedProcedure.query(async ({ ctx }) => {
+    const { prisma, session } = ctx
+    const state = await prisma.userState.findUnique({
+      where: { userId: session.user.id },
+      select: {
+        courseState: {
+          select: {
+            course: true,
+            chapterState: {
+              select: {
+                chapter: true,
+                activityStates: {
+                  select: {
+                    activity: true,
+                    state: true,
+                  },
+                },
+                examples: true,
+                challenges: true,
+                exercises: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    return state
+  }),
+  getCourse: protectedProcedure
+    .input(z.object({ course: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const { prisma, session } = ctx
+      const state = await prisma.courseState.findFirst({
+        where: {
+          userState: { userId: session.user.id },
+          course: { name: input.course },
+        },
+        select: {
+          course: true,
+          chapterState: {
+            select: {
+              chapter: true,
+              activityStates: {
+                select: {
+                  activity: true,
+                  state: true,
+                },
+              },
+              examples: true,
+              challenges: true,
+              exercises: true,
+            },
+          },
+        },
+      })
+
+      return state
+    }),
+  getChapter: protectedProcedure
+    .input(z.object({ course: z.string(), chapter: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const { prisma, session } = ctx
+      const state = await prisma.chapterState.findFirst({
+        where: {
+          chapter: { name: input.chapter },
+          courseState: {
+            userState: { userId: session.user.id },
+            course: { name: input.course },
+          },
+        },
+        select: {
+          chapter: true,
+          examples: true,
+          challenges: true,
+          exercises: true,
+        },
+      })
+
+      return state
+    }),
+  getActivity: protectedProcedure
+    .input(
+      z.object({
+        course: z.string(),
+        chapter: z.string(),
+        activity: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { prisma, session } = ctx
+      const value = await prisma.activityState.findFirst({
+        where: {
+          activity: { name: input.activity },
+          chapterState: {
+            chapter: { name: input.chapter },
+            courseState: {
+              userState: { userId: session.user.id },
+              course: { name: input.course },
+            },
+          },
+        },
+        select: {
+          activity: true,
+          state: true,
+        },
+      })
+
+      return value
+    }),
+
+  update: protectedProcedure.mutation(async ({ ctx }) => {
+    const { prisma, session } = ctx
+
     const url =
       apiUrl +
       new URLSearchParams({
         grp: 'NorwayFall2022a',
-        sid: 'TEST',
+        sid: 'TEST', //TODO oppdater disse med riktig data
         cid: '352',
         mod: 'all',
       })
@@ -45,6 +158,7 @@ export const stateRouter = createTRPCRouter({
               ...topic.activities.Challenges.map<activityLocalType>((act) => {
                 return {
                   ...act,
+                  apiId: act.id,
                   type: 'Challenge',
                   chapter: topic.name,
                   course: 'Java',
@@ -58,6 +172,7 @@ export const stateRouter = createTRPCRouter({
               ...topic.activities.Coding.map<activityLocalType>((act) => {
                 return {
                   ...act,
+                  apiId: act.id,
                   type: 'Exercise',
                   chapter: topic.name,
                   course: 'Java',
@@ -71,6 +186,7 @@ export const stateRouter = createTRPCRouter({
               ...topic.activities.Examples.map<activityLocalType>((act) => {
                 return {
                   ...act,
+                  apiId: act.id,
                   type: 'Example',
                   chapter: topic.name,
                   course: 'Java',
@@ -96,9 +212,8 @@ export const stateRouter = createTRPCRouter({
       } catch (error) {
         console.log("prisma error, couldn't get existing activity urls")
       }
+      const queries: any[] = []
       if (activities.length > 0) {
-        const queries: any[] = []
-
         const existingCourses = (
           await ctx.prisma.course.findMany({ select: { name: true } })
         ).map((course) => course.name)
@@ -114,14 +229,14 @@ export const stateRouter = createTRPCRouter({
           })
         console.log('newCourses: ', newCourses.length)
         if (newCourses.length > 0) {
-          const coursesQuery = ctx.prisma.course.createMany({
+          const coursesQuery = prisma.course.createMany({
             data: newCourses,
           })
           queries.push(coursesQuery)
         }
 
         const existingChapters: { name: string; courseName: string }[] =
-          await ctx.prisma.chapter.findMany({
+          await prisma.chapter.findMany({
             select: { name: true, courseName: true },
           })
 
@@ -152,7 +267,7 @@ export const stateRouter = createTRPCRouter({
         console.log('newChapters: ', newChapters.length)
 
         if (newChapters.length > 0) {
-          const chaptersQuery = ctx.prisma.chapter.createMany({
+          const chaptersQuery = prisma.chapter.createMany({
             data: newChapters,
           })
           queries.push(chaptersQuery)
@@ -162,11 +277,12 @@ export const stateRouter = createTRPCRouter({
 
         if (activities.length > 0) {
           const activitiesQuery = activities.map((activity) =>
-            ctx.prisma.activity.create({
+            prisma.activity.create({
               data: {
                 url: activity.url,
                 name: activity.name,
                 type: activity.type,
+                apiId: activity.course + activity.apiId,
                 Chapter: {
                   connect: {
                     name_courseName: {
@@ -180,13 +296,65 @@ export const stateRouter = createTRPCRouter({
           )
           queries.push(...activitiesQuery)
         }
-
-        await ctx.prisma.$transaction(queries)
-
-        console.log('done inserting activities')
-      } else {
-        console.log('no new activities')
       }
+
+      const state = parsed.data.learners[0].state
+      const deleteState = prisma.userState.update({
+        where: { userId: session.user.id },
+        data: {
+          courseState: {
+            deleteMany: {
+              courseName: 'Java',
+            },
+          },
+        },
+      })
+      queries.push(deleteState)
+      const createState = await prisma.courseState.create({
+        data: {
+          userState: { connect: { userId: session.user.id } },
+          course: {
+            connect: {
+              name: 'Java',
+            },
+          },
+          chapterState: {
+            create: state.map((chapter) => {
+              return {
+                chapter: {
+                  connect: {
+                    name_courseName: {
+                      name: chapter.name,
+                      courseName: 'Java',
+                    },
+                  },
+                },
+                examples: chapter.example,
+                challenges: chapter.challenges,
+                exercises: chapter.exercise,
+                state: chapter.state,
+                activityStates: chapter.activities
+                  ? {
+                      create: chapter.activities.map((activity) => {
+                        return {
+                          state: activity.values,
+                          activity: {
+                            connect: {
+                              apiId: 'Java' + activity.name,
+                            },
+                          },
+                        }
+                      }),
+                    }
+                  : undefined,
+              }
+            }),
+          },
+        },
+      })
+      queries.push(createState)
+
+      await prisma.$transaction(queries)
 
       return parsed.data
     } catch (error) {
