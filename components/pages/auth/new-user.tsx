@@ -12,7 +12,7 @@ import { ProjectInformation } from 'lib/assets/ProjectInformation'
 import { UserDetails as UD } from '@prisma/client'
 import { redirect } from 'next/navigation'
 
-type UserDetails = Omit<UD, 'id' | 'userId'>
+type UserDetails = Omit<UD, 'id' | 'userId'> & { code: string }
 
 const vaildateUserDetails = (
   userDetails: Partial<UserDetails> & { additionalDevices: string[] }
@@ -58,24 +58,6 @@ export const NewUserPage = () => {
       console.log('mission failed bois')
     }
   }
-
-  // //TODO send update to TRPC
-  // const updateInfo = () => {
-  //   console.log('code:', code)
-  //   console.log('ntnustudent:', ntnuStudent)
-  //   console.log('studyprogram:', studyProgram)
-  //   console.log('years experience:', experience)
-  //   console.log('main study device:', studyDevice)
-  //   console.log(
-  //     'additional study devices:\ncomputer:',
-  //     isComputerCheckbox,
-  //     '\nmobile:',
-  //     isMobileCheckbox,
-  //     '\ntablet:',
-  //     isTabletCheckbox
-  //   )
-  //   console.log('interested in crossplatform:', crossplatformInterest)
-  // }
 
   return readInformation ? (
     <div>

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, protectedProcedure } from '../trpc'
 
 import { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
@@ -30,11 +30,23 @@ export const userRouter = createTRPCRouter({
         interest: z.number(),
       })
     )
+
     .mutation(async ({ input, ctx }) => {
-      return await ctx.prisma.userDetails.upsert({
-        where: { userId: ctx.session.user.id },
-        create: { ...input, user: { connect: { id: ctx.session.user.id } } },
-        update: input,
+      return await ctx.prisma.user.update({
+        where: { id: ctx.session.user.id },
+        data: {
+          code: input.code,
+          userDetails: {
+            upsert: {
+              create: {
+                ...input,
+              },
+              update: {
+                ...input,
+              },
+            },
+          },
+        },
       })
     }),
 })
