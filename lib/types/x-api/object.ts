@@ -8,8 +8,10 @@ import {
   actorToPrisma,
   agent,
   agentFromPrisma,
+  anongroup,
   group,
   groupFromPrisma,
+  identifiedgroup,
   inverseFunctionalIdentifier,
 } from './actor'
 import { IRI, languageMap, recordFromPrismaArray, recordToPrismaArray } from '.'
@@ -111,7 +113,7 @@ export const agentObject = objectBase
   })
   .and(agent)
 
-export const groupObject = objectBase.and(group)
+export const groupObject = objectBase.and(identifiedgroup.or(anongroup))
 
 export const nestedObject = z.union([
   activityObject,

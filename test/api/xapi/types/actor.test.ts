@@ -47,11 +47,13 @@ describe('Type - Statment - agent', () => {
       { account: { name: 'test', homePage: 'https://protus.vercel.app' } },
       { account: { name: 'meme', homePage: 'https://protus.vercel.app' } },
     ]
-    malformed.forEach((url) => {
-      expect(inverseFunctionalIdentifier.safeParse(url).success).toBe(false)
+    malformed.forEach((value) => {
+      expect(() => {
+        inverseFunctionalIdentifier.parse(value)
+      }).toThrowError()
     })
-    correct.forEach((url) => {
-      expect(inverseFunctionalIdentifier.safeParse(url).success).toBe(true)
+    correct.forEach((value) => {
+      expect(inverseFunctionalIdentifier.parse(value)).toStrictEqual(value)
     })
   })
 
@@ -60,11 +62,13 @@ describe('Type - Statment - agent', () => {
     const correct = [
       { id: '7141e727-9483-4604-b116-1373c25e56d8', name: 'test' },
     ]
-    malformed.forEach((url) => {
-      expect(actorBase.safeParse(url).success).toBe(false)
+    malformed.forEach((value) => {
+      expect(() => {
+        actorBase.parse(value)
+      }).toThrowError()
     })
-    correct.forEach((url) => {
-      expect(actorBase.safeParse(url).success).toBe(true)
+    correct.forEach((value) => {
+      expect(actorBase.parse(value)).toStrictEqual(value)
     })
   })
 
@@ -96,16 +100,13 @@ describe('Type - Statment - agent', () => {
       },
       { mbox: 'mailto:test@test.com', objectType: 'Agent' },
     ]
-    malformed.forEach((url) => {
-      let test = agent.safeParse(url)
-      if (test.success) {
-        console.log(test.data)
-      }
-
-      expect(agent.safeParse(url).success).toBe(false)
+    malformed.forEach((value) => {
+      expect(() => {
+        agent.parse(value)
+      }).toThrowError()
     })
-    correct.forEach((url) => {
-      expect(agent.safeParse(url).success).toBe(true)
+    correct.forEach((value) => {
+      expect(agent.parse(value)).toStrictEqual(value)
     })
   })
 
@@ -155,12 +156,13 @@ describe('Type - Statment - agent', () => {
         member: [],
       },
     ]
-    malformed.forEach((url) => {
-      expect(anongroup.safeParse(url).success).toBe(false)
+    malformed.forEach((value) => {
+      expect(() => {
+        anongroup.parse(value)
+      }).toThrowError()
     })
-
-    correct.forEach((url) => {
-      expect(anongroup.safeParse(url).success).toBe(true)
+    correct.forEach((value) => {
+      expect(anongroup.parse(value)).toStrictEqual(value)
     })
   })
 
@@ -251,12 +253,13 @@ describe('Type - Statment - agent', () => {
         member: [],
       },
     ]
-    malformed.forEach((url) => {
-      expect(identifiedgroup.safeParse(url).success).toBe(false)
+    malformed.forEach((value) => {
+      expect(() => {
+        identifiedgroup.parse(value)
+      }).toThrowError()
     })
-
-    correct.forEach((url) => {
-      expect(identifiedgroup.safeParse(url).success).toBe(true)
+    correct.forEach((value) => {
+      expect(identifiedgroup.parse(value)).toStrictEqual(value)
     })
   })
 
@@ -341,12 +344,13 @@ describe('Type - Statment - agent', () => {
         member: [],
       },
     ]
-    malformed.forEach((url) => {
-      expect(group.safeParse(url).success).toBe(false)
+    malformed.forEach((value) => {
+      expect(() => {
+        group.parse(value)
+      }).toThrowError()
     })
-
-    correct.forEach((url) => {
-      expect(group.safeParse(url).success).toBe(true)
+    correct.forEach((value) => {
+      expect(group.parse(value)).toStrictEqual(value)
     })
   })
 

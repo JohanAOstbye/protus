@@ -38,44 +38,47 @@ describe('Type - Statment', () => {
     ]
     const correct = [
       {
-        id: 'c5e4a112-795f-4166-9913-8097849767d2',
         actor: {
           objectType: 'Agent',
-          name: 'test',
-          mbox: 'mailto:test@test.com',
+          mbox: 'mailto:test@example.com',
         },
         verb: {
-          id: 'http://example.com',
+          id: 'http://example.com/planned',
+          display: {
+            en: 'planned',
+          },
         },
         object: {
-          id: 'http://example.com',
-        },
-        result: {
-          score: {
-            scaled: 1,
-          },
-        },
-        context: {
-          registration: 'c5e4a112-795f-4166-9913-8097849767d2',
-          instructor: {
+          objectType: 'SubStatement',
+          actor: {
             objectType: 'Agent',
-            name: 'test',
-            mbox: 'mailto:test@test.com',
+            mbox: 'mailto:test@example.com',
           },
-          team: {
-            objectType: 'Group',
-            name: 'test',
-            mbox: 'mailto:Group@test.com',
-            member: [],
+          verb: {
+            id: 'http://example.com/visited',
+            display: {
+              en: 'will visit',
+            },
+          },
+          object: {
+            objectType: 'Activity',
+            id: 'http://example.com/website',
+            definition: {
+              name: {
+                en: 'Some Awesome Website',
+              },
+            },
           },
         },
       },
     ]
-    malformed.forEach((url) => {
-      expect(statement.safeParse(url).success).toBe(false)
+    malformed.forEach((value) => {
+      expect(() => {
+        statement.parse(value)
+      }).toThrowError()
     })
-    correct.forEach((url) => {
-      expect(statement.safeParse(url).success).toBe(true)
+    correct.forEach((value) => {
+      expect(statement.parse(value)).toStrictEqual(value)
     })
   })
 })

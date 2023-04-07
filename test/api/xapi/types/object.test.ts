@@ -315,34 +315,40 @@ describe('Type - Statment - Object', () => {
       ...correctAgent,
       ...correctGroup,
     ]
-    malformed.forEach((url) => {
-      expect(nestedObject.safeParse(url).success).toBe(false)
+    malformed.forEach((value) => {
+      expect(() => {
+        nestedObject.parse(value)
+      }).toThrowError()
     })
-    correct.forEach((url) => {
-      expect(nestedObject.safeParse(url).success).toBe(true)
+    correct.forEach((value) => {
+      expect(nestedObject.parse(value)).toStrictEqual(value)
     })
   })
 
   test('agentObject', async () => {
-    malformedAgent.forEach((url) => {
-      expect(agentObject.safeParse(url).success).toBe(false)
+    malformedAgent.forEach((value) => {
+      expect(() => {
+        agentObject.parse(value)
+      }).toThrowError()
     })
-    correctAgent.forEach((url) => {
-      expect(agentObject.safeParse(url).success).toBe(true)
+    correctAgent.forEach((value) => {
+      expect(agentObject.parse(value)).toStrictEqual(value)
     })
   })
 
   test('groupObject', async () => {
-    malformedGroup.forEach((url) => {
-      expect(groupObject.safeParse(url).success).toBe(false)
+    malformedGroup.forEach((value) => {
+      expect(() => {
+        groupObject.parse(value)
+      }).toThrowError()
     })
-    correctGroup.forEach((url) => {
-      expect(groupObject.safeParse(url).success).toBe(true)
+    correctGroup.forEach((value) => {
+      expect(groupObject.parse(value)).toStrictEqual(value)
     })
   })
 
   test('subStatementObject', async () => {
-    malformedStatement.forEach((value) => {
+    malformedSubStatement.forEach((value) => {
       expect(() => {
         subStatementObject.parse(value)
       }).toThrowError()
@@ -353,20 +359,24 @@ describe('Type - Statment - Object', () => {
   })
 
   test('statementObject', async () => {
-    malformedStatement.forEach((url) => {
-      expect(statementObject.safeParse(url).success).toBe(false)
+    malformedStatement.forEach((value) => {
+      expect(() => {
+        statementObject.parse(value)
+      }).toThrowError()
     })
-    correctStatement.forEach((url) => {
-      expect(statementObject.safeParse(url).success).toBe(true)
+    correctStatement.forEach((value) => {
+      expect(statementObject.parse(value)).toStrictEqual(value)
     })
   })
 
   test('activityObject', async () => {
-    malformedActivity.forEach((url) => {
-      expect(activityObject.safeParse(url).success).toBe(false)
+    malformedActivity.forEach((value) => {
+      expect(() => {
+        activityObject.parse(value)
+      }).toThrowError()
     })
-    correctActivity.forEach((url) => {
-      expect(activityObject.safeParse(url).success).toBe(true)
+    correctActivity.forEach((value) => {
+      expect(activityObject.parse(value)).toStrictEqual(value)
     })
   })
 })

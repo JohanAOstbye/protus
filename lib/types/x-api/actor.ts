@@ -66,7 +66,7 @@ export const identifiedgroup = z
   .and(actorBase)
   .and(inverseFunctionalIdentifier)
 
-export const group = z.union([anongroup, identifiedgroup])
+export const group = z.union([identifiedgroup, anongroup])
 
 export const actor = z.union([agent, group])
 
