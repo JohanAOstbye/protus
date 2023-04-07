@@ -21,8 +21,8 @@ const ChapterPage = ({
   chapter: chapterType
   course: string
 }) => {
-  const { data: session, status } = useSession({ required: true })
-  const { recordStatment } = useXapi()
+  // const { data: session, status } = useSession({ required: true })
+  // const { recordStatment } = useXapi()
 
   useTimedStatement((duration) => {
     if (status === 'authenticated' && session && session.user) {
