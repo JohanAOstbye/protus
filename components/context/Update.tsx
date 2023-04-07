@@ -26,7 +26,6 @@ export const UpdateChapter = ({
 
   useEffect(() => {
     const newCourse = courses.find((c) => c.title == course)
-    console.log('newCourse', newCourse, courses, course)
 
     updateCourse(newCourse)
     return () => {

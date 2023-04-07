@@ -7,8 +7,6 @@ export interface ChapterListProps {
 }
 
 export const ChapterList = ({ list }: ChapterListProps) => {
-  console.log(style)
-
   return (
     <ul className={style.chapterList}>
       {list.map((item, i) => (

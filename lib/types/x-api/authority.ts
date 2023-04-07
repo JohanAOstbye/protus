@@ -11,7 +11,7 @@ import {
 } from './actor'
 
 export const authority = agent.or(
-  group.refine(
+  anongroup.refine(
     (data) => data.member && data.member.length == 2,
     'if the authority is a group, then it has to have 2 members'
   )

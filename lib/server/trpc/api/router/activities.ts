@@ -23,8 +23,6 @@ export const activitiesRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { limit, cursor, filter } = input
 
-      console.log('quering activities')
-
       const items = await ctx.prisma.activity.findMany({
         take: limit + 1,
         cursor: cursor ? { id: cursor } : undefined,
@@ -55,7 +53,6 @@ export const activitiesRouter = createTRPCRouter({
         const nextItem = items.pop()
         nextCursor = nextItem!.id
       }
-      console.log(items)
 
       return {
         items,

@@ -11,7 +11,7 @@ import { prisma } from 'lib/server/db'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       query: z.object({
@@ -100,7 +100,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       body: document,
@@ -186,7 +186,7 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       body: document,
@@ -272,7 +272,7 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       query: z.object({

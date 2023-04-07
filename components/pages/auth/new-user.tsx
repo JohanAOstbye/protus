@@ -54,8 +54,6 @@ export const NewUserPage = () => {
     const validator = vaildateUserDetails(userDetails)
     if (validator.success) {
       mutation.mutateAsync(validator.data).then(() => redirect('/'))
-    } else {
-      console.log('mission failed bois')
     }
   }
 
@@ -64,9 +62,7 @@ export const NewUserPage = () => {
       <ProjectInformation />
       <Button
         onClick={() => {
-          console.log(readInformation)
           setReadInformation(!readInformation)
-          console.log(readInformation)
         }}
         text="Accept"
       />

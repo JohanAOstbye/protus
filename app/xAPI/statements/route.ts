@@ -20,7 +20,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 export async function GET(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       query: z.object({
@@ -295,7 +295,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       body: z.object({ statements: z.array(zStatement) }),
@@ -361,7 +361,7 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       query: z.object({

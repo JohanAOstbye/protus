@@ -10,7 +10,7 @@ import { z } from 'zod'
 import { prisma } from 'lib/server/db'
 
 export async function POST(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       query: z.object({

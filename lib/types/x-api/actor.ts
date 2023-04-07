@@ -10,7 +10,7 @@ export const account = z.object({
 
 export const inverseFunctionalIdentifier = z
   .object({
-    mbox: z.string().email().optional(),
+    mbox: z.string().startsWith('mailto:').optional(),
     mbox_sha1sum: z.string().optional(),
     openid: z.string().url().optional(),
     account: account.optional(),
@@ -66,9 +66,9 @@ export const identifiedgroup = z
   .and(actorBase)
   .and(inverseFunctionalIdentifier)
 
-export const group = anongroup.or(identifiedgroup)
+export const group = z.union([anongroup, identifiedgroup])
 
-export const actor = agent.or(group)
+export const actor = z.union([agent, group])
 
 export type actorType = z.infer<typeof actor>
 export type groupType = z.infer<typeof group>

@@ -4,17 +4,15 @@ const headers = z.record(z.string(), z.array(z.string()).nonempty())
 
 type headersType = z.infer<typeof headers>
 
-export function apiValidation<
+export async function apiValidation<
   T extends z.AnyZodObject,
   Y extends z.AnyZodObject
 >(
   request: Request,
   input: undefined,
   headers?: headersType
-):
-  | {
-      success: true
-    }
+): Promise<
+  | { success: true }
   | {
       success: false
       error: {
@@ -22,14 +20,15 @@ export function apiValidation<
         options: { status: number }
       }
     }
-export function apiValidation<
+>
+export async function apiValidation<
   T extends z.AnyZodObject,
   Y extends z.AnyZodObject
 >(
   request: Request,
   input: { body: Y },
   headers?: headersType
-):
+): Promise<
   | {
       success: true
       data: {
@@ -43,15 +42,16 @@ export function apiValidation<
         options: { status: number }
       }
     }
+>
 
-export function apiValidation<
+export async function apiValidation<
   T extends z.AnyZodObject,
   Y extends z.AnyZodObject
 >(
   request: Request,
   input: { query: T },
   headers?: headersType
-):
+): Promise<
   | {
       success: true
       data: {
@@ -65,14 +65,15 @@ export function apiValidation<
         options: { status: number }
       }
     }
-export function apiValidation<
+>
+export async function apiValidation<
   T extends z.AnyZodObject,
   Y extends z.AnyZodObject
 >(
   request: Request,
   input: { query: T; body: Y },
   headers?: headersType
-):
+): Promise<
   | {
       success: true
       data: {
@@ -87,15 +88,16 @@ export function apiValidation<
         options: { status: number }
       }
     }
+>
 
-export function apiValidation<
+export async function apiValidation<
   T extends z.AnyZodObject,
   Y extends z.AnyZodObject
 >(
   request: Request,
   input?: { query?: T; body?: Y },
   headers?: headersType
-):
+): Promise<
   | {
       success: true
       data: {
@@ -109,7 +111,8 @@ export function apiValidation<
         json: { message: string; error?: z.ZodError<any> }
         options: { status: number }
       }
-    } {
+    }
+> {
   const data: {
     query?: z.infer<T>
     body?: z.infer<Y>
@@ -146,8 +149,10 @@ export function apiValidation<
     data.query = query.data
   }
   if (input && input.body) {
-    const body = input.body.safeParse(request.body)
+    const body = input.body.safeParse(await request.json())
     if (!body.success) {
+      console.log(body.error)
+
       return {
         success: false,
         error: {

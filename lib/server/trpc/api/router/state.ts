@@ -200,7 +200,6 @@ export const stateRouter = createTRPCRouter({
         []
       )
 
-      console.log('inserting activivies')
       let existingActivityUrls: string[] = []
       try {
         existingActivityUrls = (
@@ -209,9 +208,7 @@ export const stateRouter = createTRPCRouter({
         activities = activities.filter(
           (act) => !existingActivityUrls.includes(act.url)
         )
-      } catch (error) {
-        console.log("prisma error, couldn't get existing activity urls")
-      }
+      } catch (error) {}
       const queries: any[] = []
       if (activities.length > 0) {
         const existingCourses = (
@@ -264,16 +261,12 @@ export const stateRouter = createTRPCRouter({
             }
           })
 
-        console.log('newChapters: ', newChapters.length)
-
         if (newChapters.length > 0) {
           const chaptersQuery = prisma.chapter.createMany({
             data: newChapters,
           })
           queries.push(chaptersQuery)
         }
-
-        console.log('activities: ', activities.length)
 
         if (activities.length > 0) {
           const activitiesQuery = activities.map((activity) =>
@@ -378,8 +371,6 @@ export const stateRouter = createTRPCRouter({
 
       return parsed.data
     } catch (error) {
-      console.log(error)
-
       throw new Error('json parsing failed:/')
     }
   }),

@@ -21,10 +21,6 @@ export const Navbar = () => {
   const { isVisible: authIsVisible, setIsVisible: setAuthIsVisible } =
     useOutsideClick(false, authRef)
 
-  useEffect(() => {
-    console.log('course changed', course)
-  }, [course])
-
   return (
     <div className={style.container}>
       <div className={style.navbar}>

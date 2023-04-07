@@ -50,8 +50,7 @@ export const ActivitiesPage = ({
   )
 
   useEffect(() => {
-    // activities.refetch()
-    console.log('lol')
+    // activities.refetch() TODO: fix this
   }, [deferredFilter])
 
   return (

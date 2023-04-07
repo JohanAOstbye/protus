@@ -13,13 +13,19 @@ import {
   inverseFunctionalIdentifier,
 } from './actor'
 import { IRI, languageMap, recordFromPrismaArray, recordToPrismaArray } from '.'
-import { Actor, Prisma, Verb, Object, interactionType } from '@prisma/client'
+import {
+  Actor,
+  Prisma,
+  Verb,
+  Object as pObject,
+  interactionType,
+} from '@prisma/client'
 
 const objectBase = z.object({
   mongoid: z.string().uuid().optional(),
 })
 
-const definition = z.object({
+export const definition = z.object({
   name: languageMap.optional(),
   description: languageMap.optional(),
   type: IRI.optional(),
@@ -40,15 +46,15 @@ export const interactionTypes = z.enum([
   'other',
 ])
 
-export const interactionDefinition = z
-  .object({
-    name: languageMap.optional(),
-    description: languageMap.optional(),
-    type: IRI.optional(),
-    moreInfo: IRI.optional(),
-    extensions: z.record(IRI.or(z.string()), z.unknown()).optional(),
-    interactionType: interactionTypes
-      .transform((value) => {
+export const interactionDefinition = definition
+  .and(
+    z.object({
+      // name: languageMap.optional(),
+      // description: languageMap.optional(),
+      // type: IRI.optional(),
+      // moreInfo: IRI.optional(),
+      // extensions: z.record(IRI.or(z.string()), z.unknown()).optional(),
+      interactionType: interactionTypes.transform((value) => {
         switch (value) {
           case 'true-false':
             return 'trueFalse'
@@ -59,22 +65,21 @@ export const interactionDefinition = z
           default:
             return value
         }
-      })
-      .optional(),
-    correctResponsesPattern: z.array(z.string()).optional(),
-    choices: z.array(z.string()).optional(),
-    scale: z.array(z.string()).optional(),
-    source: z
-      .array(z.object({ id: z.string(), description: languageMap }))
-      .optional(),
-    target: z
-      .array(z.object({ id: z.string(), description: languageMap }))
-      .optional(),
-    steps: z
-      .array(z.object({ id: z.string(), description: languageMap }))
-      .optional(),
-  })
-
+      }),
+      correctResponsesPattern: z.array(z.string()).optional(),
+      choices: z.array(z.string()).optional(),
+      scale: z.array(z.string()).optional(),
+      source: z
+        .array(z.object({ id: z.string(), description: languageMap }))
+        .optional(),
+      target: z
+        .array(z.object({ id: z.string(), description: languageMap }))
+        .optional(),
+      steps: z
+        .array(z.object({ id: z.string(), description: languageMap }))
+        .optional(),
+    })
+  )
   .refine((data) => {
     let keys = Object.keys(data)
     let interactionComponentLists = [
@@ -87,47 +92,47 @@ export const interactionDefinition = z
     return (
       interactionComponentLists.filter((key) => keys.includes(key)).length <= 1
     )
-  })
+  }, 'Only one interaction component list is allowed')
 
 export const activityObject = objectBase.extend({
   id: IRI,
   objectType: z.literal('Activity'),
-  definition: interactionDefinition.or(definition).optional(),
+  definition: definition.or(interactionDefinition).optional(),
 })
 
-const statementObject = objectBase.extend({
+export const statementObject = objectBase.extend({
   objectType: z.literal('StatementRef'),
   id: z.string().uuid(),
 })
 
-const agentObject = objectBase
+export const agentObject = objectBase
   .extend({
     objectType: z.literal('Agent'),
   })
   .and(agent)
 
-const groupObject = objectBase
-  .extend({
-    objectType: z.literal('Group'),
-  })
-  .and(group)
+export const groupObject = objectBase.and(group)
 
-const nestedObject = activityObject
-  .or(statementObject)
-  .or(agentObject)
-  .or(groupObject)
-const subStatementObject = z.object({
+export const nestedObject = z.union([
+  activityObject,
+  statementObject,
+  agentObject,
+  groupObject,
+])
+export const subStatementObject = z.object({
   objectType: z.literal('SubStatement'),
   actor: actor,
   verb: verb,
   object: nestedObject,
 })
 
-export const object = activityObject
-  .or(statementObject)
-  .or(subStatementObject)
-  .or(agentObject)
-  .or(groupObject)
+export const object = z.union([
+  activityObject,
+  statementObject,
+  subStatementObject,
+  agentObject,
+  groupObject,
+])
 
 export type objectType = z.infer<typeof object>
 
@@ -301,12 +306,12 @@ export const objectToPrisma = (object: objectType) => {
 }
 
 export const objectFromPrisma = (
-  prismaobject: Omit<Object, 'mongoid'> & {
+  prismaobject: Omit<pObject, 'mongoid'> & {
     mongoid?: string | undefined
     actor?: Actor | undefined
     verb?: Verb | undefined
     object?:
-      | (Object & {
+      | (pObject & {
           objectActor?: Actor | undefined
         })
       | undefined
@@ -378,7 +383,11 @@ export const objectFromPrisma = (
                 : prismaobject.definition.moreInfo,
             extensions:
               prismaobject.definition.extensions.length > 0
-                ? recordFromPrismaArray(prismaobject.definition.extensions)
+                ? new Map(
+                    Object.entries(
+                      recordFromPrismaArray(prismaobject.definition.extensions)
+                    )
+                  )
                 : undefined,
             interactionType:
               prismaobject.definition.interactionType == null
@@ -444,7 +453,7 @@ export const objectFromPrisma = (
 }
 
 export const nestedObjectFromPrisma = (
-  prismaobject: Object & {
+  prismaobject: pObject & {
     objectActor?: Actor | undefined
   }
 ): z.infer<typeof nestedObject> => {
@@ -494,7 +503,11 @@ export const nestedObjectFromPrisma = (
                 : prismaobject.definition.moreInfo,
             extensions:
               prismaobject.definition.extensions.length > 0
-                ? recordFromPrismaArray(prismaobject.definition.extensions)
+                ? new Map(
+                    Object.entries(
+                      recordFromPrismaArray(prismaobject.definition.extensions)
+                    )
+                  )
                 : undefined,
             interactionType:
               prismaobject.definition.interactionType == null

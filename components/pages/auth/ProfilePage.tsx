@@ -30,7 +30,6 @@ export const ProfilePage = () => {
             ? undefined
             : deferredUser.image,
       })
-      console.log(res)
     }
   }
 
