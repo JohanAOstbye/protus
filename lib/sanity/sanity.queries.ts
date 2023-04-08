@@ -35,7 +35,7 @@ const courseFields = groq`
 export const settingsQuery = groq`*[_type == "settings"][0]`
 
 export const courseQuery = groq`
-*[_type == "course" && slug == $course][0]
+*[_type == "course" && slug.current == $course][0]
 {${courseFields}}
 `
 
@@ -45,7 +45,7 @@ export const coursesQuery = groq`
 `
 
 export const chapterBySlugAndCourseQuery = groq`
-*[_type == "course" && slug == $course  && $slug in chapters[]->slug.current][0]
+*[_type == "course" && slug.current == $course  && $slug in chapters[]->slug.current][0]
 {
   chapters[]->
 }
@@ -54,12 +54,6 @@ export const chapterBySlugAndCourseQuery = groq`
 }.chapters[0]
   {${chapterFields}}
 
-`
-export const CoursePageQuery = groq`
-*[_type == "course" && name == $course ][0]
-{
-  "page": page->{${chapterFields}}
-}
 `
 
 export type Author = {
