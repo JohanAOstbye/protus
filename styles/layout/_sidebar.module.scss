@@ -79,3 +79,20 @@
     aspect-ratio: 1;
   }
 }
+
+.activitiesLink {
+  @include link-style-reset;
+  @include gradient(90deg, $surf-gradient);
+  color: $surf-darkgrey;
+  border-radius: $border-radius--s;
+  @include type($font--s);
+  font-weight: 600;
+  width: 100%;
+  padding: $spacing--xxxxs $spacing--s;
+  @include breakpoint-sm {
+    margin-right: 2em;
+    margin-top: $spacing--xxxs;
+    opacity: 90%;
+    width: $spacing--big;
+  }
+}
