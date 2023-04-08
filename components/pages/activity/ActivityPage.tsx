@@ -63,7 +63,14 @@ export const ActivityPage = ({ activity }: { activity: Activity | null }) => {
 
   return (
     <div className={style.page} ref={ref}>
-      <iframe src={activity.url} height={height} width="100%" />
+      {activity.url.startsWith('https://') ? (
+        <iframe src={activity.url} height={height} width="100%" />
+      ) : (
+        <div>
+          Our activity api doesnt seem to use https. please click{' '}
+          <a href={activity.url}>here</a> to access the activity
+        </div>
+      )}
     </div>
   )
 }
