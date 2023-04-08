@@ -15,8 +15,10 @@
 
 .sidebar {
   z-index: 5;
+  position: fixed;
   background-color: $surf-darkgrey;
   width: 100%;
+  height: calc(100vh - $spacing--l);
   padding: $spacing--xs;
   margin: $spacing--tiny;
   margin-left: 0;
@@ -28,9 +30,11 @@
     border-top-right-radius: $border-radius--m;
     opacity: 90%;
     width: $spacing--big;
+    position: relative;
+    height: auto;
   }
 
-  @include breakpoint-m {
+  @include breakpoint-l {
     border-radius: $border-radius--m;
   }
 
