@@ -1,0 +1,20 @@
+@use 'styles/utils/main' as *;
+
+.content {
+  > p,
+  ul {
+    margin-block: $spacing--xxxs;
+  }
+
+  > h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-block: $spacing--xs $spacing--xxs;
+  }
+  > div {
+    margin-block: $spacing--xxs $spacing--s;
+  }
+}

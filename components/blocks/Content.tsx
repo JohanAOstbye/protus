@@ -1,18 +1,15 @@
 import { PortableText } from '@portabletext/react'
 import DescriptionBlock from './DescriptionBlock'
-
-const customComponents = {
-  types: {
-    descriptionBlock: DescriptionBlock,
-  },
-}
+import style from 'styles/components/_content.module.scss'
 
 export function Content({ value }: React.ComponentProps<typeof PortableText>) {
   return (
-    <PortableText
-      value={value}
-      components={{ types: { descriptionBlock: DescriptionBlock } }}
-    />
+    <div className={style.content}>
+      <PortableText
+        value={value}
+        components={{ types: { descriptionBlock: DescriptionBlock } }}
+      />
+    </div>
   )
 }
 
