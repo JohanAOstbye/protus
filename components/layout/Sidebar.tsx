@@ -29,8 +29,8 @@ export const Sidebar = () => {
                 <button
                   className={`${style.button} ${
                     isExpanded || window.innerWidth >= 1312
-                      ? style.closed
-                      : style.open
+                      ? style.open
+                      : style.closed
                   }`}
                   onClick={() => setIsExpanded(!isExpanded)}
                 >
@@ -49,6 +49,11 @@ export const Sidebar = () => {
                   </li>
                 ))}
               </ul>
+              {isExpanded && window.innerWidth <= 700 && (
+                <Link className={style.activitiesLink} href={'/activities'}>
+                  Activities
+                </Link>
+              )}
             </div>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
@@ -62,9 +67,11 @@ export const Sidebar = () => {
             >
               <ArrowRight />
             </button>
-            <Link className={style.activitiesLink} href={'/activities'}>
-              Activities
-            </Link>
+            {isExpanded && window.innerWidth >= 700 && (
+              <Link className={style.activitiesLink} href={'/activities'}>
+                Activities
+              </Link>
+            )}
           </div>
         </>
       )}
