@@ -16,51 +16,56 @@ export const Sidebar = () => {
     <nav>
       {course && course.slug && course.chapters && (
         <>
-          <div
-            className={`${style.sidebar} ${
-              isExpanded || window.innerWidth >= 1312
-                ? style.open
-                : style.closed
-            }`}
-          >
-            <div className={style.title}>
-              <label>{course.title ? course.title : course.slug}</label>
-              <button
-                className={`${style.button} ${
-                  isExpanded || window.innerWidth >= 1312
-                    ? style.closed
-                    : style.open
-                }`}
-                onClick={() => setIsExpanded(!isExpanded)}
-              >
-                x
-              </button>
+          <div>
+            <div
+              className={`${style.sidebar} ${
+                isExpanded || window.innerWidth >= 1312
+                  ? style.open
+                  : style.closed
+              }`}
+            >
+              <div className={style.title}>
+                <label>{course.title ? course.title : course.slug}</label>
+                <button
+                  className={`${style.button} ${
+                    isExpanded || window.innerWidth >= 1312
+                      ? style.closed
+                      : style.open
+                  }`}
+                  onClick={() => setIsExpanded(!isExpanded)}
+                >
+                  x
+                </button>
+              </div>
+              <ul>
+                {course.chapters.map((chapter, i) => (
+                  <li key={i}>
+                    <Link
+                      className={style.items}
+                      href={`c/${course.slug}/${chapter.slug}`}
+                    >
+                      <span>{chapter.title}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul>
-              {course.chapters.map((chapter, i) => (
-                <li key={i}>
-                  <Link
-                    className={style.items}
-                    href={`${course.slug}/${chapter.slug}`}
-                  >
-                    <span>{chapter.title}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className={`${style.button_test} ${style.button} ${
+                style.button_test
+              } ${
+                isExpanded || window.innerWidth >= 1312
+                  ? style.closed
+                  : style.open
+              }`}
+            >
+              <ArrowRight />
+            </button>
+            <Link className={style.activitiesLink} href={'/activities'}>
+              Activities
+            </Link>
           </div>
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className={`${style.button_test} ${style.button} ${
-              style.button_test
-            } ${
-              isExpanded || window.innerWidth >= 1312
-                ? style.closed
-                : style.open
-            }`}
-          >
-            <ArrowRight />
-          </button>
         </>
       )}
     </nav>
