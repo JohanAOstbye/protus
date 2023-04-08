@@ -87,7 +87,7 @@ export const ActivitiesPage = ({
         )
       )}
       {activities.hasNextPage && (
-        <div>
+        <div className={style.more}>
           <Button onClick={() => activities.fetchNextPage()}>Load more</Button>
         </div>
       )}
