@@ -4,6 +4,13 @@
 
 .page {
   @include content-wrapper();
+
+  .more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-block: $spacing--xxs;
+  }
 }
 
 .title {
