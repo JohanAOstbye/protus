@@ -37,8 +37,8 @@ export const Navbar = () => {
                   onClick={() => setCourseIsVisible(!courseIsVisible)}
                 >
                   <div>
-                    <span>Course</span>
-                    <p>{course ? course.title : 'None'}</p>
+                    {course && <span>Course</span>}
+                    <p>{course ? course.title : 'Course'}</p>
                   </div>
                   <DownArrow />
                 </button>
@@ -50,6 +50,7 @@ export const Navbar = () => {
                         ? 'block'
                         : 'none',
                   }}
+                  onClick={() => setCourseIsVisible(!courseIsVisible)}
                 >
                   {courses
                     .filter((c) => (course ? c.slug !== course.slug : true))
@@ -71,6 +72,7 @@ export const Navbar = () => {
               </div>
             </>
           )}
+          <Link href={'/activities'}>Activities</Link>
         </div>
 
         <div ref={authRef} className={style.auth}>

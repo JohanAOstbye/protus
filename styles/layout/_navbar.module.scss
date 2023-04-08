@@ -114,6 +114,14 @@
     padding-inline: $spacing--xs;
     padding-block: $spacing--xxxs;
 
+    button {
+      @include button-style-reset;
+      padding-block: $spacing--tiny;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
     li {
       padding-block: $spacing--tiny;
       &:hover {
