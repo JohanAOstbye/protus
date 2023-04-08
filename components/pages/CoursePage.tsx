@@ -61,6 +61,7 @@ const CoursePage = ({
 
   return (
     <div className={style.page}>
+      <div>{JSON.stringify(course)}</div>
       <UpdateCourse course={course} />
       {course ? (
         <>
