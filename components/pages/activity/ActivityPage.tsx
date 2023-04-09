@@ -64,7 +64,11 @@ export const ActivityPage = ({ activity }: { activity: Activity | null }) => {
   return (
     <div className={style.page} ref={ref}>
       {activity.url.startsWith('https://') ? (
-        <iframe src={activity.url} height={height} width="100%" />
+        <iframe
+          src={'http://www.google.ie/gwt/x?u=' + activity.url}
+          height={height}
+          width="100%"
+        />
       ) : (
         <div>
           Our activity api doesnt seem to use https. please click{' '}
