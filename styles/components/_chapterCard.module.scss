@@ -2,43 +2,38 @@
 
 .chapterCard {
   background-color: $surf-grey;
-  max-width: $spacing--xbig;
-  min-width: 140px;
-  padding: $spacing--xs;
-  border-radius: $border-radius--m;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  height: 100%;
-  min-height: max-content;
-  width: 100%;
-  @include breakpoint-sm {
-    max-width: $spacing--xbig;
-    min-width: $spacing--big;
-  }
-
-  &:hover {
-    background-color: $surf-hovergrey;
-  }
-
+  border-radius: $border-radius--s;
+  min-width: $spacing--xbig;
+  max-width: 360px;
+  z-index: 1;
+  overflow: hidden;
   a {
     @include link-style-reset;
     display: flex;
-  }
-  svg {
-    margin: auto 0;
-  }
-  &:hover svg {
-    transform: scale(1.5);
-  }
-}
+    flex-direction: column;
+    height: 100%;
 
-.title {
-  @include type($font--s);
-  line-height: 105%;
-  max-height: $spacing--l;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+    > :first-child {
+      display: flex;
+      align-items: center;
+      padding: $spacing--tiny;
+    }
+
+    svg {
+      margin: $spacing--xxxs;
+    }
+    &:hover {
+      svg {
+        transform: scale(1.5);
+      }
+    }
+  }
+  .title {
+    @include type($font--s);
+    line-height: 105%;
+    max-height: $spacing--l;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
 }
