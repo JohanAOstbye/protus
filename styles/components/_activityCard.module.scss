@@ -6,6 +6,7 @@
   min-width: 140px;
   padding: $spacing--xs;
   border-radius: $border-radius--m;
+  overflow: hidden;
   cursor: pointer;
 
   @include breakpoint-sm {
