@@ -8,9 +8,10 @@ import { ProgressBar } from './ProgressBar'
 export interface ChapterCardProps {
   title: string
   url: string
+  progress?: number
 }
 
-export const ChapterCard = ({ title, url }: ChapterCardProps) => {
+export const ChapterCard = ({ title, url, progress }: ChapterCardProps) => {
   return (
     <li className={style.chapterCard}>
       <Link href={url}>
@@ -19,7 +20,7 @@ export const ChapterCard = ({ title, url }: ChapterCardProps) => {
           <div className={style.title}>{title}</div>
         </div>
 
-        <ProgressBar percent={Math.random() * 100} />
+        {progress && <ProgressBar percent={progress * 100} />}
       </Link>
     </li>
   )
