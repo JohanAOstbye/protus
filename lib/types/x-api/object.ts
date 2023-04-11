@@ -3,7 +3,6 @@ import { verb, verbFromPrisma, verbSelect } from './verb'
 import {
   actor,
   actorFromPrisma,
-  actorInclude,
   actorSelect,
   actorToPrisma,
   agent,
@@ -13,7 +12,7 @@ import {
   inverseFunctionalIdentifier,
 } from './actor'
 import { IRI, languageMap, recordFromPrismaArray, recordToPrismaArray } from '.'
-import { Actor, Prisma, Verb, Object, interactionType } from '@prisma/client'
+import { Actor, Prisma, Verb, Object } from '@prisma/client'
 
 const objectBase = z.object({
   mongoid: z.string().uuid().optional(),

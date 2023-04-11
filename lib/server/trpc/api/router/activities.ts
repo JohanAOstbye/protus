@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 import { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
 export const activitiesRouter = createTRPCRouter({
@@ -23,8 +23,6 @@ export const activitiesRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { limit, cursor, filter } = input
 
-      console.log('quering activities')
-
       const items = await ctx.prisma.activity.findMany({
         take: limit + 1,
         cursor: cursor ? { id: cursor } : undefined,
@@ -36,7 +34,7 @@ export const activitiesRouter = createTRPCRouter({
               ? {
                   OR: filter.courses.reduce(
                     (acc: { name?: string; courseName: string }[], course) =>
-                      course.chapters
+                      course.chapters && course.chapters.length > 0
                         ? acc.concat(
                             course.chapters.map((chapter) => {
                               return { name: chapter, courseName: course.name }
@@ -55,7 +53,6 @@ export const activitiesRouter = createTRPCRouter({
         const nextItem = items.pop()
         nextCursor = nextItem!.id
       }
-      console.log(items)
 
       return {
         items,

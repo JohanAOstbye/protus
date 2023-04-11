@@ -68,8 +68,6 @@ export const state = z
   })
   .transform((state) => {
     return state.topics.map((topic) => {
-      console.log(state.activities)
-
       return {
         name: topic.name,
         state: topic.overall,

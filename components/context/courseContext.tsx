@@ -63,7 +63,6 @@ export const CourseContextProvider = (props: courseContextProviderProps) => {
   return (
     // the Provider gives access to the context to its children
     <CourseContext.Provider value={memoedCourse}>
-      {/* <div>course: {course ? course.name : 'no course'}</div> */}
       {props.children}
     </CourseContext.Provider>
   )

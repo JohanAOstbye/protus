@@ -1,5 +1,4 @@
 'use client'
-import { trpc } from 'lib/server/trpc/provider'
 import { groupType } from 'lib/types/course-api/group'
 import { learnerType } from 'lib/types/course-api/learner'
 import { useSession } from 'next-auth/react'
@@ -35,11 +34,6 @@ export const StateContextProvider = (props: StateContextProviderProps) => {
 
   useEffect(() => {
     if (status == 'authenticated') {
-      // const prank = trpc.state.get.useQuery()
-      // if (prank.isSuccess) {
-      //   setLearners(prank.data.learners)
-      //   setGroups(prank.data.groups)
-      // }
     }
 
     return () => {

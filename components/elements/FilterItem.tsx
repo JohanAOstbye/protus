@@ -1,8 +1,4 @@
-import useOutsideClick from 'components/hooks/useOutsideClick.hook'
-import { useRef } from 'react'
-import DownArrow from 'lib/assets/icons/arrow-down.svg'
 import style from 'styles/components/_filterItem.module.scss'
-import { filterType } from 'lib/types/componentTypes'
 
 export interface FilterItemProps {
   title: string
@@ -21,11 +17,10 @@ export const FilterItem = ({
       <input
         className={style.checkbox}
         type="checkbox"
-        // checked={checked}
-        // onChange={() => {
-        //   check(checked)
-        //   console.log(filter?.course)
-        // }}
+        checked={checked}
+        onChange={() => {
+          check(checked)
+        }}
       />
     </div>
   )

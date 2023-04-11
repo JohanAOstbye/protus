@@ -6,8 +6,6 @@ export interface ActivityListProps {
 }
 
 export const ActivityList = ({ list }: ActivityListProps) => {
-  console.log(style)
-
   return (
     <ul className={style.activityList}>
       {list.map((item, i) => (

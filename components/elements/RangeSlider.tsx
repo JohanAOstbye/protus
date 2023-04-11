@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEventHandler } from 'react'
+import React, { ChangeEventHandler } from 'react'
 import style from 'styles/components/_rangeSlider.module.scss'
 
 export type RangeSliderProps = {

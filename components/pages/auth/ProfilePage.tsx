@@ -30,7 +30,6 @@ export const ProfilePage = () => {
             ? undefined
             : deferredUser.image,
       })
-      console.log(res)
     }
   }
 
@@ -116,7 +115,6 @@ export const ProfilePage = () => {
               <div>
                 <Button onClick={() => update()}>Save</Button>
               </div>
-              {/* {JSON.stringify(deferredUser)} */}
             </div>
           </>
         ) : (

@@ -2,7 +2,6 @@
 import Link from 'next/link'
 import style from 'styles/layout/_sidebar.module.scss'
 import { useState } from 'react'
-import { Chapter } from 'lib/sanity/sanity.queries'
 import ArrowRight from 'lib/assets/icons/arrow-right.svg'
 import { useCourse } from 'components/context/courseContext'
 
@@ -11,7 +10,6 @@ export interface SidebarProps {}
 export const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(false)
   const { course } = useCourse()
-
   return (
     <nav>
       {course && course.slug && course.chapters && (
@@ -50,7 +48,12 @@ export const Sidebar = () => {
                 ))}
               </ul>
               {isExpanded && window.innerWidth <= 700 && (
-                <Link className={style.activitiesLink} href={'/activities'}>
+                <Link
+                  className={style.activitiesLink}
+                  href={`/activities?${new URLSearchParams({
+                    course: JSON.stringify({ name: course.title }),
+                  }).toString()}`}
+                >
                   Activities
                 </Link>
               )}
@@ -68,7 +71,12 @@ export const Sidebar = () => {
               <ArrowRight />
             </button>
             {isExpanded && window.innerWidth >= 700 && (
-              <Link className={style.activitiesLink} href={'/activities'}>
+              <Link
+                className={style.activitiesLink}
+                href={`/activities?${new URLSearchParams({
+                  course: JSON.stringify({ name: course.title }),
+                }).toString()}`}
+              >
                 Activities
               </Link>
             )}

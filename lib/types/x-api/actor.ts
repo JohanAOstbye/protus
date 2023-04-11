@@ -1,5 +1,4 @@
 import { Actor, Prisma, XapiAccount } from '@prisma/client'
-import { Session } from 'next-auth'
 import { z } from 'zod'
 import { user } from '../auth/user'
 

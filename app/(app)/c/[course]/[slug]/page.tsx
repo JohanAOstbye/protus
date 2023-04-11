@@ -1,41 +1,11 @@
-import Loading from 'components/elements/Loading'
 import ChapterPage from 'components/pages/chapter/ChapterPage'
-import CourseLayout from 'components/pages/chapter/ChapterPage'
-import PreviewChapterPage from 'components/pages/chapter/PreviewChapterPage'
-import {
-  getChapter,
-  getInitialChapter,
-  getSettings,
-} from 'lib/sanity/sanity.client'
-// import { PreviewSuspense } from 'next-sanity/preview';
-import { previewData } from 'next/headers'
-import { Suspense } from 'react'
+import { getChapter } from 'lib/sanity/sanity.client'
 
 export default async function SlugRoute({
   params,
 }: {
   params: { slug: string; course: string }
 }) {
-  // Start fetching settings early, so it runs in parallel with the chapter query
-  const settings = getSettings()
-
-  // if (previewData()) {
-  //   const token = previewData().token || null
-  //   const data = getInitialChapter(params, token)
-  //   return (
-  //     <PreviewSuspense
-  //       fallback={
-  //         <CourseLayout
-  //           loading
-  //           preview
-  //         ><div></div></CourseLayout>
-  //       }
-  //     >
-  //       <PreviewChapterPage token={token} chapter={params} />
-  //     </PreviewSuspense>
-  //   )
-  // }
-
   const chapter = getChapter(params.slug, params.course)
 
   return <ChapterPage chapter={await chapter} course={params.course} />

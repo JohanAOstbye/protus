@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import dJSON from 'dirty-json'
-import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, protectedProcedure } from '../trpc'
 import { response } from 'lib/types/course-api'
 import { activityType } from 'lib/types/course-api/topic'
 import { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
@@ -128,6 +128,7 @@ export const stateRouter = createTRPCRouter({
 
   update: protectedProcedure.mutation(async ({ ctx }) => {
     const { prisma, session } = ctx
+    const userId = ctx.session.user.code
 
     const url =
       apiUrl +
@@ -200,7 +201,6 @@ export const stateRouter = createTRPCRouter({
         []
       )
 
-      console.log('inserting activivies')
       let existingActivityUrls: string[] = []
       try {
         existingActivityUrls = (
@@ -227,7 +227,6 @@ export const stateRouter = createTRPCRouter({
           .map((course) => {
             return { name: course }
           })
-        console.log('newCourses: ', newCourses.length)
         if (newCourses.length > 0) {
           const coursesQuery = prisma.course.createMany({
             data: newCourses,
@@ -264,16 +263,12 @@ export const stateRouter = createTRPCRouter({
             }
           })
 
-        console.log('newChapters: ', newChapters.length)
-
         if (newChapters.length > 0) {
           const chaptersQuery = prisma.chapter.createMany({
             data: newChapters,
           })
           queries.push(chaptersQuery)
         }
-
-        console.log('activities: ', activities.length)
 
         if (activities.length > 0) {
           const activitiesQuery = activities.map((activity) =>

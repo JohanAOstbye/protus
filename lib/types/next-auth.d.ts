@@ -5,6 +5,7 @@ import { UserRole } from '@prisma/client'
 interface IUser extends DefaultUser {
   name?: string
   roles?: UserRole[]
+  code?: string | null
 }
 declare module 'next-auth' {
   interface User extends IUser {}
