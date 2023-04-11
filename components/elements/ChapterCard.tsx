@@ -1,4 +1,3 @@
-import { Colors } from 'lib/types/style'
 import Link from 'next/link'
 import style from 'styles/components/_chapterCard.module.scss'
 import React from 'react'

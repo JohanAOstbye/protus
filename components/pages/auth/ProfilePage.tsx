@@ -115,7 +115,6 @@ export const ProfilePage = () => {
               <div>
                 <Button onClick={() => update()}>Save</Button>
               </div>
-              {/* {JSON.stringify(deferredUser)} */}
             </div>
           </>
         ) : (

@@ -1,4 +1,3 @@
-import useOutsideClick from 'components/hooks/useOutsideClick.hook'
 import { useState } from 'react'
 import DownArrow from 'lib/assets/icons/arrow-down.svg'
 import style from 'styles/components/_filterSection.module.scss'

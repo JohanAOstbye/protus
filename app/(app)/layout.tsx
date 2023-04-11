@@ -1,4 +1,3 @@
-import { QueryClient, QueryClientProvider } from 'react-query'
 import { Session } from 'next-auth'
 import { headers } from 'next/headers'
 import Layout from 'components/layout'

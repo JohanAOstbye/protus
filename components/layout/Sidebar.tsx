@@ -2,7 +2,6 @@
 import Link from 'next/link'
 import style from 'styles/layout/_sidebar.module.scss'
 import { useState } from 'react'
-import { Chapter } from 'lib/sanity/sanity.queries'
 import ArrowRight from 'lib/assets/icons/arrow-right.svg'
 import { useCourse } from 'components/context/courseContext'
 

@@ -7,8 +7,6 @@ import { courseType } from 'lib/types/sanity'
 import style from 'styles/pages/_coursePage.module.scss'
 
 const CoursePage = ({
-  preview = false,
-  loading,
   course,
 }: {
   preview?: boolean
