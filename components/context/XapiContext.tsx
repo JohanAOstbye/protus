@@ -1,6 +1,6 @@
 import { agentType } from 'lib/types/x-api/actor'
 import { authorityType } from 'lib/types/x-api/authority'
-import { statement, statementType } from 'lib/types/x-api/statement'
+import { statementType } from 'lib/types/x-api/statement'
 import React, {
   createContext,
   useContext,
@@ -9,7 +9,7 @@ import React, {
   useState,
 } from 'react'
 import { useSession } from 'next-auth/react'
-import { sendStatement, sendStatements } from 'lib/types/x-api/functions'
+import { sendStatement } from 'lib/types/x-api/functions'
 
 type XapiContextType = {
   recordStatment: (statement: statementType) => void

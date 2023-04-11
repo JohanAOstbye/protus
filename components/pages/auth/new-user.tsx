@@ -55,7 +55,7 @@ export const NewUserPage = () => {
     if (validator.success) {
       mutation.mutateAsync(validator.data).then(() => redirect('/'))
     } else {
-      console.log('mission failed bois')
+      console.log('validator failed')
     }
   }
 

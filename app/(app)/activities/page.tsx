@@ -48,7 +48,6 @@ export default async function IndexRoute({
     } else if (Array.isArray(searchParams.course)) {
       searchParams.course.forEach((test) => {
         let course = JSON.parse(test)
-        console.log(course)
 
         if (course.name) {
           let chapters: string[] = Array.isArray(course.chapters)
