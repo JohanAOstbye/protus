@@ -1,5 +1,4 @@
 import { Prisma, Verb } from '@prisma/client'
-import { Session } from 'next-auth'
 import { z } from 'zod'
 import { IRI, languageMap, recordFromPrismaArray, recordToPrismaArray } from '.'
 

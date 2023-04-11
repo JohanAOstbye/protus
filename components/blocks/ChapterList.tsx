@@ -1,4 +1,3 @@
-import ActivityCard from 'components/elements/ActivityCard'
 import ChapterCard from 'components/elements/ChapterCard'
 import style from 'styles/components/_chapterList.module.scss'
 

@@ -3,7 +3,6 @@ import { verb, verbFromPrisma, verbSelect } from './verb'
 import {
   actor,
   actorFromPrisma,
-  actorInclude,
   actorSelect,
   actorToPrisma,
   agent,

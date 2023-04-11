@@ -1,7 +1,4 @@
-import { useCourse } from 'components/context/courseContext'
 import React from 'react'
-import Footer from './Footer'
-import { Navbar } from './Navbar'
 import { Sidebar } from './Sidebar'
 import style from 'styles/layout/_chapterLayout.module.scss'
 

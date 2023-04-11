@@ -11,8 +11,6 @@ import { useXapi } from 'components/context/XapiContext'
 import { getDeviceCategory } from 'lib/types/x-api/functions'
 
 const CoursePage = ({
-  preview = false,
-  loading,
   course,
 }: {
   preview?: boolean

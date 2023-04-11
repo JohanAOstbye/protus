@@ -1,4 +1,3 @@
-import { Colors } from 'lib/types/style'
 import Link from 'next/link'
 import style from 'styles/components/_activityCard.module.scss'
 import ExerciseIcon from 'lib/assets/icons/exercise.svg'
