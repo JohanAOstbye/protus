@@ -34,7 +34,7 @@ export const activitiesRouter = createTRPCRouter({
               ? {
                   OR: filter.courses.reduce(
                     (acc: { name?: string; courseName: string }[], course) =>
-                      course.chapters
+                      course.chapters && course.chapters.length > 0
                         ? acc.concat(
                             course.chapters.map((chapter) => {
                               return { name: chapter, courseName: course.name }

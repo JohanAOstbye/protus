@@ -2,17 +2,17 @@
 import ActivityList from 'components/blocks/ActivityList'
 import Filter from 'components/blocks/Filter'
 import { filterType } from 'lib/types/componentTypes'
-import React, { useDeferredValue, useEffect, useState } from 'react'
+import React, { useDeferredValue, useState } from 'react'
 import SearchIcon from 'lib/assets/icons/search.svg'
 import style from 'styles/pages/_activitiesPage.module.scss'
 import { trpc } from 'lib/server/trpc/provider'
 import Loading from 'components/elements/Loading'
-import { activitiesRouterInput } from 'lib/server/trpc/api/router/activities'
 import { ActivityCardProps } from 'components/elements/ActivityCard'
 import { Button } from 'components/elements/Button'
 
 type activitiesPageProps = {
   options?: filterType
+  initialfilter: filterType
 }
 
 export const ActivitiesPage = ({
@@ -33,12 +33,10 @@ export const ActivitiesPage = ({
       },
     ],
   },
+  initialfilter,
 }: activitiesPageProps) => {
   const [query, setQuery] = useState('')
-  const [filter, setFilter] = useState<filterType>({
-    type: [],
-    courses: [],
-  })
+  const [filter, setFilter] = useState<filterType>(initialfilter)
   const deferredFilter = useDeferredValue({ query: query, ...filter })
 
   const activities = trpc.activities.getAll.useInfiniteQuery(
@@ -48,10 +46,6 @@ export const ActivitiesPage = ({
       trpc: { abortOnUnmount: true },
     }
   )
-
-  useEffect(() => {
-    // activities.refetch() TODO: fix this
-  }, [deferredFilter])
 
   return (
     <div className={style.page}>
