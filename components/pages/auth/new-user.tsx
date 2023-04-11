@@ -64,9 +64,7 @@ export const NewUserPage = () => {
       <ProjectInformation />
       <Button
         onClick={() => {
-          console.log(readInformation)
           setReadInformation(!readInformation)
-          console.log(readInformation)
         }}
         text="Accept"
       />

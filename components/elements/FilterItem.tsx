@@ -21,11 +21,10 @@ export const FilterItem = ({
       <input
         className={style.checkbox}
         type="checkbox"
-        // checked={checked}
-        // onChange={() => {
-        //   check(checked)
-        //   console.log(filter?.course)
-        // }}
+        checked={checked}
+        onChange={() => {
+          check(checked)
+        }}
       />
     </div>
   )

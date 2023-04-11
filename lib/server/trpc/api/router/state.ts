@@ -128,6 +128,7 @@ export const stateRouter = createTRPCRouter({
 
   update: protectedProcedure.mutation(async ({ ctx }) => {
     const { prisma, session } = ctx
+    const userId = ctx.session.user.code
 
     const url =
       apiUrl +
