@@ -49,8 +49,6 @@ export default async function revalidate(
       return res.status(400).send(invalidId)
     }
 
-    console.log(body)
-
     const staleRoutes = await queryStaleRoutes(body as any)
     await Promise.all(staleRoutes.map((route) => res.revalidate(route)))
 

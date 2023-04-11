@@ -1,9 +1,8 @@
 'use client'
 import Link from 'next/link'
 import style from 'styles/layout/_navbar.module.scss'
-import { courseType } from 'lib/types/sanity'
 import ProtusLabel from 'components/elements/ProtusLabel'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import useOutsideClick from 'components/hooks/useOutsideClick.hook'
 import DownArrow from 'lib/assets/icons/arrow-down.svg'
 import SignInIcon from 'lib/assets/icons/signin.svg'
@@ -88,7 +87,6 @@ export const Navbar = () => {
               session.user && session.user.image ? (
                 <img src={session.user.image} />
               ) : (
-                // <PersonIcon />
                 <PersonIcon />
               )
             ) : (

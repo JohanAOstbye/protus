@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 import { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
 export const activitiesRouter = createTRPCRouter({

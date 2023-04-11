@@ -3,14 +3,12 @@
 import ChapterList from 'components/blocks/ChapterList'
 import { Content } from 'components/blocks/Content'
 import { UpdateCourse } from 'components/context/Update'
-import ChapterCard from 'components/elements/ChapterCard'
-import { useXapi } from 'components/context/XapiContext'
 import { courseType } from 'lib/types/sanity'
-import { getDeviceCategory } from 'lib/types/x-api/functions'
-import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
 import style from 'styles/pages/_coursePage.module.scss'
 import { useTimedStatement } from 'components/hooks/useTimedStatement.hook'
+import { useSession } from 'next-auth/react'
+import { useXapi } from 'components/context/XapiContext'
+import { getDeviceCategory } from 'lib/types/x-api/functions'
 
 const CoursePage = ({
   preview = false,

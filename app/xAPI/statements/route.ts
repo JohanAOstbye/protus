@@ -382,7 +382,6 @@ export async function PUT(request: Request) {
       return
     }
     await prisma.statement.create({
-      // data: statementToPrisma(parsedStatement, {}, session?.user),
       data: statementToPrisma(statement, {}, undefined),
     })
 

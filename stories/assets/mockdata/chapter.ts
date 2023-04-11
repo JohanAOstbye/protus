@@ -4,7 +4,6 @@ export const chapterMock: Chapter = {
   _id: '3a7c3886-addb-416f-9140-69ffd21d22b5',
   content: [
     {
-      //6 items  Item 0
       _key: 'c687528726d5',
       _type: 'block',
       children: [
@@ -19,7 +18,6 @@ export const chapterMock: Chapter = {
       style: 'normal',
     },
     {
-      // item 1
       _key: '8cd6f013f596',
       _type: 'block',
       children: [
@@ -34,7 +32,6 @@ export const chapterMock: Chapter = {
       style: 'normal',
     },
     {
-      // item 2
       _key: '8d67b7af2a3b',
       _type: 'block',
       children: [
@@ -49,7 +46,6 @@ export const chapterMock: Chapter = {
       style: 'normal',
     },
     {
-      // item 3
       _key: 'ce015bc59157',
       _type: 'block',
       children: [
@@ -99,7 +95,6 @@ export const chapterMock: Chapter = {
       title: 'desc',
     },
     {
-      // item 5
       _key: '2201eb3b20fd',
       _type: 'block',
       children: [

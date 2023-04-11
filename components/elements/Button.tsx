@@ -8,7 +8,6 @@ export interface ButtonProps {
   text?: string
   url?: string
   onClick?: React.MouseEventHandler<HTMLButtonElement>
-  //   outline?: boolean
   color?: Extract<Colors, 'blue' | 'blue_dark' | 'blue_grey'>
   target?: string
   disabled?: boolean
@@ -19,7 +18,6 @@ export const Button = ({
   text,
   url,
   onClick,
-  //   outline = false,
   color = 'blue',
   target,
   disabled = false,
