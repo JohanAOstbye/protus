@@ -4,9 +4,9 @@
   @include list-style-reset;
   display: grid;
   gap: $spacing--xxs;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(1fr, 1fr));
 
   @include breakpoint-sm {
-    grid-template-columns: repeat(auto-fit, minmax($spacing--big, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax($spacing--xbig, 1fr));
   }
 }

@@ -67,6 +67,23 @@ describe('Type - Statement - Authority', () => {
     ]
     const correct = [
       {
+        objectType: 'Group',
+        name: 'LMS',
+        member: [
+          {
+            objectType: 'Agent',
+            mbox: 'mailto:hei@hei.no',
+          },
+          {
+            objectType: 'Agent',
+            account: {
+              homePage: 'https://protus.vercel.app',
+              name: 'protus-client',
+            },
+          },
+        ],
+      },
+      {
         id: '7141e727-9483-4604-b116-1373c25e56d8',
         name: 'test',
         account: { name: 'test', homePage: 'https://protus.vercel.app' },
@@ -91,16 +108,13 @@ describe('Type - Statement - Authority', () => {
         ],
       },
     ]
-    malformed.forEach((url) => {
-      expect(authority.safeParse(url).success).toBe(false)
+    malformed.forEach((value) => {
+      expect(() => {
+        authority.parse(value)
+      }).toThrowError()
     })
-
-    correct.forEach((url) => {
-      let test = authority.safeParse(url)
-      if (!test.success) {
-        console.log(test.error)
-      }
-      expect(authority.safeParse(url).success).toBe(true)
+    correct.forEach((value) => {
+      expect(authority.parse(value)).toStrictEqual(value)
     })
   })
 })

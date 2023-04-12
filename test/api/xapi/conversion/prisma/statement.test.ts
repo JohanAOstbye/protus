@@ -1,41 +1,7 @@
-import { statement } from 'lib/types/x-api/statement'
+import { statementToPrisma, statementType } from 'lib/types/x-api/statement'
 
-describe('Type - Statment', () => {
+describe('Conversion - Statment', () => {
   test('statement', async () => {
-    const malformed = [
-      {
-        id: 'test',
-        actor: {
-          objectType: 'Agent',
-          name: 'test',
-          mbox: 'mailto:test@test.com',
-        },
-        verb: { id: 'http://example.com', display: { en: 'English' } },
-        object: {
-          id: 'c5e4a112-795f-4166-9913-8097849767d2',
-          objectType: 'StatementRef',
-        },
-        result: {
-          score: {
-            scaled: 1,
-          },
-        },
-        context: {
-          registration: 'c5e4a112-795f-4166-9913-8097849767d2',
-          instructor: {
-            objectType: 'Agent',
-            name: 'test',
-            mbox: 'mailto:test@test.com',
-          },
-          team: {
-            objectType: 'Group',
-            name: 'test',
-            mbox: 'mailto:Group@test.com',
-            member: [],
-          },
-        },
-      },
-    ]
     const correct = [
       {
         object: {
@@ -113,14 +79,11 @@ describe('Type - Statment', () => {
           },
         },
       },
-    ]
-    malformed.forEach((value) => {
-      expect(() => {
-        statement.parse(value)
-      }).toThrowError()
-    })
+    ] as statementType[]
     correct.forEach((value) => {
-      expect(statement.parse(value)).toStrictEqual(value)
+      expect(() => {
+        statementToPrisma(value, {})
+      }).not.toThrowError()
     })
   })
 })

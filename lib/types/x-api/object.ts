@@ -13,6 +13,7 @@ import {
   groupFromPrisma,
   identifiedgroup,
   inverseFunctionalIdentifier,
+  inverseFunctionalIdentifierReducer,
 } from './actor'
 import { IRI, languageMap, recordFromPrismaArray, recordToPrismaArray } from '.'
 import {
@@ -204,7 +205,7 @@ export const objectToPrisma = (object: objectType) => {
       objectActor: {
         connectOrCreate: {
           create: actorToPrisma(object),
-          where: inverseFunctionalIdentifier.parse(object),
+          where: inverseFunctionalIdentifierReducer.parse(object),
         },
       },
     }
@@ -214,7 +215,7 @@ export const objectToPrisma = (object: objectType) => {
       objectActor: {
         connectOrCreate: {
           create: actorToPrisma(object),
-          where: inverseFunctionalIdentifier.parse(object),
+          where: inverseFunctionalIdentifierReducer.parse(object),
         },
       },
     }

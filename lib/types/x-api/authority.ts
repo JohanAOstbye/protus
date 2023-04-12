@@ -1,13 +1,16 @@
-import { Prisma } from '@prisma/client'
+import { Actor, Prisma, XapiAccount } from '@prisma/client'
 import { z } from 'zod'
 import {
   actor,
-  actorToPrisma,
+  actorType,
   agent,
+  agentFromPrisma,
+  agentType,
+  anonGroupFromPrisma,
+  anonGroupType,
   anongroup,
-  group,
   identifiedgroup,
-  inverseFunctionalIdentifier,
+  inverseFunctionalIdentifierReducer,
 } from './actor'
 
 export const authority = agent.or(
@@ -25,7 +28,7 @@ export const authorityToPrisma = (
 ) => {
   let prismaAuthority: Prisma.ActorCreateNestedOneWithoutAuthoritiesInput = {}
 
-  let identifier = inverseFunctionalIdentifier.parse(authority)
+  let identifier = inverseFunctionalIdentifierReducer.parse(authority)
 
   let anon = anongroup.safeParse(authority)
 
@@ -37,7 +40,7 @@ export const authorityToPrisma = (
           member: anon.data.member
             ? {
                 connect: anon.data.member.map((member) => {
-                  return inverseFunctionalIdentifier.parse(member)
+                  return inverseFunctionalIdentifierReducer.parse(member)
                 }),
               }
             : undefined,
@@ -56,11 +59,11 @@ export const authorityToPrisma = (
           member: identified.data.member
             ? {
                 connect: identified.data.member.map((member) => {
-                  return inverseFunctionalIdentifier.parse(member)
+                  return inverseFunctionalIdentifierReducer.parse(member)
                 }),
               }
             : undefined,
-          ...inverseFunctionalIdentifier.parse(identified),
+          ...inverseFunctionalIdentifierReducer.parse(identified),
           account: identified.data.account
             ? {
                 connectOrCreate: {
@@ -84,7 +87,7 @@ export const authorityToPrisma = (
       connectOrCreate: {
         create: {
           objectType: parsedagent.data.objectType,
-          ...inverseFunctionalIdentifier.parse(parsedagent),
+          ...inverseFunctionalIdentifierReducer.parse(parsedagent),
           account: parsedagent.data.account
             ? {
                 connectOrCreate: {
@@ -103,4 +106,19 @@ export const authorityToPrisma = (
   }
 
   return prismaAuthority
+}
+
+export const authorityFromPrisma = (
+  prismaAuthority: Actor & {
+    account?: XapiAccount | undefined
+    member?: (Actor & {
+      account?: XapiAccount | undefined
+    })[]
+  }
+): agentType | anonGroupType => {
+  if (prismaAuthority.objectType === 'Agent') {
+    return agentFromPrisma(prismaAuthority)
+  } else {
+    return anonGroupFromPrisma(prismaAuthority)
+  }
 }

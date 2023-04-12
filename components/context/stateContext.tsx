@@ -32,14 +32,11 @@ export const StateContextProvider = (props: StateContextProviderProps) => {
   const { status } = useSession()
   const [learners, setLearners] = useState<learnerType[]>(props.learners || [])
   const [groups, setGroups] = useState<groupType[]>(props.groups || [])
+  const mutation = trpc.state.update.useMutation()
 
   useEffect(() => {
     if (status == 'authenticated') {
-      // const prank = trpc.state.get.useQuery()
-      // if (prank.isSuccess) {
-      //   setLearners(prank.data.learners)
-      //   setGroups(prank.data.groups)
-      // }
+      mutation.mutateAsync()
     }
 
     return () => {

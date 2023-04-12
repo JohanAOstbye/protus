@@ -129,6 +129,19 @@ export const stateRouter = createTRPCRouter({
   update: protectedProcedure.mutation(async ({ ctx }) => {
     const { prisma, session } = ctx
 
+    const last = await prisma.userState.findFirst({
+      where: { userId: session.user.id },
+      select: { updatedAt: true },
+    })
+
+    if (last && last.updatedAt) {
+      const diff = new Date().getTime() - last.updatedAt.getTime()
+      console.log('diff', diff)
+      if (diff < 1000 * 60 * 10) {
+        return
+      }
+    }
+
     const url =
       apiUrl +
       new URLSearchParams({
@@ -224,7 +237,6 @@ export const stateRouter = createTRPCRouter({
           .map((course) => {
             return { name: course }
           })
-        console.log('newCourses: ', newCourses.length)
         if (newCourses.length > 0) {
           const coursesQuery = prisma.course.createMany({
             data: newCourses,

@@ -70,6 +70,7 @@ model UserState {
     user        User          @relation(fields: [userId], references: [id])
     userId      String        @unique
     courseState CourseState[]
+    updatedAt   DateTime?     @updatedAt
 }
 
 model CourseState {

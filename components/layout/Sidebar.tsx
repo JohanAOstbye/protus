@@ -28,9 +28,9 @@ export const Sidebar = () => {
                 <label>{course.title ? course.title : course.slug}</label>
                 <button
                   className={`${style.button} ${
-                    isExpanded || window.innerWidth >= 1312
-                      ? style.open
-                      : style.closed
+                    window.innerWidth <= 1312 && isExpanded
+                      ? style.closed
+                      : style.open
                   }`}
                   onClick={() => setIsExpanded(!isExpanded)}
                 >
@@ -67,7 +67,8 @@ export const Sidebar = () => {
             >
               <ArrowRight />
             </button>
-            {isExpanded && window.innerWidth >= 700 && (
+            {(window.innerWidth >= 1312 ||
+              (isExpanded && window.innerWidth >= 700)) && (
               <Link className={style.activitiesLink} href={'/activities'}>
                 Activities
               </Link>

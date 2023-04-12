@@ -16,7 +16,9 @@ import {
   statementSelect,
   statementSelectWithoutAttachments,
 } from 'lib/types/x-api/statement'
+import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
+import { authOptions } from 'pages/api/auth/[...nextauth]'
 import { z } from 'zod'
 
 export async function GET(request: Request) {
@@ -26,30 +28,7 @@ export async function GET(request: Request) {
       query: z.object({
         statementId: z.string().uuid().optional(),
         voidedStatementId: z.string().uuid().optional(),
-        agent: z
-          .string()
-          .optional()
-          .transform((value, ctx) => {
-            if (!value) return value
-            try {
-              let json = JSON.parse(value)
-              const agent = zAgent.or(identifiedgroup).safeParse(json)
-              if (!agent.success) {
-                ctx.addIssue({
-                  code: z.ZodIssueCode.custom,
-                  message: 'agent is not a valid agent or group',
-                })
-                return z.NEVER
-              }
-              return agent.data
-            } catch (error) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'agent is not a valid json object',
-              })
-              return z.NEVER
-            }
-          }),
+        agent: identifiedgroup.or(zAgent).optional(),
         verb: IRI.optional(),
         activity: IRI.optional(),
         registration: z.string().uuid().optional(),
@@ -295,6 +274,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const session = await getServerSession(authOptions)
   const validator = await apiValidation(
     request.clone(),
     {
@@ -321,6 +301,7 @@ export async function POST(request: Request) {
       { message: 'Duplicate statement id' },
       { status: 400, headers }
     )
+
   try {
     const existingStatements = await prisma.statement.findMany({
       where: { id: { in: ids } },
@@ -347,7 +328,7 @@ export async function POST(request: Request) {
     await Promise.all(
       createStatements.map((statement) =>
         prisma.statement.create({
-          data: statementToPrisma(statement, {}, undefined),
+          data: statementToPrisma(statement, {}, session?.user),
         })
       )
     )
@@ -355,7 +336,6 @@ export async function POST(request: Request) {
     // Any other status or JSON format will lead to TS error.
     return NextResponse.json(ids, { status: 200, headers })
   } catch (error) {
-    console.error(error)
     return NextResponse.json(undefined, { status: 400, headers })
   }
 }

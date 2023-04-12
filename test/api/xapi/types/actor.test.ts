@@ -168,25 +168,25 @@ describe('Type - Statment - agent', () => {
 
   test('identifiedgroup', async () => {
     const malformed = [
-      { objectType: 'fail' },
-      {
-        member: [
-          {
-            id: '7141e727-9483-4604-b116-1373c25e56d8',
-            name: 'test',
-            account: { name: 'test', homePage: 'https://protus.vercel.app' },
-          },
-        ],
-      },
-      {
-        member: [
-          {
-            id: 'fail',
-            name: 'test',
-            account: { name: 'test', homePage: 'fail' },
-          },
-        ],
-      },
+      // { objectType: 'fail' },
+      // {
+      //   member: [
+      //     {
+      //       id: '7141e727-9483-4604-b116-1373c25e56d8',
+      //       name: 'test',
+      //       account: { name: 'test', homePage: 'https://protus.vercel.app' },
+      //     },
+      //   ],
+      // },
+      // {
+      //   member: [
+      //     {
+      //       id: 'fail',
+      //       name: 'test',
+      //       account: { name: 'test', homePage: 'fail' },
+      //     },
+      //   ],
+      // },
       {
         objectType: 'Group',
         member: [

@@ -24,7 +24,12 @@ import {
   attachmentFromPrisma,
   attachmentSelect,
 } from './attachments'
-import { authority, authorityToPrisma } from './authority'
+import {
+  authority,
+  authorityFromPrisma,
+  authorityToPrisma,
+  authorityType,
+} from './authority'
 import {
   context,
   contextToPrisma,
@@ -64,7 +69,7 @@ export type statementType = z.infer<typeof statement>
 
 export const statementToPrisma = (
   statement: statementType,
-  authority: actorType,
+  authority: authorityType,
   user?: Session['user']
 ) => {
   const prismaStatment: Prisma.StatementCreateInput = {
@@ -163,7 +168,7 @@ export const statementFromPrisma = (
         ? resultFromPrisma(prismaStatement.result)
         : undefined,
     authority: prismaStatement.authority
-      ? actorFromPrisma(prismaStatement.authority)
+      ? authorityFromPrisma(prismaStatement.authority)
       : undefined,
     attachments: prismaStatement.attachments.map((attachment) =>
       attachmentFromPrisma(attachment)

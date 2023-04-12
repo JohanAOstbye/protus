@@ -16,26 +16,7 @@ export async function GET(request: Request) {
     {
       query: z.object({
         activityId: IRI,
-        agent: z.string().transform((value, ctx) => {
-          try {
-            let json = JSON.parse(value)
-            const agent = zAgent.safeParse(json)
-            if (!agent.success) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'agent is not a valid agent or group',
-              })
-              return z.NEVER
-            }
-            return agent.data
-          } catch (error) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'agent is not a valid json object',
-            })
-            return z.NEVER
-          }
-        }),
+        agent: zAgent,
         registration: z.string().uuid().optional(),
         stateId: z.string().optional(),
         since: z.string().datetime().optional(),
@@ -106,26 +87,7 @@ export async function POST(request: Request) {
       body: document,
       query: z.object({
         activityId: IRI,
-        agent: z.string().transform((value, ctx) => {
-          try {
-            let json = JSON.parse(value)
-            const agent = zAgent.safeParse(json)
-            if (!agent.success) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'agent is not a valid agent or group',
-              })
-              return z.NEVER
-            }
-            return agent.data
-          } catch (error) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'agent is not a valid json object',
-            })
-            return z.NEVER
-          }
-        }),
+        agent: zAgent,
         registration: z.string().uuid().optional(),
         stateId: z.string(),
       }),
@@ -192,26 +154,7 @@ export async function PUT(request: Request) {
       body: document,
       query: z.object({
         activityId: IRI,
-        agent: z.string().transform((value, ctx) => {
-          try {
-            let json = JSON.parse(value)
-            const agent = zAgent.safeParse(json)
-            if (!agent.success) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'agent is not a valid agent or group',
-              })
-              return z.NEVER
-            }
-            return agent.data
-          } catch (error) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'agent is not a valid json object',
-            })
-            return z.NEVER
-          }
-        }),
+        agent: zAgent,
         registration: z.string().uuid().optional(),
         stateId: z.string(),
       }),
@@ -277,26 +220,7 @@ export async function DELETE(request: Request) {
     {
       query: z.object({
         activityId: IRI,
-        agent: z.string().transform((value, ctx) => {
-          try {
-            let json = JSON.parse(value)
-            const agent = zAgent.safeParse(json)
-            if (!agent.success) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'agent is not a valid agent or group',
-              })
-              return z.NEVER
-            }
-            return agent.data
-          } catch (error) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'agent is not a valid json object',
-            })
-            return z.NEVER
-          }
-        }),
+        agent: zAgent,
         registration: z.string().uuid().optional(),
         stateId: z.string(),
       }),

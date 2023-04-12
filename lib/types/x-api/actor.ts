@@ -27,6 +27,12 @@ export const inverseFunctionalIdentifier = z
       path: ['identifier'],
     }
   )
+export const inverseFunctionalIdentifierReducer = z.object({
+  mbox: z.string().startsWith('mailto:').optional(),
+  mbox_sha1sum: z.string().optional(),
+  openid: z.string().url().optional(),
+  account: account.optional(),
+})
 
 export const actorBase = z.object({
   id: z.string().uuid().optional(),
@@ -72,11 +78,15 @@ export const actor = z.union([agent, group])
 
 export type actorType = z.infer<typeof actor>
 export type groupType = z.infer<typeof group>
+export type anonGroupType = z.infer<typeof anongroup>
+export type identifiedGroupType = z.infer<typeof identifiedgroup>
 export type agentType = z.infer<typeof agent>
 
 export const actorToPrisma = (actor: actorType, userId?: string) => {
   let prismaActor: Prisma.ActorCreateInput = {}
   let anon = anongroup.safeParse(actor)
+  let identified = identifiedgroup.safeParse(actor)
+  let parsedagent = agent.safeParse(actor)
 
   if (anon.success) {
     prismaActor = {
@@ -86,14 +96,13 @@ export const actorToPrisma = (actor: actorType, userId?: string) => {
             connect: anon.data.member.map((member) => {
               return {
                 id: member.id,
-                ...inverseFunctionalIdentifier.parse(member),
+                ...inverseFunctionalIdentifierReducer.parse(member),
               }
             }),
           }
         : undefined,
     }
   }
-  let identified = identifiedgroup.safeParse(actor)
 
   if (identified.success) {
     prismaActor = {
@@ -103,12 +112,12 @@ export const actorToPrisma = (actor: actorType, userId?: string) => {
             connect: identified.data.member.map((member) => {
               return {
                 id: member.id,
-                ...inverseFunctionalIdentifier.parse(member),
+                ...inverseFunctionalIdentifierReducer.parse(member),
               }
             }),
           }
         : undefined,
-      ...inverseFunctionalIdentifier.parse(identified),
+      ...inverseFunctionalIdentifierReducer.parse(identified),
       account: identified.data.account
         ? {
             connectOrCreate: {
@@ -122,12 +131,10 @@ export const actorToPrisma = (actor: actorType, userId?: string) => {
     }
   }
 
-  let parsedagent = agent.safeParse(actor)
-
   if (parsedagent.success) {
     prismaActor = {
       objectType: parsedagent.data.objectType,
-      ...inverseFunctionalIdentifier.parse(parsedagent),
+      ...inverseFunctionalIdentifierReducer.parse(parsedagent),
       account: parsedagent.data.account
         ? {
             connectOrCreate: {
@@ -185,7 +192,32 @@ export const groupFromPrisma = (
   const result = group.safeParse(actorObject)
   if (!result.success) {
     console.error(result.error)
-    throw new Error('Invalid actor')
+    throw new Error('Invalid group')
+  }
+  return result.data
+}
+
+export const anonGroupFromPrisma = (
+  prismaActor: Actor & {
+    account?: XapiAccount | undefined
+    member?: (Actor & {
+      account?: XapiAccount | undefined
+    })[]
+  }
+): anonGroupType => {
+  let actorObject: groupType = {
+    objectType: 'Group',
+    member: prismaActor.member
+      ? prismaActor.member
+          .filter((member) => member.objectType == 'Agent')
+          .map((member) => agent.parse(actorFromPrisma(member)))
+      : undefined,
+  }
+
+  const result = anongroup.safeParse(actorObject)
+  if (!result.success) {
+    console.error(result.error)
+    throw new Error('Invalid anongroup')
   }
   return result.data
 }
@@ -194,7 +226,7 @@ export const agentFromPrisma = (
   prismaActor: Actor & {
     account?: XapiAccount | undefined
   }
-): actorType => {
+): agentType => {
   let actorObject: actorType
   if (prismaActor.objectType !== 'Agent') throw new Error('Not an agent')
 
@@ -211,7 +243,7 @@ export const agentFromPrisma = (
   const result = agent.safeParse(actorObject)
   if (!result.success) {
     console.error(result.error)
-    throw new Error('Invalid actor')
+    throw new Error('Invalid agent')
   }
   return result.data
 }
