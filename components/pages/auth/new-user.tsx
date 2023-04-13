@@ -53,7 +53,9 @@ export const NewUserPage = () => {
   const update = async () => {
     const validator = vaildateUserDetails(userDetails)
     if (validator.success) {
-      mutation.mutateAsync(validator.data).then(() => redirect('/'))
+      mutation
+        .mutateAsync(validator.data)
+        .then(() => window.location.replace('/'))
     }
   }
 
