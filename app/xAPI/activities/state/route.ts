@@ -4,6 +4,7 @@ import {
   actorToPrisma,
   agent as zAgent,
   inverseFunctionalIdentifier,
+  inverseFunctionalIdentifierFilter,
 } from 'lib/types/x-api/actor'
 import { document, mergeDocuments } from 'lib/types/x-api/document'
 import { z } from 'zod'
@@ -39,7 +40,9 @@ export async function GET(request: Request) {
           stateId,
           registration,
           activityId,
-          agent: inverseFunctionalIdentifier.parse(agent),
+          agent: inverseFunctionalIdentifier.parse(agent)
+            ? { is: inverseFunctionalIdentifierFilter.parse(agent) }
+            : undefined,
         },
       })
       if (prismaDocument) {
@@ -57,7 +60,9 @@ export async function GET(request: Request) {
         where: {
           registration,
           activityId,
-          agent: inverseFunctionalIdentifier.parse(agent),
+          agent: inverseFunctionalIdentifier.parse(agent)
+            ? { is: inverseFunctionalIdentifierFilter.parse(agent) }
+            : undefined,
           timestamp: { gte: since },
         },
         select: {
@@ -105,6 +110,8 @@ export async function POST(request: Request) {
   const headers = new Headers()
   try {
     const old = await prisma.document.findUnique({ where: { stateId } })
+    const identifier = inverseFunctionalIdentifierFilter.parse(agent)
+
     await prisma.document
       .create({
         data: {
@@ -124,7 +131,7 @@ export async function POST(request: Request) {
           agent: {
             connectOrCreate: {
               create: actorToPrisma(agent),
-              where: inverseFunctionalIdentifier.parse(agent),
+              where: identifier ? identifier : { id: 'not an id' },
             },
           },
           contents:
@@ -172,6 +179,8 @@ export async function PUT(request: Request) {
   const headers = new Headers()
   try {
     const old = await prisma.document.findUnique({ where: { stateId } })
+    const identifier = inverseFunctionalIdentifierFilter.parse(agent)
+
     await prisma.document
       .create({
         data: {
@@ -191,7 +200,7 @@ export async function PUT(request: Request) {
           agent: {
             connectOrCreate: {
               create: actorToPrisma(agent),
-              where: inverseFunctionalIdentifier.parse(agent),
+              where: identifier ? identifier : { id: 'not an id' },
             },
           },
           contents:
@@ -242,7 +251,9 @@ export async function DELETE(request: Request) {
           stateId,
           registration,
           activityId,
-          agent: inverseFunctionalIdentifier.parse(agent),
+          agent: inverseFunctionalIdentifier.parse(agent)
+            ? { is: inverseFunctionalIdentifierFilter.parse(agent) }
+            : undefined,
         },
       })
       .then(() => {

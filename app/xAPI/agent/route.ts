@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server'
 import {
   actorSelect,
   agent as zAgent,
-  inverseFunctionalIdentifier,
   person,
+  inverseFunctionalIdentifierFilter,
 } from 'lib/types/x-api/actor'
 import { z } from 'zod'
 import { prisma } from 'lib/server/db'
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     const prismaAgents = await prisma.actor.findMany({
       where: {
         objectType: 'Agent',
-        ...inverseFunctionalIdentifier.parse(agent),
+        ...inverseFunctionalIdentifierFilter.parse(agent),
       },
       select: actorSelect,
     })
@@ -54,10 +54,13 @@ export async function POST(request: Request) {
         returnPerson.openid = returnPerson.openid
           ? [...returnPerson.openid, agent.openid]
           : [agent.openid]
-      if (agent.account)
+      if (agent.accountName && agent.accountHomePage)
         returnPerson.account = returnPerson.account
-          ? [...returnPerson.account, agent.account]
-          : [agent.account]
+          ? [
+              ...returnPerson.account,
+              { name: agent.accountName, homePage: agent.accountHomePage },
+            ]
+          : [{ name: agent.accountName, homePage: agent.accountHomePage }]
     })
     return NextResponse.json(returnPerson, { status: 200, headers })
   } catch (error) {
