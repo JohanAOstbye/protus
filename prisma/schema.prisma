@@ -136,7 +136,7 @@ model Statement {
     authorityId String
     verbId      String
     objectId    String       @unique
-    contextId   String       @unique
+    contextId   String?      @unique
     contextref  Context[]    @relation(name: "statementcontextref")
     objectref   Object[]     @relation(name: "statementobjectref")
 }
@@ -185,7 +185,7 @@ model Context {
     extensions        Extension[]
     instructorId      String?
     teamId            String?
-    statementId       String
+    statementId       String?
     Statement         Statement?        @relation(name: "statementContext")
 }
 
@@ -279,15 +279,6 @@ type Extension {
     value String
 }
 
-model XapiAccount {
-    id       String  @id @default(uuid()) @map("_id")
-    name     String
-    homePage String
-    Actor    Actor[]
-
-    @@unique([name, homePage])
-}
-
 enum actorObjectType {
     Agent
     Group
@@ -301,11 +292,11 @@ model Actor {
     mbox              String?          @unique
     mbox_sha1sum      String?          @unique
     openid            String?          @unique
-    account           XapiAccount?     @relation(fields: [accountId], references: [id])
+    accountName       String?
+    accountHomePage   String?
     profile           User?            @relation(fields: [profileId], references: [id])
     memberIDs         String[]
     profileId         String?          @unique
-    accountId         String?          @unique
     Statement         Statement[]
     teamContext       Context[]        @relation(name: "team")
     InsturctorContext Context[]        @relation(name: "instructor")
@@ -315,6 +306,8 @@ model Actor {
     groups            Actor[]          @relation(name: "member", references: [id], fields: [groupIDs])
     groupIDs          String[]
     documents         Document[]
+
+    @@unique([accountName, accountHomePage])
 }
 
 // Necessary for Next auth

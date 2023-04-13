@@ -1,8 +1,8 @@
-import { Actor, Prisma, XapiAccount } from '@prisma/client'
+import { Actor, Prisma } from '@prisma/client'
 import { z } from 'zod'
 import {
   actor,
-  actorType,
+  actorToPrisma,
   agent,
   agentFromPrisma,
   agentType,
@@ -10,6 +10,7 @@ import {
   anonGroupType,
   anongroup,
   identifiedgroup,
+  inverseFunctionalIdentifierFilter,
   inverseFunctionalIdentifierReducer,
 } from './actor'
 
@@ -28,24 +29,26 @@ export const authorityToPrisma = (
 ) => {
   let prismaAuthority: Prisma.ActorCreateNestedOneWithoutAuthoritiesInput = {}
 
-  let identifier = inverseFunctionalIdentifierReducer.parse(authority)
+  let identifier = inverseFunctionalIdentifierFilter.parse(authority)
+  console.log('auth', identifier, authority)
 
   let anon = anongroup.safeParse(authority)
 
   if (anon.success) {
     prismaAuthority = {
-      connectOrCreate: {
-        create: {
-          objectType: anon.data.objectType,
-          member: anon.data.member
-            ? {
-                connect: anon.data.member.map((member) => {
-                  return inverseFunctionalIdentifierReducer.parse(member)
-                }),
-              }
-            : undefined,
-        },
-        where: identifier,
+      create: {
+        objectType: anon.data.objectType,
+        member: anon.data.member
+          ? {
+              connectOrCreate: anon.data.member.map((member) => {
+                let identifier = inverseFunctionalIdentifierFilter.parse(member)
+                return {
+                  create: actorToPrisma(member),
+                  where: identifier ? identifier : { id: 'not an id' },
+                }
+              }),
+            }
+          : undefined,
       },
     }
   }
@@ -58,24 +61,29 @@ export const authorityToPrisma = (
           objectType: identified.data.objectType,
           member: identified.data.member
             ? {
-                connect: identified.data.member.map((member) => {
-                  return inverseFunctionalIdentifierReducer.parse(member)
-                }),
+                connect: identified.data.member
+                  .map((member) => {
+                    return inverseFunctionalIdentifierFilter.parse(member)
+                  })
+                  .filter((member) => member !== undefined)
+                  .map((member) => member as Prisma.ActorWhereUniqueInput),
               }
             : undefined,
           ...inverseFunctionalIdentifierReducer.parse(identified),
-          account: identified.data.account
-            ? {
-                connectOrCreate: {
-                  create: identified.data.account,
-                  where: {
-                    name_homePage: identified.data.account,
-                  },
-                },
-              }
-            : undefined,
+          accountName:
+            identified.data.account &&
+            identified.data.account.name &&
+            identified.data.account.homePage
+              ? identified.data.account.name
+              : undefined,
+          accountHomePage:
+            identified.data.account &&
+            identified.data.account.homePage &&
+            identified.data.account.name
+              ? identified.data.account.homePage
+              : undefined,
         },
-        where: identifier,
+        where: identifier ? identifier : { id: 'not a id' },
       },
     }
   }
@@ -88,19 +96,21 @@ export const authorityToPrisma = (
         create: {
           objectType: parsedagent.data.objectType,
           ...inverseFunctionalIdentifierReducer.parse(parsedagent),
-          account: parsedagent.data.account
-            ? {
-                connectOrCreate: {
-                  create: parsedagent.data.account,
-                  where: {
-                    name_homePage: parsedagent.data.account,
-                  },
-                },
-              }
-            : undefined,
+          accountName:
+            parsedagent.data.account &&
+            parsedagent.data.account.name &&
+            parsedagent.data.account.homePage
+              ? parsedagent.data.account.name
+              : undefined,
+          accountHomePage:
+            parsedagent.data.account &&
+            parsedagent.data.account.homePage &&
+            parsedagent.data.account.name
+              ? parsedagent.data.account.homePage
+              : undefined,
           profile: userId ? { connect: { id: userId } } : undefined,
         },
-        where: identifier,
+        where: identifier ? identifier : { id: 'not a id' },
       },
     }
   }
@@ -110,10 +120,7 @@ export const authorityToPrisma = (
 
 export const authorityFromPrisma = (
   prismaAuthority: Actor & {
-    account?: XapiAccount | undefined
-    member?: (Actor & {
-      account?: XapiAccount | undefined
-    })[]
+    member?: Actor[]
   }
 ): agentType | anonGroupType => {
   if (prismaAuthority.objectType === 'Agent') {

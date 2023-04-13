@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import ISO6391 from 'iso-639-1'
 import { IRI as iri } from 'iri'
+import { Prisma } from '.prisma/client'
 
 export const IRL = z.string().refine(
   (str) => {

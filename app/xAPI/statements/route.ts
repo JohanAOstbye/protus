@@ -326,17 +326,22 @@ export async function POST(request: Request) {
       ({ id }) => !existingStatements.find((el) => el.id === id)
     )
     await Promise.all(
-      createStatements.map((statement) =>
-        prisma.statement.create({
-          data: statementToPrisma(statement, {}, session?.user),
+      createStatements.map((statement) => {
+        let data = statementToPrisma(statement, {}, session?.user)
+        console.log('data', data)
+
+        return prisma.statement.create({
+          data,
         })
-      )
+      })
     )
 
     // Any other status or JSON format will lead to TS error.
     return NextResponse.json(ids, { status: 200, headers })
   } catch (error) {
-    return NextResponse.json(undefined, { status: 400, headers })
+    console.log('error', error)
+
+    return NextResponse.json({}, { status: 400, headers })
   }
 }
 

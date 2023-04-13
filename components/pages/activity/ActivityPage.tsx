@@ -2,6 +2,7 @@
 
 import { Activity } from '@prisma/client'
 import { useXapi } from 'components/context/XapiContext'
+import { useTimedStatement } from 'components/hooks/useTimedStatement.hook'
 import { getDeviceCategory } from 'lib/types/x-api/functions'
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useRef, useState } from 'react'
@@ -14,7 +15,7 @@ export const ActivityPage = ({ activity }: { activity: Activity | null }) => {
   const { data: session, status } = useSession({ required: true })
   const { recordStatment } = useXapi()
 
-  useEffect(() => {
+  useTimedStatement((duration) => {
     if (status === 'authenticated' && session && session.user) {
       recordStatment({
         object: {
@@ -42,6 +43,9 @@ export const ActivityPage = ({ activity }: { activity: Activity | null }) => {
             en: 'viewed',
           },
         },
+        result: {
+          duration: duration,
+        },
         context: {
           platform: `${getDeviceCategory(
             window.innerWidth,
@@ -50,7 +54,7 @@ export const ActivityPage = ({ activity }: { activity: Activity | null }) => {
         },
       })
     }
-  }, [status, activity])
+  })
 
   useEffect(() => {
     if (ref.current) {

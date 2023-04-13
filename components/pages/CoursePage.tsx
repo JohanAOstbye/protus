@@ -10,6 +10,7 @@ import { getDeviceCategory } from 'lib/types/x-api/functions'
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import style from 'styles/pages/_coursePage.module.scss'
+import { useTimedStatement } from 'components/hooks/useTimedStatement.hook'
 
 const CoursePage = ({
   preview = false,
@@ -22,8 +23,7 @@ const CoursePage = ({
 }) => {
   const { data: session, status } = useSession({ required: true })
   const { recordStatment } = useXapi()
-
-  useEffect(() => {
+  useTimedStatement((duration) => {
     if (status === 'authenticated' && session && session.user) {
       recordStatment({
         object: {
@@ -46,6 +46,9 @@ const CoursePage = ({
             en: 'viewed',
           },
         },
+        result: {
+          duration: duration,
+        },
         context: {
           platform: `${getDeviceCategory(
             window.innerWidth,
@@ -54,7 +57,8 @@ const CoursePage = ({
         },
       })
     }
-  }, [status, course])
+  })
+
   return (
     <div className={style.page}>
       <UpdateCourse course={course} />

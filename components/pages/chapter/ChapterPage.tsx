@@ -8,6 +8,7 @@ import { useXapi } from 'components/context/XapiContext'
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { getDeviceCategory } from 'lib/types/x-api/functions'
+import { useTimedStatement } from 'components/hooks/useTimedStatement.hook'
 
 const ChapterPage = ({
   preview = false,
@@ -23,7 +24,7 @@ const ChapterPage = ({
   const { data: session, status } = useSession({ required: true })
   const { recordStatment } = useXapi()
 
-  useEffect(() => {
+  useTimedStatement((duration) => {
     if (status === 'authenticated' && session && session.user) {
       recordStatment({
         object: {
@@ -46,6 +47,9 @@ const ChapterPage = ({
             en: 'viewed',
           },
         },
+        result: {
+          duration: duration,
+        },
         context: {
           platform: `${getDeviceCategory(
             window.innerWidth,
@@ -54,7 +58,8 @@ const ChapterPage = ({
         },
       })
     }
-  }, [status, course])
+  })
+
   return (
     <article>
       {preview && <AlertBanner loading={loading} />}

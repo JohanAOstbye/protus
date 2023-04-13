@@ -13,6 +13,7 @@ import {
   groupFromPrisma,
   identifiedgroup,
   inverseFunctionalIdentifier,
+  inverseFunctionalIdentifierFilter,
   inverseFunctionalIdentifierReducer,
 } from './actor'
 import { IRI, languageMap, recordFromPrismaArray, recordToPrismaArray } from '.'
@@ -170,14 +171,16 @@ export const objectToPrisma = (object: objectType) => {
       },
     }
   } else if (object.objectType == 'SubStatement') {
+    let identifier = inverseFunctionalIdentifierFilter.parse(object.actor)
+    if (!identifier) {
+      identifier = { id: 'not an id' }
+    }
     prismaObject = {
       objectType: object.objectType,
       actor: {
         connectOrCreate: {
           create: actorToPrisma(object.actor),
-          where: {
-            id: object.actor.id,
-          },
+          where: identifier,
         },
       },
       object: object.object
@@ -187,7 +190,7 @@ export const objectToPrisma = (object: objectType) => {
               where:
                 object.object.objectType == 'Activity'
                   ? { id: object.object.id }
-                  : {},
+                  : { id: 'not an id' },
             },
           }
         : undefined,
@@ -200,22 +203,30 @@ export const objectToPrisma = (object: objectType) => {
         : undefined,
     }
   } else if (object.objectType == 'Agent') {
+    let identifier = inverseFunctionalIdentifierFilter.parse(object)
+    if (!identifier) {
+      identifier = { id: 'not an id' }
+    }
     prismaObject = {
       objectType: 'Agent',
       objectActor: {
         connectOrCreate: {
           create: actorToPrisma(object),
-          where: inverseFunctionalIdentifierReducer.parse(object),
+          where: identifier,
         },
       },
     }
   } else if (object.objectType == 'Group') {
+    let identifier = inverseFunctionalIdentifierFilter.parse(object)
+    if (!identifier) {
+      identifier = { id: 'not an id' }
+    }
     prismaObject = {
       objectType: 'Group',
       objectActor: {
         connectOrCreate: {
           create: actorToPrisma(object),
-          where: inverseFunctionalIdentifierReducer.parse(object),
+          where: identifier,
         },
       },
     }
