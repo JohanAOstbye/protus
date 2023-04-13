@@ -10,13 +10,15 @@ export const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
   const [isRegister, setRegister] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [passwordVerify, setPasswordVerify] = useState('')
+  const [verifyPassword, setVerifyPassword] = useState('')
 
   const signin = async () => {
     await signIn('credentials', {
       email,
       password,
       callbackUrl: '/',
+      isRegister: false,
+      verifyPassword: '',
     })
   }
 
@@ -24,7 +26,8 @@ export const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
     await signIn('credentials', {
       email,
       password,
-      passwordVerify,
+      verifyPassword,
+      isRegister: true,
       callbackUrl: '/',
     })
   }
@@ -54,9 +57,9 @@ export const SignInPage = ({ csrfToken }: { csrfToken: string }) => {
             type="password"
             id="password"
             name="passwordVerify"
-            value={passwordVerify}
+            value={verifyPassword}
             placeholder="Verify password..."
-            onChange={(e) => setPasswordVerify(e.target.value)}
+            onChange={(e) => setVerifyPassword(e.target.value)}
           />
           <span className={style.separator} />
           <Button onClick={() => register()}>Register</Button>
