@@ -130,6 +130,10 @@ export const stateRouter = createTRPCRouter({
     const { prisma, session } = ctx
     const userId = ctx.session.user.code
 
+    if (userId === null || userId === undefined) {
+      return
+    }
+
     const last = await prisma.userState.findFirst({
       where: { userId: session.user.id },
       select: { updatedAt: true },
@@ -150,6 +154,7 @@ export const stateRouter = createTRPCRouter({
         sid: 'TEST', //TODO oppdater disse med riktig data
         cid: '352',
         mod: 'all',
+        userId: userId,
       })
 
     const res = await fetch(url)

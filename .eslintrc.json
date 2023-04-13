@@ -1,24 +1,6 @@
 {
   "extends": "next/core-web-vitals",
-  "overrides": [
-    {
-        "files": ["pages/api/**/*.ts"], 
-        "plugins": ["jsdoc"],
-        "rules": {
-            "jsdoc/no-missing-syntax": [
-            "error",
-            {
-                "contexts": [
-                {
-                    "comment": "JsdocBlock:has(JsdocTag[tag=swagger])",
-                    "context": "any",
-                    "message": "@swagger documentation is required on each API. Check this out for syntax info: https://github.com/jellydn/next-swagger-doc"
-                }
-                ]
-            }
-        ]
-    }}
-],
+
   "rules": {
     "no-console": "off",
     "no-undef": "off",
@@ -28,6 +10,6 @@
     "react/prop-types": "off",
     "react/display-name": "off",
     "react/no-unescaped-entities": "off",
-    "react/no-children-prop": "off",
+    "react/no-children-prop": "off"
   }
 }

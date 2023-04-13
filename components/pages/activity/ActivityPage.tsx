@@ -9,14 +9,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import style from 'styles/pages/_activityPage.module.scss'
 
 export const ActivityPage = ({ activity }: { activity: Activity | null }) => {
-  if (!activity) return <div>Activity not found</div>
   const ref = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(0)
   const { data: session, status } = useSession({ required: true })
   const { recordStatment } = useXapi()
 
   useTimedStatement((duration) => {
-    if (status === 'authenticated' && session && session.user) {
+    if (status === 'authenticated' && session && session.user && activity) {
       recordStatment({
         object: {
           objectType: 'Activity',
@@ -65,14 +64,21 @@ export const ActivityPage = ({ activity }: { activity: Activity | null }) => {
     }
   }, [ref.current?.clientHeight])
 
+  if (!activity) return <div>Activity not found</div>
+
   return (
     <div className={style.page} ref={ref}>
       {activity.url.startsWith('https://') ? (
-        <iframe src={activity.url} height={height} width="100%" />
+        <iframe
+          src={activity.url + `&userId=${session?.user?.code}`}
+          height={height}
+          width="100%"
+        />
       ) : (
         <div>
           Our activity api doesnt seem to use https. please click{' '}
-          <a href={activity.url}>here</a> to access the activity
+          <a href={activity.url + `&userId=${session?.user?.code}`}>here</a> to
+          access the activity
         </div>
       )}
     </div>
