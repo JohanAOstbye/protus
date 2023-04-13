@@ -58,7 +58,7 @@ export const NewUserPage = () => {
   }
 
   return readInformation ? (
-    <div>
+    <div className={style.newUserPage}>
       <ProjectInformation />
       <Button
         onClick={() => {
