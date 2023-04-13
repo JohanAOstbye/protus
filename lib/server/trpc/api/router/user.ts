@@ -39,10 +39,20 @@ export const userRouter = createTRPCRouter({
           userDetails: {
             upsert: {
               create: {
-                ...input,
+                ntnuStudent: input.ntnuStudent,
+                studyProgram: input.studyProgram,
+                experience: input.experience,
+                mainDevice: input.mainDevice,
+                additionalDevices: input.additionalDevices,
+                interest: input.interest,
               },
               update: {
-                ...input,
+                ntnuStudent: input.ntnuStudent,
+                studyProgram: input.studyProgram,
+                experience: input.experience,
+                mainDevice: input.mainDevice,
+                additionalDevices: input.additionalDevices,
+                interest: input.interest,
               },
             },
           },
