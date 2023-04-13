@@ -2,7 +2,6 @@ import { Actor, Prisma } from '@prisma/client'
 import { z } from 'zod'
 import {
   actor,
-  actorToPrisma,
   agent,
   agentFromPrisma,
   agentType,
