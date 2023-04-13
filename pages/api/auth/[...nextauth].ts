@@ -9,7 +9,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/auth/signin',
     // signOut: '/auth/signout',
-    // error: '/auth/error', // Error code passed in query string as ?error=
+    error: '/auth/error',
     // verifyRequest: '/auth/verify-request', // (used for check email message)
     newUser: '/auth/new-user', // New users will be directed here on first sign in (leave the property out if not of interest)
   },
@@ -24,6 +24,8 @@ export const authOptions: NextAuthOptions = {
           placeholder: 'example@gmail.com',
         },
         password: { label: 'Password', type: 'password' },
+        verifyPassword: { label: 'Verify Password', type: 'password' },
+        isRegister: { label: 'Register', type: 'checkbox' },
       },
       async authorize(credentials, req) {
         if (!credentials) return null
@@ -31,7 +33,10 @@ export const authOptions: NextAuthOptions = {
         let user = await prisma.user.findUnique({
           where: { email: credentials.email },
         })
-        if (user === null) {
+        if (user === null && credentials.isRegister) {
+          if (credentials.password !== credentials.verifyPassword) {
+            throw new Error('Passwords do not match')
+          }
           const hash = await bcrypt.hash(credentials.password, 10)
           user = await prisma.user.create({
             data: {
@@ -41,6 +46,9 @@ export const authOptions: NextAuthOptions = {
           })
 
           return user
+        }
+        if (user === null) {
+          throw new Error('User not found')
         }
 
         if (user.password === null) {

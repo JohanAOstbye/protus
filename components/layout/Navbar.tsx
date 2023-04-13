@@ -9,6 +9,7 @@ import SignInIcon from 'lib/assets/icons/signin.svg'
 import PersonIcon from 'lib/assets/icons/person.svg'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useCourse } from 'components/context/courseContext'
+import { redirect } from 'next/navigation'
 
 export const Navbar = () => {
   const { courses, course } = useCourse()
@@ -19,6 +20,17 @@ export const Navbar = () => {
     useOutsideClick(false, courseRef)
   const { isVisible: authIsVisible, setIsVisible: setAuthIsVisible } =
     useOutsideClick(false, authRef)
+
+  if (
+    status == 'authenticated' &&
+    session.user &&
+    (session.user.code === null ||
+      session.user.code === undefined ||
+      session.user.code === '') &&
+    window.location.pathname !== '/auth/new-user'
+  ) {
+    redirect('/auth/new-user')
+  }
 
   return (
     <div className={style.container}>

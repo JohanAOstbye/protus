@@ -11,8 +11,9 @@ export const useTimedStatement = (sendFunction: (duration: string) => void) => {
       const diff = now - time
       if (diff > 1000) {
         const duration: Duration = {
-          seconds: Math.floor(diff / 1000),
-          minutes: Math.floor(diff / 1000 / 60),
+          seconds: Math.floor((diff / 1000) % 60),
+          minutes: Math.floor((diff / 1000 / 60) % 60),
+          hours: Math.floor((diff / 1000 / 60 / 60) % 24),
         }
         sendFunction(serialize(duration))
       }
