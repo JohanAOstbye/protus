@@ -29,6 +29,12 @@ export const Navbar = () => {
       session.user.code === '') &&
     window.location.pathname !== '/auth/new-user'
   ) {
+    console.log(
+      session.user.code === null,
+      session.user.code === undefined,
+      session.user.code === ''
+    )
+
     redirect('/auth/new-user')
   }
 
