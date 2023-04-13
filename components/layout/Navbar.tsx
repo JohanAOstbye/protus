@@ -39,7 +39,7 @@ export const Navbar = () => {
           <Link href={'/'}>
             <ProtusLabel />
           </Link>
-          {courses.length > 0 && (
+          {status == 'authenticated' && courses.length > 0 && (
             <>
               <hr className={style.lineSeperator} />
               <div className={style.courseContainer} ref={courseRef}>
@@ -83,7 +83,9 @@ export const Navbar = () => {
               </div>
             </>
           )}
-          <Link href={'/activities'}>Activities</Link>
+          {status == 'authenticated' && (
+            <Link href={'/activities'}>Activities</Link>
+          )}
         </div>
 
         <div ref={authRef} className={style.auth}>

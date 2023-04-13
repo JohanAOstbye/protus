@@ -9,6 +9,7 @@ import { trpc } from 'lib/server/trpc/provider'
 import Loading from 'components/elements/Loading'
 import { ActivityCardProps } from 'components/elements/ActivityCard'
 import { Button } from 'components/elements/Button'
+import { useSession } from 'next-auth/react'
 
 type activitiesPageProps = {
   options?: filterType
@@ -38,6 +39,7 @@ export const ActivitiesPage = ({
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<filterType>(initialfilter)
   const deferredFilter = useDeferredValue({ query: query, ...filter })
+  useSession({ required: true })
 
   const activities = trpc.activities.getAll.useInfiniteQuery(
     { limit: 20, filter: filter },
