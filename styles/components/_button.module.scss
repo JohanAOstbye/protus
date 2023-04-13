@@ -10,14 +10,14 @@
   border-radius: $border-radius--s;
   @include type($font--s);
   font-weight: 600;
-  padding: $spacing--xxxxs $spacing--s;
+  padding: $spacing--xxxxs $spacing--s !important;
 
   @include breakpoint-sm {
-    padding: $spacing--xxxs $spacing--s;
+    padding: $spacing--xxxs $spacing--s !important;
   }
 
   @include breakpoint-m {
-    padding: $spacing--xxxs $spacing--sm;
+    padding: $spacing--xxxs $spacing--sm !important;
   }
 
   &_blue {
