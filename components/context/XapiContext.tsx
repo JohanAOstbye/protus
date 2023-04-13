@@ -74,20 +74,18 @@ export const XapiContextProvider = ({ children }: XapiContextProviderProps) => {
           {
             objectType: 'Agent',
             account: {
-              homePage: process.env.NEXTAUTH_URL
-                ? process.env.NEXTAUTH_URL
-                : 'www.protus.no',
+              homePage: 'https://protus.vercel.app',
               name: 'protus-client',
             },
           },
         ],
       })
       fetch(
-        '/xAPI/statements' +
+        '/xAPI/statements?' +
           new URLSearchParams({
-            agent: JSON.stringify(agent),
             related_agents: 'true',
-          }),
+            agent: JSON.stringify(agent),
+          }).toString(),
         {
           method: 'GET',
           headers: {

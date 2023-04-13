@@ -1,6 +1,6 @@
 import { Prisma, Verb } from '@prisma/client'
 import { z } from 'zod'
-import { IRI, languageMap, recordFromPrismaArray } from '.'
+import { IRI, languageMap, recordFromPrismaArray, recordToPrismaArray } from '.'
 
 export const verb = z.object({
   id: IRI,
@@ -12,7 +12,9 @@ export type verbType = z.infer<typeof verb>
 export const verbToPrisma = (verb: verbType) => {
   const prismaStatment: Prisma.VerbCreateInput = {
     iri: verb.id,
-    display: verb.display,
+    display: {
+      set: recordToPrismaArray(verb.display),
+    },
   }
   return prismaStatment
 }

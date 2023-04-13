@@ -7,8 +7,14 @@ import {
   recordFromPrismaArray,
   recordToPrismaArray,
 } from '.'
+import { contentType } from 'mime-types'
 
-const internetMediaType = z.object({})
+export const internetMediaType = z
+  .string()
+  .refine((val) => contentType(val) !== false, {
+    message: 'Invalid internet media type',
+    path: ['internetMediaType'],
+  })
 
 export const attachment = z.object({
   usageType: IRI,

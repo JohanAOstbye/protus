@@ -1,8 +1,9 @@
 import { Prisma, Result } from '@prisma/client'
+import { parse } from 'tinyduration'
 import { z } from 'zod'
 import { extensions, recordFromPrismaArray, recordToPrismaArray } from '.'
 
-const score = z
+export const score = z
   .object({
     scaled: z.number().max(1).min(-1),
     raw: z.number().optional(),
@@ -23,11 +24,17 @@ const score = z
     return true
   })
 
-const duration = z
-  .string()
-  .regex(
-    /^P(([0-9]+Y)?([0-9]+M)?([0-9]+W)?([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+(\.?[0-9]+)?S)?))?$/
-  )
+export const duration = z.string().refine(
+  (value) => {
+    try {
+      parse(value)
+      return true
+    } catch (error) {
+      return false
+    }
+  },
+  (value) => ({ message: 'Invalid duration for ' + value })
+)
 
 export const result = z.object({
   score: score.optional(),

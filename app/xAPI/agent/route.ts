@@ -3,37 +3,18 @@ import { NextResponse } from 'next/server'
 import {
   actorSelect,
   agent as zAgent,
-  inverseFunctionalIdentifier,
   person,
+  inverseFunctionalIdentifierFilter,
 } from 'lib/types/x-api/actor'
 import { z } from 'zod'
 import { prisma } from 'lib/server/db'
 
 export async function POST(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       query: z.object({
-        agent: z.string().transform((value, ctx) => {
-          try {
-            let json = JSON.parse(value)
-            const agent = zAgent.safeParse(json)
-            if (!agent.success) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'agent is not a valid agent or group',
-              })
-              return z.NEVER
-            }
-            return agent.data
-          } catch (error) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'agent is not a valid json object',
-            })
-            return z.NEVER
-          }
-        }),
+        agent: zAgent,
       }),
     },
     { 'content-type': ['application/json'] }
@@ -49,7 +30,7 @@ export async function POST(request: Request) {
     const prismaAgents = await prisma.actor.findMany({
       where: {
         objectType: 'Agent',
-        ...inverseFunctionalIdentifier.parse(agent),
+        ...inverseFunctionalIdentifierFilter.parse(agent),
       },
       select: actorSelect,
     })
@@ -73,10 +54,13 @@ export async function POST(request: Request) {
         returnPerson.openid = returnPerson.openid
           ? [...returnPerson.openid, agent.openid]
           : [agent.openid]
-      if (agent.account)
+      if (agent.accountName && agent.accountHomePage)
         returnPerson.account = returnPerson.account
-          ? [...returnPerson.account, agent.account]
-          : [agent.account]
+          ? [
+              ...returnPerson.account,
+              { name: agent.accountName, homePage: agent.accountHomePage },
+            ]
+          : [{ name: agent.accountName, homePage: agent.accountHomePage }]
     })
     return NextResponse.json(returnPerson, { status: 200, headers })
   } catch (error) {

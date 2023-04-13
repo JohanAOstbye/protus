@@ -11,15 +11,8 @@ export interface CourseCardProps {
 }
 
 export const CourseCard = ({ title, slug }: CourseCardProps) => {
-  const mutation = trpc.state.update.useMutation()
   return (
-    <Link
-      className={style.courseCard}
-      href={`/c/${slug}`}
-      onClick={() => {
-        mutation.mutateAsync()
-      }}
-    >
+    <Link className={style.courseCard} href={`/c/${slug}`}>
       <>
         <JavaIcon />
         <div className={style.title}>{title + ' course'}</div>

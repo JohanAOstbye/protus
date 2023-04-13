@@ -54,8 +54,6 @@ export const NewUserPage = () => {
     const validator = vaildateUserDetails(userDetails)
     if (validator.success) {
       mutation.mutateAsync(validator.data).then(() => redirect('/'))
-    } else {
-      console.log('validator failed')
     }
   }
 

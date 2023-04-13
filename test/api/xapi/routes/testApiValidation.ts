@@ -4,11 +4,15 @@ const headers = z.record(z.string(), z.array(z.string()).nonempty())
 
 type headersType = z.infer<typeof headers>
 
-export async function apiValidation<
+export async function testApiValidation<
   T extends z.AnyZodObject,
   Y extends z.AnyZodObject
 >(
-  request: Request,
+  request: {
+    query?: URLSearchParams
+    headers?: Headers
+    body?: any
+  },
   input: undefined,
   headers?: headersType
 ): Promise<
@@ -21,11 +25,15 @@ export async function apiValidation<
       }
     }
 >
-export async function apiValidation<
+export async function testApiValidation<
   T extends z.AnyZodObject,
   Y extends z.AnyZodObject
 >(
-  request: Request,
+  request: {
+    query?: URLSearchParams
+    headers?: Headers
+    body?: any
+  },
   input: { body: Y },
   headers?: headersType
 ): Promise<
@@ -44,11 +52,15 @@ export async function apiValidation<
     }
 >
 
-export async function apiValidation<
+export async function testApiValidation<
   T extends z.AnyZodObject,
   Y extends z.AnyZodObject
 >(
-  request: Request,
+  request: {
+    query?: URLSearchParams
+    headers?: Headers
+    body?: any
+  },
   input: { query: T },
   headers?: headersType
 ): Promise<
@@ -66,11 +78,15 @@ export async function apiValidation<
       }
     }
 >
-export async function apiValidation<
+export async function testApiValidation<
   T extends z.AnyZodObject,
   Y extends z.AnyZodObject
 >(
-  request: Request,
+  request: {
+    query?: URLSearchParams
+    headers?: Headers
+    body?: any
+  },
   input: { query: T; body: Y },
   headers?: headersType
 ): Promise<
@@ -90,11 +106,15 @@ export async function apiValidation<
     }
 >
 
-export async function apiValidation<
+export async function testApiValidation<
   T extends z.AnyZodObject,
   Y extends z.AnyZodObject
 >(
-  request: Request,
+  request: {
+    query?: URLSearchParams
+    headers?: Headers
+    body?: any
+  },
   input?: { query?: T; body?: Y },
   headers?: headersType
 ): Promise<
@@ -117,7 +137,7 @@ export async function apiValidation<
     query?: z.infer<T>
     body?: z.infer<Y>
   } = {}
-  if (headers) {
+  if (headers && request.headers) {
     request.headers.forEach((value, key) => {
       if (headers[key]) {
         if (!headers[key].includes(value)) {
@@ -133,8 +153,8 @@ export async function apiValidation<
     })
   }
 
-  if (input && input.query) {
-    let rawSearchParams = new URL(request.url).searchParams
+  if (input && input.query && request.query) {
+    let rawSearchParams = request.query
     const searchParams = Object.fromEntries(rawSearchParams)
     rawSearchParams.forEach((value, key) => {
       searchParams[key] = JSON.parse(value)
@@ -152,7 +172,7 @@ export async function apiValidation<
     data.query = query.data
   }
   if (input && input.body) {
-    let json = await request.json()
+    let json = request.body
 
     const body = input.body.safeParse(json)
     if (!body.success) {

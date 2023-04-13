@@ -7,12 +7,14 @@ export async function sendStatement(
 ) {
   statement.authority = authority
 
+  const body = JSON.stringify({ statements: [statement] })
+
   const response = await fetch('/xAPI/statements', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ statements: [statement] }),
+    body: body,
   })
   if (!response.ok) {
     throw new Error('Error sending statement')

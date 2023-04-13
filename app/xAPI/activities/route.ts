@@ -6,7 +6,7 @@ import { activityObject, objectFromPrisma } from 'lib/types/x-api/object'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       query: z.object({

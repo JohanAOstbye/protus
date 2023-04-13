@@ -2,7 +2,7 @@ import { apiValidation } from 'lib/server/rest'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
-  const validator = apiValidation(request.clone(), undefined, {
+  const validator = await apiValidation(request.clone(), undefined, {
     'content-type': ['application/json'],
   })
   if (!validator.success) {

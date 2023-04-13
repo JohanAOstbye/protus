@@ -130,6 +130,19 @@ export const stateRouter = createTRPCRouter({
     const { prisma, session } = ctx
     const userId = ctx.session.user.code
 
+    const last = await prisma.userState.findFirst({
+      where: { userId: session.user.id },
+      select: { updatedAt: true },
+    })
+
+    if (last && last.updatedAt) {
+      const diff = new Date().getTime() - last.updatedAt.getTime()
+      console.log('diff', diff)
+      if (diff < 1000 * 60 * 10) {
+        return
+      }
+    }
+
     const url =
       apiUrl +
       new URLSearchParams({
@@ -209,9 +222,7 @@ export const stateRouter = createTRPCRouter({
         activities = activities.filter(
           (act) => !existingActivityUrls.includes(act.url)
         )
-      } catch (error) {
-        console.log("prisma error, couldn't get existing activity urls")
-      }
+      } catch (error) {}
       const queries: any[] = []
       if (activities.length > 0) {
         const existingCourses = (
@@ -373,8 +384,6 @@ export const stateRouter = createTRPCRouter({
 
       return parsed.data
     } catch (error) {
-      console.log(error)
-
       throw new Error('json parsing failed:/')
     }
   }),

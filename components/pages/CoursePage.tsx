@@ -5,6 +5,10 @@ import { Content } from 'components/blocks/Content'
 import { UpdateCourse } from 'components/context/Update'
 import { courseType } from 'lib/types/sanity'
 import style from 'styles/pages/_coursePage.module.scss'
+import { useTimedStatement } from 'components/hooks/useTimedStatement.hook'
+import { useSession } from 'next-auth/react'
+import { useXapi } from 'components/context/XapiContext'
+import { getDeviceCategory } from 'lib/types/x-api/functions'
 
 const CoursePage = ({
   course,
@@ -13,6 +17,44 @@ const CoursePage = ({
   loading?: boolean
   course: courseType
 }) => {
+  const { data: session, status } = useSession({ required: true })
+  const { recordStatment } = useXapi()
+  useTimedStatement((duration) => {
+    if (status === 'authenticated' && session && session.user) {
+      recordStatment({
+        object: {
+          objectType: 'Activity',
+          id: `https://protus.no/c/${course.slug}`,
+          definition: {
+            name: {
+              en: course.title || 'Untitled course: ' + course._id,
+            },
+          },
+        },
+        actor: {
+          objectType: 'Agent',
+          name: session.user.name === null ? undefined : session.user.name,
+          mbox: `mailto:${session.user.email}`,
+        },
+        verb: {
+          id: 'http://adlnet.gov/expapi/verbs/viewed',
+          display: {
+            en: 'viewed',
+          },
+        },
+        result: {
+          duration: duration,
+        },
+        context: {
+          platform: `${getDeviceCategory(
+            window.innerWidth,
+            window.innerHeight
+          )} ${window.navigator.userAgent}`,
+        },
+      })
+    }
+  })
+
   return (
     <div className={style.page}>
       <UpdateCourse course={course} />

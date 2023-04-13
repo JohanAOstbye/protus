@@ -8,7 +8,7 @@ import {
   actorSelect,
 } from './actor'
 import { languageTag, extensions, recordToPrismaArray } from '.'
-import { Actor, Context, Prisma, XapiAccount } from '@prisma/client'
+import { Actor, Context, Prisma } from '@prisma/client'
 
 import { objectInclude, objectSelect } from './object'
 
@@ -63,9 +63,6 @@ export const contextToPrisma = (context: contextType) => {
     revision: context.revision,
     platform: context.platform,
     language: context.language,
-    statement: context.statement
-      ? { connect: { id: context.statement } }
-      : undefined,
     extensions: context.extensions
       ? recordToPrismaArray(context.extensions)
       : undefined,
@@ -79,10 +76,7 @@ export const contextFromPrisma = (
     instructor?: Actor | undefined
     team?:
       | (Actor & {
-          account?: XapiAccount | undefined
-          member?: (Actor & {
-            account?: XapiAccount | undefined
-          })[]
+          member?: Actor[]
         })
       | undefined
   }
@@ -99,7 +93,10 @@ export const contextFromPrisma = (
       prismacontext.platform === null ? undefined : prismacontext.platform,
     language:
       prismacontext.language === null ? undefined : prismacontext.language,
-    statement: prismacontext.statementId,
+    statement:
+      prismacontext.statementId === null
+        ? undefined
+        : prismacontext.statementId,
   }
   const result = context.safeParse(contextObject)
   if (!result.success) {

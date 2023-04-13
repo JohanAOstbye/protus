@@ -3,6 +3,7 @@ import {
   actorToPrisma,
   agent as zAgent,
   inverseFunctionalIdentifier,
+  inverseFunctionalIdentifierFilter,
 } from 'lib/types/x-api/actor'
 import { document, mergeDocuments } from 'lib/types/x-api/document'
 import { z } from 'zod'
@@ -10,30 +11,11 @@ import { prisma } from 'lib/server/db'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       query: z.object({
-        agent: z.string().transform((value, ctx) => {
-          try {
-            let json = JSON.parse(value)
-            const agent = zAgent.safeParse(json)
-            if (!agent.success) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'agent is not a valid agent or group',
-              })
-              return z.NEVER
-            }
-            return agent.data
-          } catch (error) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'agent is not a valid json object',
-            })
-            return z.NEVER
-          }
-        }),
+        agent: zAgent,
         profileId: z.string().optional(),
         since: z.string().datetime().optional(),
       }),
@@ -53,7 +35,9 @@ export async function GET(request: Request) {
       const prismaDocument = await prisma.document.findFirst({
         where: {
           profileId,
-          agent: inverseFunctionalIdentifier.parse(agent),
+          agent: inverseFunctionalIdentifier.parse(agent)
+            ? { is: inverseFunctionalIdentifierFilter.parse(agent) }
+            : undefined,
         },
       })
       if (prismaDocument) {
@@ -93,31 +77,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       body: document,
       query: z.object({
-        agent: z.string().transform((value, ctx) => {
-          try {
-            let json = JSON.parse(value)
-            const agent = zAgent.safeParse(json)
-            if (!agent.success) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'agent is not a valid agent or group',
-              })
-              return z.NEVER
-            }
-            return agent.data
-          } catch (error) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'agent is not a valid json object',
-            })
-            return z.NEVER
-          }
-        }),
+        agent: zAgent,
         profileId: z.string(),
       }),
     },
@@ -165,31 +130,12 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       body: document,
       query: z.object({
-        agent: z.string().transform((value, ctx) => {
-          try {
-            let json = JSON.parse(value)
-            const agent = zAgent.safeParse(json)
-            if (!agent.success) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'agent is not a valid agent or group',
-              })
-              return z.NEVER
-            }
-            return agent.data
-          } catch (error) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'agent is not a valid json object',
-            })
-            return z.NEVER
-          }
-        }),
+        agent: zAgent,
         profileId: z.string(),
       }),
     },
@@ -237,30 +183,11 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const validator = apiValidation(
+  const validator = await apiValidation(
     request.clone(),
     {
       query: z.object({
-        agent: z.string().transform((value, ctx) => {
-          try {
-            let json = JSON.parse(value)
-            const agent = zAgent.safeParse(json)
-            if (!agent.success) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'agent is not a valid agent or group',
-              })
-              return z.NEVER
-            }
-            return agent.data
-          } catch (error) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'agent is not a valid json object',
-            })
-            return z.NEVER
-          }
-        }),
+        agent: zAgent,
         profileId: z.string(),
       }),
     },
@@ -279,7 +206,9 @@ export async function DELETE(request: Request) {
       .deleteMany({
         where: {
           profileId,
-          agent: inverseFunctionalIdentifier.parse(agent),
+          agent: inverseFunctionalIdentifier.parse(agent)
+            ? { is: inverseFunctionalIdentifierFilter.parse(agent) }
+            : undefined,
         },
       })
       .then(() => {

@@ -1,12 +1,4 @@
-import {
-  Prisma,
-  Statement,
-  Actor,
-  XapiAccount,
-  Verb,
-  Object,
-  Context,
-} from '@prisma/client'
+import { Prisma, Statement, Actor, Verb, Object, Context } from '@prisma/client'
 import { Session } from 'next-auth'
 
 import { z } from 'zod'
@@ -17,6 +9,7 @@ import {
   actorFromPrisma,
   actorInclude,
   actorSelect,
+  inverseFunctionalIdentifierFilter,
 } from './actor'
 import {
   attachment,
@@ -24,7 +17,12 @@ import {
   attachmentFromPrisma,
   attachmentSelect,
 } from './attachments'
-import { authority, authorityToPrisma } from './authority'
+import {
+  authority,
+  authorityFromPrisma,
+  authorityToPrisma,
+  authorityType,
+} from './authority'
 import {
   context,
   contextToPrisma,
@@ -64,16 +62,18 @@ export type statementType = z.infer<typeof statement>
 
 export const statementToPrisma = (
   statement: statementType,
-  authority: actorType,
+  authority: authorityType,
   user?: Session['user']
 ) => {
+  let identifier = inverseFunctionalIdentifierFilter.parse(statement.actor)
+  if (!identifier) {
+    identifier = { id: 'not an id' }
+  }
   const prismaStatment: Prisma.StatementCreateInput = {
     id: statement.id,
     actor: {
       connectOrCreate: {
-        where: {
-          id: statement.actor.id,
-        },
+        where: identifier,
         create: actorToPrisma({
           ...statement.actor,
           userId: user ? user.id : undefined,
@@ -89,19 +89,11 @@ export const statementToPrisma = (
       },
     },
     object: {
-      connectOrCreate: {
-        where:
-          statement.object.objectType == 'Activity'
-            ? {
-                id: statement.object.id,
-              }
-            : {},
-        create: objectToPrisma(statement.object),
-      },
+      create: objectToPrisma(statement.object),
     },
     result: statement.result ? resultToPrisma(statement.result) : undefined,
-    context: statement.result
-      ? { create: contextToPrisma(statement.result) }
+    context: statement.context
+      ? { create: contextToPrisma(statement.context) }
       : undefined,
 
     authority: statement.authority
@@ -119,20 +111,10 @@ export const statementToPrisma = (
 
 export type PrismaStatement = Statement & {
   object?: Object | undefined
-  actor?:
-    | Actor
-    | (Actor & {
-        account?: XapiAccount | undefined
-      })
-    | undefined
+  actor?: Actor | undefined
   verb?: Verb | undefined
   context?: Context | null | undefined
-  authority?:
-    | Actor
-    | (Actor & {
-        account?: XapiAccount | undefined
-      })
-    | undefined
+  authority?: Actor | undefined
   _count?: Prisma.StatementCountOutputType | undefined
   contextref?: Context[] | undefined
   objectref?:
@@ -163,7 +145,7 @@ export const statementFromPrisma = (
         ? resultFromPrisma(prismaStatement.result)
         : undefined,
     authority: prismaStatement.authority
-      ? actorFromPrisma(prismaStatement.authority)
+      ? authorityFromPrisma(prismaStatement.authority)
       : undefined,
     attachments: prismaStatement.attachments.map((attachment) =>
       attachmentFromPrisma(attachment)

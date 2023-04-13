@@ -1,4 +1,5 @@
 'use client'
+import { trpc } from 'lib/server/trpc/provider'
 import { groupType } from 'lib/types/course-api/group'
 import { learnerType } from 'lib/types/course-api/learner'
 import { useSession } from 'next-auth/react'
@@ -31,9 +32,11 @@ export const StateContextProvider = (props: StateContextProviderProps) => {
   const { status } = useSession()
   const [learners, setLearners] = useState<learnerType[]>(props.learners || [])
   const [groups, setGroups] = useState<groupType[]>(props.groups || [])
+  const mutation = trpc.state.update.useMutation()
 
   useEffect(() => {
     if (status == 'authenticated') {
+      mutation.mutateAsync()
     }
 
     return () => {
