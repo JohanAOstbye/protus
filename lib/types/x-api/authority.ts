@@ -30,7 +30,6 @@ export const authorityToPrisma = (
   let prismaAuthority: Prisma.ActorCreateNestedOneWithoutAuthoritiesInput = {}
 
   let identifier = inverseFunctionalIdentifierFilter.parse(authority)
-  console.log('auth', identifier, authority)
 
   let anon = anongroup.safeParse(authority)
 

@@ -6,6 +6,7 @@ import style from 'styles/pages/_frontPage.module.scss'
 import { useSession } from 'next-auth/react'
 import CourseCard from 'components/elements/CourseCard'
 import { useCourse } from 'components/context/courseContext'
+import Loading from 'components/elements/Loading'
 
 export const FrontPage = () => {
   const { data: session, status } = useSession()
@@ -24,8 +25,8 @@ export const FrontPage = () => {
       <>
         {status == 'authenticated' ? (
           <div className={style.courses}>
-            {courses.map((course) => (
-              <CourseCard title={course.title} slug={course.slug} />
+            {courses.map((course, index) => (
+              <CourseCard key={index} title={course.title} slug={course.slug} />
             ))}
           </div>
         ) : (
