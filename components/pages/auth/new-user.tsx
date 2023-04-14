@@ -2,7 +2,7 @@
 import { Button } from 'components/elements/Button'
 import { Input } from 'components/elements/Input'
 import { trpc } from 'lib/server/trpc/provider'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import style from 'styles/pages/_newUserPage.module.scss'
 import { SelectionButton } from 'components/elements/SelectionButton'
 import RangeSlider from 'components/elements/RangeSlider'
@@ -11,6 +11,8 @@ import { ProjectInformation } from 'lib/assets/ProjectInformation'
 
 import { UserDetails as UD } from '@prisma/client'
 import { redirect } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+import Loading from 'components/elements/Loading'
 
 type UserDetails = Omit<UD, 'id' | 'userId'> & { code: string }
 
@@ -44,20 +46,42 @@ const vaildateUserDetails = (
 }
 
 export const NewUserPage = () => {
+  const { data: session, status, update } = useSession({ required: true })
   const [readInformation, setReadInformation] = React.useState(true)
   const [userDetails, setUserDetails] = useState<
     Partial<UserDetails> & { additionalDevices: string[] }
   >({ additionalDevices: [] })
-
+  const [loading, setLoading] = useState(false)
   const mutation = trpc.user.new.useMutation()
-  const update = async () => {
+  const updateMutation = async () => {
+    setLoading(true)
     const validator = vaildateUserDetails(userDetails)
     if (validator.success) {
-      mutation
-        .mutateAsync(validator.data)
-        .then(() => window.location.replace('/'))
+      mutation.mutateAsync(validator.data).then(() => {
+        update({ code: validator.data.code })
+      })
     }
   }
+
+  useEffect(() => {
+    console.log(
+      session,
+      session?.user,
+      session?.user?.code !== null,
+      session?.user?.code !== undefined
+    )
+
+    if (
+      session &&
+      session.user &&
+      session.user.code !== null &&
+      session.user.code !== undefined
+    ) {
+      redirect('/')
+    }
+  }, [session])
+
+  if (loading) return <Loading />
 
   return readInformation ? (
     <div className={style.newUserPage}>
@@ -270,7 +294,7 @@ export const NewUserPage = () => {
       <div>
         <span title=""></span>
       </div>
-      <Button onClick={update} text="Send in" />
+      <Button onClick={() => updateMutation()} text="Send in" />
     </div>
   )
 }

@@ -348,36 +348,40 @@ export const stateRouter = createTRPCRouter({
             },
           },
           chapterState: {
-            create: state.map((chapter) => {
-              return {
-                chapter: {
-                  connect: {
-                    name_courseName: {
-                      name: chapter.name,
-                      courseName: 'Java',
+            create: state
+              .filter((chapter) => chapter.state?.p !== 0)
+              .map((chapter) => {
+                return {
+                  chapter: {
+                    connect: {
+                      name_courseName: {
+                        name: chapter.name,
+                        courseName: 'Java',
+                      },
                     },
                   },
-                },
-                examples: chapter.example,
-                challenges: chapter.challenges,
-                exercises: chapter.exercise,
-                state: chapter.state,
-                activityStates: chapter.activities
-                  ? {
-                      create: chapter.activities.map((activity) => {
-                        return {
-                          state: activity.state,
-                          activity: {
-                            connect: {
-                              apiId: 'Java' + activity.name,
-                            },
-                          },
-                        }
-                      }),
-                    }
-                  : undefined,
-              }
-            }),
+                  examples: chapter.example,
+                  challenges: chapter.challenges,
+                  exercises: chapter.exercise,
+                  state: chapter.state,
+                  activityStates: chapter.activities
+                    ? {
+                        create: chapter.activities
+                          .filter((activity) => activity.state?.p !== 0)
+                          .map((activity) => {
+                            return {
+                              state: activity.state,
+                              activity: {
+                                connect: {
+                                  apiId: 'Java' + activity.name,
+                                },
+                              },
+                            }
+                          }),
+                      }
+                    : undefined,
+                }
+              }),
           },
         },
       })

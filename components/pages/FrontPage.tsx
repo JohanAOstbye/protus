@@ -24,8 +24,8 @@ export const FrontPage = () => {
       <>
         {status == 'authenticated' ? (
           <div className={style.courses}>
-            {courses.map((course) => (
-              <CourseCard title={course.title} slug={course.slug} />
+            {courses.map((course, index) => (
+              <CourseCard key={index} title={course.title} slug={course.slug} />
             ))}
           </div>
         ) : (
