@@ -328,7 +328,6 @@ export async function POST(request: Request) {
     await Promise.all(
       createStatements.map((statement) => {
         let data = statementToPrisma(statement, {}, session?.user)
-        console.log('data', data)
 
         return prisma.statement.create({
           data,
@@ -339,8 +338,6 @@ export async function POST(request: Request) {
     // Any other status or JSON format will lead to TS error.
     return NextResponse.json(ids, { status: 200, headers })
   } catch (error) {
-    console.log('error', error)
-
     return NextResponse.json({}, { status: 400, headers })
   }
 }

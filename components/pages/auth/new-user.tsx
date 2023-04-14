@@ -64,13 +64,6 @@ export const NewUserPage = () => {
   }
 
   useEffect(() => {
-    console.log(
-      session,
-      session?.user,
-      session?.user?.code !== null,
-      session?.user?.code !== undefined
-    )
-
     if (
       session &&
       session.user &&

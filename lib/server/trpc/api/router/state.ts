@@ -139,7 +139,6 @@ export const stateRouter = createTRPCRouter({
 
     if (last && last.updatedAt) {
       const diff = new Date().getTime() - last.updatedAt.getTime()
-      console.log('diff', diff)
       if (diff < 1000 * 60 * 10) {
         return
       }

@@ -71,7 +71,6 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-      console.log('jwt', token, user)
       if (trigger === 'update' && session?.code) {
         // Note, that `session` can be any arbitrary object, remember to validate it!
         token.code = session.code
