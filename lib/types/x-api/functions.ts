@@ -46,7 +46,7 @@ export async function sendStatements(
 }
 
 export function getDeviceCategory(width: number, height: number) {
-  const viewport = Math.max(width, height)
+  const viewport = Math.min(width, height)
   if (viewport < 512) {
     return 'mobile'
   } else if (viewport < 1200) {

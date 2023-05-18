@@ -1,17 +1,22 @@
-import { ResponsiveBar } from '@nivo/bar'
+'use client'
+import { BarDatum, ResponsiveBar } from '@nivo/bar'
 import style from 'styles/components/_barChart.module.scss'
 
 export interface BarData {
-  data: any
+  data: BarDatum[]
+  keys: string[]
+  indexBy: string
+  xLabel?: string
+  yLabel?: string
 }
 
-const BarChart = ({ data }: BarData) => (
+const BarChart = ({ data, keys, indexBy, xLabel, yLabel }: BarData) => (
   <div className={style.barChart}>
     <ResponsiveBar
       data={data}
       theme={{ textColor: style.colorText, background: style.colorBackground }}
-      keys={['burger']} // Activities completed
-      indexBy="country" //Chapter
+      keys={keys}
+      indexBy={indexBy}
       margin={{ top: 60, right: 30, bottom: 100, left: 30 }}
       padding={0.3}
       colors={{ scheme: 'accent' }}
@@ -20,14 +25,14 @@ const BarChart = ({ data }: BarData) => (
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 90,
-        legend: 'Actvities completed', //TODO dynamic
+        legend: xLabel, //TODO dynamic
         legendPosition: 'middle',
         legendOffset: 80,
       }}
       axisLeft={{
         tickPadding: 5,
         tickRotation: 0,
-        legend: 'Chapter', //TODO dynamic
+        legend: yLabel, //TODO dynamic
         legendPosition: 'middle',
         legendOffset: -40,
       }}

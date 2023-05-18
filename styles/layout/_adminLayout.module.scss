@@ -1,0 +1,21 @@
+@use 'styles/utils/main' as *;
+.layout {
+  height: 100%;
+  display: flex;
+  .sidebar {
+    background-color: $surf-darkgrey;
+    height: 100%;
+    width: max-content;
+    padding: $spacing--tiny $spacing--xxs;
+
+    ul {
+      @include list-style-reset;
+      li > a {
+        @include link-style-reset;
+      }
+    }
+  }
+  .content {
+    padding: $spacing--tiny;
+  }
+}

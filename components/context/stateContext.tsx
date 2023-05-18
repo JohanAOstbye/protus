@@ -55,10 +55,10 @@ export const StateContextProvider = (props: StateContextProviderProps) => {
   )
 }
 
-export const useActivities = () => {
+export const useCourseState = () => {
   const courseInfo = useContext(StateContext)
   if (courseInfo === undefined) {
-    throw new Error('usecourse was used outside of its Provider')
+    throw new Error('useCourseState was used outside of its Provider')
   }
   return courseInfo
 }

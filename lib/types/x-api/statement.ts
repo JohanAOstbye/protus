@@ -62,7 +62,7 @@ export type statementType = z.infer<typeof statement>
 
 export const statementToPrisma = (
   statement: statementType,
-  authority: authorityType,
+  authority?: authorityType,
   user?: Session['user']
 ) => {
   let identifier = inverseFunctionalIdentifierFilter.parse(statement.actor)
@@ -76,7 +76,7 @@ export const statementToPrisma = (
         where: identifier,
         create: actorToPrisma({
           ...statement.actor,
-          userId: user ? user.id : undefined,
+          userId: undefined,
         }),
       },
     },
@@ -98,7 +98,7 @@ export const statementToPrisma = (
 
     authority: statement.authority
       ? authorityToPrisma(statement.authority)
-      : authorityToPrisma(authority),
+      : authorityToPrisma(authority ? authority : {}),
     version: statement.version,
     attachments: statement.attachments
       ? statement.attachments.map((attachment) =>
@@ -179,7 +179,7 @@ export const statementInclude: Prisma.StatementInclude = {
   authority: { include: actorInclude },
 }
 
-export function statementSelect(depth: number): Prisma.StatementSelect {
+export function statementSelect(depth: number = 0): Prisma.StatementSelect {
   if (depth === 0) {
     return {
       id: true,

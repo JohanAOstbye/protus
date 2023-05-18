@@ -20,7 +20,7 @@ export const ActivityPage = ({ activity }: { activity: Activity | null }) => {
       recordStatment({
         object: {
           objectType: 'Activity',
-          id: activity.id,
+          id: `https://protus.vercel.app/activity/${activity.id}`,
           definition: {
             name: {
               en: activity.name,

@@ -9,6 +9,9 @@
   overflow: hidden;
   cursor: pointer;
 
+  max-width: $spacing--xbig;
+  min-width: 140px;
+
   @include breakpoint-sm {
     max-width: $spacing--xbig;
     min-width: $spacing--big;

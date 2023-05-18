@@ -294,6 +294,7 @@ export const actorSelect: Prisma.ActorSelect = {
   openid: true,
   accountName: true,
   accountHomePage: true,
+  profile: true,
   member: {
     select: {
       id: true,
