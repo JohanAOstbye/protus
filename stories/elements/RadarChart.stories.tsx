@@ -2,7 +2,7 @@
 
 import React, { ReactPropTypes } from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import RadarChart from 'components/elements/RadarChart'
 
 const data = [
@@ -35,8 +35,8 @@ export default {
    */
   title: 'Elements/RadarChart',
   component: RadarChart,
-} as ComponentMeta<typeof RadarChart>
+} as Meta<typeof RadarChart>
 
-export const Primary: ComponentStory<typeof RadarChart> = () => (
+export const Primary: StoryFn<typeof RadarChart> = () => (
   <RadarChart data={data} />
 )

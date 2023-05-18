@@ -1,5 +1,5 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import { Course } from 'lib/sanity/sanity.queries'
 import Layout from 'components/layout'
 import { SessionProvider } from 'next-auth/react'
@@ -14,9 +14,9 @@ export default {
    */
   title: 'Pages/CoursePage',
   component: CoursePage,
-} as ComponentMeta<typeof CoursePage>
+} as Meta<typeof CoursePage>
 
-export const Primary: ComponentStory<typeof CoursePage> = () => (
+export const Primary: StoryFn<typeof CoursePage> = () => (
   <SessionProvider>
     <CourseContextProvider course={courseMock} courses={coursesMock}>
       <Layout>

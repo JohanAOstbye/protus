@@ -1,7 +1,7 @@
 // FrontPage.stories.ts|tsx
 
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import { FrontPage as Page } from 'components/pages/FrontPage'
 import Layout from 'components/layout'
 import { StoryContext } from 'stories/assets/StoryContext'
@@ -13,16 +13,16 @@ export default {
    */
   title: 'Pages/FrontPage',
   component: Page,
-} as ComponentMeta<typeof Page>
+} as Meta<typeof Page>
 
-export const FrontPage: ComponentStory<typeof Page> = () => (
+export const FrontPage: StoryFn<typeof Page> = () => (
   <StoryContext>
     <Layout>
       <Page />
     </Layout>
   </StoryContext>
 )
-export const FrontPageAuthenticated: ComponentStory<typeof Page> = () => (
+export const FrontPageAuthenticated: StoryFn<typeof Page> = () => (
   <StoryContext authenticated>
     <Layout>
       <Page />

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import FilterItem from 'components/elements/FilterItem'
 
 export default {
@@ -9,9 +9,9 @@ export default {
    */
   title: 'Elements/FilterItem',
   component: FilterItem,
-} as ComponentMeta<typeof FilterItem>
+} as Meta<typeof FilterItem>
 
-export const Primary: ComponentStory<typeof FilterItem> = () => (
+export const Primary: StoryFn<typeof FilterItem> = () => (
   <div style={{ width: 'max-content' }}>
     <FilterItem title={'test'} checked={false} />
     <FilterItem title={'test'} checked={true} />

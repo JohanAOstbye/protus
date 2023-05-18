@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import ActivityList from 'components/blocks/ActivityList'
 import { activitiesMock } from 'stories/assets/mockdata/activity'
 
@@ -13,8 +13,8 @@ export default {
    */
   title: 'Block/ActivityList',
   component: ActivityList,
-} as ComponentMeta<typeof ActivityList>
+} as Meta<typeof ActivityList>
 
-export const Primary: ComponentStory<typeof ActivityList> = () => (
+export const Primary: StoryFn<typeof ActivityList> = () => (
   <ActivityList list={activitiesMock} />
 )

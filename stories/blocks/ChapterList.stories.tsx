@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import ChapterList from 'components/blocks/ChapterList'
 import chapter from 'schemas/chapter'
 import { courseMock } from 'stories/assets/mockdata/course'
@@ -14,9 +14,9 @@ export default {
    */
   title: 'Block/ChapterList',
   component: ChapterList,
-} as ComponentMeta<typeof ChapterList>
+} as Meta<typeof ChapterList>
 
-export const Primary: ComponentStory<typeof ChapterList> = () => (
+export const Primary: StoryFn<typeof ChapterList> = () => (
   <ChapterList
     list={
       courseMock.chapters?.map((chapter) => {

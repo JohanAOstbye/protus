@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import ActivityCard from 'components/elements/ActivityCard'
 import { activityMock } from 'stories/assets/mockdata/activity'
 
@@ -11,8 +11,8 @@ export default {
    */
   title: 'Elements/ActivityCard',
   component: ActivityCard,
-} as ComponentMeta<typeof ActivityCard>
+} as Meta<typeof ActivityCard>
 
-export const Primary: ComponentStory<typeof ActivityCard> = () => (
+export const Primary: StoryFn<typeof ActivityCard> = () => (
   <ActivityCard {...activityMock} />
 )

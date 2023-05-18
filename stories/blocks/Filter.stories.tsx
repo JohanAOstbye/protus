@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import Filter from 'components/blocks/Filter'
 import FilterWrapper from 'stories/assets/FilterWrapper'
 
@@ -11,9 +11,9 @@ export default {
    */
   title: 'Block/Filter',
   component: Filter,
-} as ComponentMeta<typeof Filter>
+} as Meta<typeof Filter>
 
-export const Primary: ComponentStory<typeof Filter> = () => (
+export const Primary: StoryFn<typeof Filter> = () => (
   <FilterWrapper
     options={{
       type: ['Challenge', 'Exercise'],

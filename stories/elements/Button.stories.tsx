@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import { Button } from 'components/elements/Button'
 
 export default {
@@ -10,8 +10,6 @@ export default {
    */
   title: 'Elements/Button',
   component: Button,
-} as ComponentMeta<typeof Button>
+} as Meta<typeof Button>
 
-export const Primary: ComponentStory<typeof Button> = () => (
-  <Button>Activities</Button>
-)
+export const Primary: StoryFn<typeof Button> = () => <Button>Activities</Button>

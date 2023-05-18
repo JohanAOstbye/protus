@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import CourseCard from 'components/elements/CourseCard'
 
 export default {
@@ -10,8 +10,8 @@ export default {
    */
   title: 'Elements/CourseCard',
   component: CourseCard,
-} as ComponentMeta<typeof CourseCard>
+} as Meta<typeof CourseCard>
 
-export const Primary: ComponentStory<typeof CourseCard> = () => (
+export const Primary: StoryFn<typeof CourseCard> = () => (
   <CourseCard title="Java" />
 )

@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import Chip from 'components/elements/Chip'
 
 const mock = 'Examples'
@@ -14,6 +14,6 @@ export default {
    */
   title: 'Elements/Chip',
   component: Chip,
-} as ComponentMeta<typeof Chip>
+} as Meta<typeof Chip>
 
-export const Primary: ComponentStory<typeof Chip> = () => <Chip text={mock} />
+export const Primary: StoryFn<typeof Chip> = () => <Chip text={mock} />

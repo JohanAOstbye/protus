@@ -1,4 +1,4 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import React from 'react'
 import { Serializable } from '@portabletext/react'
 
@@ -56,8 +56,6 @@ export default {
    */
   title: 'Block/DescriptionBlock',
   component: Content,
-} as ComponentMeta<typeof Content>
+} as Meta<typeof Content>
 
-export const Primary: ComponentStory<typeof Content> = () => (
-  <Content value={test} />
-)
+export const Primary: StoryFn<typeof Content> = () => <Content value={test} />

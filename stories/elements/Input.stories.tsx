@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import { Input as Element, InputProps } from 'components/elements/Input'
 
 const inputMock: InputProps = {
@@ -14,9 +14,9 @@ export default {
    */
   title: 'Elements/Input',
   component: Element,
-} as ComponentMeta<typeof Element>
+} as Meta<typeof Element>
 
-export const Primary: ComponentStory<typeof Element> = () => (
+export const Primary: StoryFn<typeof Element> = () => (
   <div>
     <Element {...inputMock} />
     <Element {...inputMock} color="dark" />

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import Navbar from 'components/layout/Navbar'
 import { StoryContext } from 'stories/assets/StoryContext'
 
@@ -10,9 +10,9 @@ export default {
    */
   title: 'Layout/Navbar',
   component: Navbar,
-} as ComponentMeta<typeof Navbar>
+} as Meta<typeof Navbar>
 
-export const Primary: ComponentStory<typeof Navbar> = () => (
+export const Primary: StoryFn<typeof Navbar> = () => (
   <StoryContext>
     <Navbar />
   </StoryContext>

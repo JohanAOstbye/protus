@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import { ActivitiesPage as Page } from 'components/pages/activity/ActivitiesPage'
 import Layout from 'components/layout'
 import { StoryContext } from 'stories/assets/StoryContext'
@@ -16,7 +16,7 @@ export default {
 
   title: 'Pages/ActivitiesPage',
   component: Page,
-} as ComponentMeta<typeof Page>
+} as Meta<typeof Page>
 
 const initialfilter: filterType = {
   type: ['Exercise', 'Challenge'],
@@ -36,7 +36,7 @@ const initialfilter: filterType = {
   ],
 }
 
-export const ActivitiesPage: ComponentStory<typeof Page> = () => (
+export const ActivitiesPage: StoryFn<typeof Page> = () => (
   <StoryContext>
     <Layout>
       <Page initialfilter={initialfilter} />

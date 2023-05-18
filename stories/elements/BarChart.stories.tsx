@@ -1,6 +1,6 @@
 import React, { ReactPropTypes } from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import BarChart from 'components/elements/BarChart'
 
 const data = [
@@ -68,8 +68,6 @@ export default {
    */
   title: 'Elements/BarChart',
   component: BarChart,
-} as ComponentMeta<typeof BarChart>
+} as Meta<typeof BarChart>
 
-export const Primary: ComponentStory<typeof BarChart> = () => (
-  <BarChart data={data} />
-)
+export const Primary: StoryFn<typeof BarChart> = () => <BarChart data={data} />

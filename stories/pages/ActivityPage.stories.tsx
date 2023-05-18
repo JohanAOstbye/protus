@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import { ActivityPage as Page } from 'components/pages/activity/ActivityPage'
 import Layout from 'components/layout'
 import { StoryContext } from 'stories/assets/StoryContext'
@@ -15,9 +15,9 @@ export default {
    */
   title: 'Pages/ActivityPage',
   component: Page,
-} as ComponentMeta<typeof Page>
+} as Meta<typeof Page>
 
-export const ActivityPage: ComponentStory<typeof Page> = () => (
+export const ActivityPage: StoryFn<typeof Page> = () => (
   <StoryContext>
     <Layout>
       <Page activity={activityMock} />

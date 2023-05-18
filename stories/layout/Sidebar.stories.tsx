@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import Sidebar from 'components/layout/Sidebar'
 import { Chapter } from 'lib/sanity/sanity.queries'
 import ContextWrapper from 'components/context/ContextWrapper'
@@ -23,9 +23,9 @@ export default {
    */
   title: 'Layout/Sidebar',
   component: Sidebar,
-} as ComponentMeta<typeof Sidebar>
+} as Meta<typeof Sidebar>
 
-export const Primary: ComponentStory<typeof Sidebar> = () => (
+export const Primary: StoryFn<typeof Sidebar> = () => (
   <ContextWrapper>
     <Sidebar />
   </ContextWrapper>

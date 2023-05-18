@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import ChapterCard from 'components/elements/ChapterCard'
 
 export default {
@@ -10,8 +10,8 @@ export default {
    */
   title: 'Elements/ChapterCard',
   component: ChapterCard,
-} as ComponentMeta<typeof ChapterCard>
+} as Meta<typeof ChapterCard>
 
-export const Primary: ComponentStory<typeof ChapterCard> = () => (
+export const Primary: StoryFn<typeof ChapterCard> = () => (
   <ChapterCard title={'Strings'} url={'/'} />
 )

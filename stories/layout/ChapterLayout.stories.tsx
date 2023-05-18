@@ -1,5 +1,5 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import { CourseLayout } from 'components/layout/CourseLayout'
 import { CourseContextProvider } from 'components/context/courseContext'
 import { courseMock, coursesMock } from 'stories/assets/mockdata/course'
@@ -11,9 +11,9 @@ export default {
    */
   title: 'Layout/CourseLayout',
   component: CourseLayout,
-} as ComponentMeta<typeof CourseLayout>
+} as Meta<typeof CourseLayout>
 
-export const Primary: ComponentStory<typeof CourseLayout> = () => (
+export const Primary: StoryFn<typeof CourseLayout> = () => (
   <CourseContextProvider course={courseMock} courses={coursesMock}>
     <CourseLayout></CourseLayout>
   </CourseContextProvider>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import Layout from 'components/layout'
 import { SessionProvider } from 'next-auth/react'
 import { NewUserPage } from 'components/pages/auth/new-user'
@@ -12,9 +12,9 @@ export default {
    */
   title: 'Pages/NewUserPage',
   component: NewUserPage,
-} as ComponentMeta<typeof NewUserPage>
+} as Meta<typeof NewUserPage>
 
-export const Primary: ComponentStory<typeof NewUserPage> = () => (
+export const Primary: StoryFn<typeof NewUserPage> = () => (
   <StoryContext>
     <Layout>
       <NewUserPage />

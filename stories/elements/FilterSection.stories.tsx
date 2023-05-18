@@ -1,5 +1,5 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { StoryFn, Meta } from '@storybook/react'
 import FilterSection from 'components/elements/FilterSection'
 import FilterItem from 'components/elements/FilterItem'
 
@@ -10,9 +10,9 @@ export default {
    */
   title: 'Elements/FilterSection',
   component: FilterSection,
-} as ComponentMeta<typeof FilterSection>
+} as Meta<typeof FilterSection>
 
-export const Primary: ComponentStory<typeof FilterSection> = () => (
+export const Primary: StoryFn<typeof FilterSection> = () => (
   <FilterSection title={'selection'} canSelect={false}>
     <FilterItem title={'test'} checked={false} />
     <FilterItem title={'test1'} checked={true} />
