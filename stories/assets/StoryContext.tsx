@@ -18,28 +18,28 @@ export const StoryContext = ({
   roles?: UserRole[]
 }) => {
   return (
-    <SessionProvider
-      session={
-        authenticated
-          ? {
-              user: {
-                id: '123',
-                email: 'test@email.com',
-                name: 'Robert',
-                roles: roles,
-              },
-              expires: 'never',
-            }
-          : undefined
-      }
-    >
-      <CourseContextProvider course={courseMock} courses={coursesMock}>
-        <ClientProvider>
-          <XapiContextProvider>
-            <StateContextProvider>{children}</StateContextProvider>
-          </XapiContextProvider>
-        </ClientProvider>
-      </CourseContextProvider>
-    </SessionProvider>
+    // <SessionProvider
+    //   session={
+    //     authenticated
+    //       ? {
+    //           user: {
+    //             id: '123',
+    //             email: 'test@email.com',
+    //             name: 'Robert',
+    //             roles: roles,
+    //           },
+    //           expires: 'never',
+    //         }
+    //       : undefined
+    //   }
+    // >
+    <CourseContextProvider course={courseMock} courses={coursesMock}>
+      <ClientProvider>
+        <XapiContextProvider>
+          <StateContextProvider>{children}</StateContextProvider>
+        </XapiContextProvider>
+      </ClientProvider>
+    </CourseContextProvider>
+    // </SessionProvider>
   )
 }

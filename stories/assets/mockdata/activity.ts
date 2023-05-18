@@ -1,5 +1,5 @@
 import { Activity } from '@prisma/client'
-import { ActivityCardProps } from 'components/elements/ActivityCard'
+import { ActivityCard } from 'components/elements/ActivityCard'
 
 export const activityMock: Activity = {
   id: 'id',
@@ -13,7 +13,7 @@ export const activityMock: Activity = {
   type: 'Challenge',
 }
 
-export const activitiesMock: ActivityCardProps[] = [
+export const activitiesMock: React.ComponentProps<typeof ActivityCard>[] = [
   {
     ...activityMock,
     name: 'Time Time Operator with an extremely long title hehe',

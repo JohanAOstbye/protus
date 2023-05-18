@@ -21,6 +21,9 @@ const config = {
     ignoreDuringBuilds: process.env.VERCEL_ENV === 'production',
   },
   webpack: (config) => {
+    config.module.rules
+      .filter((rule) => rule.test.test('.svg'))
+      .forEach((rule) => (rule.exclude = /\.svg$/i))
     config.module.rules.push({
       test: /\.svg$/,
       use: ['@svgr/webpack'],

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { StoryFn, Meta } from '@storybook/react'
-import ActivityCard from 'components/elements/ActivityCard'
+import { ActivityCard } from 'components/elements/ActivityCard'
 import { activityMock } from 'stories/assets/mockdata/activity'
 
 export default {

@@ -9,10 +9,11 @@ module.exports = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     '@storybook/addon-mdx-gfm',
+    '@tomfreudenberg/next-auth-mock/storybook',
   ],
   framework: {
     name: '@storybook/nextjs',
-    options: {},
+    options: { nextConfigPath: '../next.config.js' },
   },
   // webpackFinal: async config => {
   //   config.resolve.modules.push(path.resolve(__dirname, '../'));
